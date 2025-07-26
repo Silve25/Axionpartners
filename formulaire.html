@@ -16,7 +16,7 @@
     'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '4175147286095380');
     fbq('track', 'PageView');
-    fbq('track', 'ViewContent');
+    fbq('track', 'Lead');
   </script>
   <noscript>
     <img height="1" width="1" style="display:none"
@@ -36,6 +36,17 @@
     footer { text-align: center; font-size: 0.9rem; color: #8891c8; margin-top: 20px; }
     footer a { color: #6ec1ff; text-decoration: none; margin: 0 5px; }
   </style>
+  <!-- Track iframe load as Lead event -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var iframe = document.querySelector('iframe[data-tally-src]');
+      if (iframe) {
+        iframe.addEventListener('load', function() {
+          fbq('track', 'Lead');
+        });
+      }
+    });
+  </script>
 </head>
 <body>
   <div class="content">
@@ -53,21 +64,5 @@
   <footer>
     © 2025 Axion Partners – <a href="https://axionpartners.eu" target="_blank">axionpartners.eu</a>
   </footer>
-  <script>
-    (function(d) {
-      var w = "https://tally.so/widgets/embed.js";
-      var v = function() {
-        if (typeof Tally !== "undefined") {
-          Tally.loadEmbeds();
-        } else {
-          var frames = d.querySelectorAll("iframe[data-tally-src]:not([src])");
-          frames.forEach(function(e) { e.src = e.dataset.tallySrc; });
-        }
-      };
-      if (typeof Tally === "undefined") {
-        var s = d.createElement("script"); s.src = w; s.onload = v; s.onerror = v; d.body.appendChild(s);
-      } else v();
-    })(document);
-  </script>
 </body>
 </html>
