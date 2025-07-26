@@ -1,17 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr">
-<script>
-  fbq('track', 'ViewContent', {
-    value: 2,
-    currency: 'EUR',
-  });
-</script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Demande d’accompagnement – Axion Partners</title>
-  <!-- Pixel Shown.io -->
-  <script defer src="https://shown.io/metrics/5M0ZD4Gv8P" type="text/javascript"></script>
+  <!-- Meta Pixel Base -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);
+    t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)
+    }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '673140075759134');
+    fbq('track', 'PageView');
+  </script>
+  <!-- Track: ViewContent on form page -->
+  <script>
+    fbq('track', 'ViewContent', {
+      value: 2,
+      currency: 'EUR'
+    });
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=673140075759134&ev=PageView&noscript=1"/>
+  </noscript>
   <style>
     body { font-family: Arial, sans-serif; background: #0a0f2f; color: #e0e6ff; margin: 0; padding: 20px; }
     .content { max-width: 800px; margin: auto; text-align: center; }
