@@ -28,17 +28,17 @@
   <!-- Tally Widget -->
   <script async src="https://tally.so/widgets/embed.js"></script>
   <style type="text/css">
-    html, body { margin: 0; height: 100%; overflow: hidden; font-family: Arial, sans-serif; color: #e0e6ff; background: #0a0f2f; }
-    .container { position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; }
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: Arial, sans-serif; background: #0a0f2f; color: #e0e6ff; }
+    .container { display: flex; flex-direction: column; height: 100%; }
     .header { padding: 20px; text-align: center; }
-    .logo { width: 80px; margin-bottom: 15px; }
+    .logo { width: 80px; margin: 0 auto 10px; display: block; }
     .title { font-size: 1.8rem; color: #4faaff; margin-bottom: 10px; }
-    .desc { font-size: 1rem; max-width: 600px; margin: 0 auto 20px; color: #cfd8ff; }
-    .actions { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
+    .desc { font-size: 1rem; max-width: 600px; margin: 0 auto; color: #cfd8ff; }
+    .iframe-wrapper { flex: 1; position: relative; }
+    iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+    .actions { padding: 15px; display: flex; justify-content: center; gap: 15px; background: #0a0f2f; }
     .btn { background: #4faaff; color: #0a0f2f; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; font-weight: bold; }
     .btn:hover { background: #6ec1ff; }
-    .iframe-wrapper { flex: 1; position: relative; }
-    iframe { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; }
   </style>
 
   <!-- Track iframe load as Lead -->
@@ -58,15 +58,15 @@
     <div class="header">
       <img src="images/app-icon.png" alt="Logo Axion Partners" class="logo">
       <div class="title">Accédez à 200 000 € de financement avant le 31 août</div>
-      <div class="desc">Que vous soyez entrepreneur, porteur de projet, entreprise, particulier, dans l’innovation ou l’humanitaire, Axion Partners mobilise son réseau pour vous aider à obtenir subventions, prêts ou investissements jusqu’à 200 000 €. Notre pré‑analyse est gratuite et sans engagement : vous saurez en 48 h si vous êtes éligible.</div>
-      <div class="actions">
-        <a class="btn" href="tel:+447575894918">Nous appeler</a>
-        <a class="btn" href="mailto:Contact@axionpartners.eu">Nous envoyer un mail</a>
-        <a class="btn" href="https://wa.link/xsa9j5" target="_blank">Discuter via WhatsApp</a>
-      </div>
+      <div class="desc">Entrepreneurs, projets innovants, particuliers en humanitaire : obtenez subventions, prêts ou investisseurs. Pré-analyse gratuite en 48 h.</div>
     </div>
     <div class="iframe-wrapper">
-      <iframe data-tally-src="https://tally.so/r/mBJPae?formEventsForwarding=1" width="100%" height="100%" frameborder="0" title="Demande d’accompagnement – Axion Partners"></iframe>
+      <iframe data-tally-src="https://tally.so/embed/mBJPae?alignLeft=1&hideTitle=1&dynamicHeight=1&formEventsForwarding=1" loading="lazy" frameborder="0" marginheight="0" marginwidth="0" title="Demande d’accompagnement – Axion Partners"></iframe>
+    </div>
+    <div class="actions">
+      <a class="btn" href="tel:+447575894918">Nous appeler</a>
+      <a class="btn" href="mailto:Contact@axionpartners.eu">Nous envoyer un mail</a>
+      <a class="btn" href="https://wa.link/xsa9j5" target="_blank" rel="noopener">Discuter via WhatsApp</a>
     </div>
   </div>
 </body>
