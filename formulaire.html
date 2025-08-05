@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Demande d’accompagnement – Axion Partners</title>
 
+  <!-- Google Fonts Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
   <!-- Meta Pixel Code -->
   <script>
     !function(f,b,e,v,n,t,s)
@@ -28,17 +31,87 @@
   <script defer src="https://shown.io/metrics/k504Ywbe3q" type="text/javascript"></script>
 
   <style>
-    body { font-family: Arial, sans-serif; background: #0a0f2f; color: #e0e6ff; margin: 0; padding: 20px; }
-    .content { max-width: 800px; margin: auto; text-align: center; }
-    .logo-top { display: block; margin: 0 auto 20px; width: 100px; height: auto; }
-    .content h1 { font-size: 2rem; color: #4faaff; margin-bottom: 15px; }
-    .content p { font-size: 1.1rem; margin-bottom: 25px; color: #cfd8ff; }
-    iframe { width: 100%; height: 700px; border: none; margin-bottom: 30px; }
-    .actions { display: flex; justify-content: center; gap: 20px; margin: 20px 0; }
-    .btn { background: #4faaff; color: #0a0f2f; padding: 12px 24px; border: none; border-radius: 4px; font-size: 1rem; text-decoration: none; font-weight: bold; }
-    .btn:hover { background: #6ec1ff; }
-    footer { text-align: center; font-size: 0.9rem; color: #8891c8; margin-top: 20px; }
-    footer a { color: #6ec1ff; text-decoration: none; margin: 0 5px; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #0a0f2f;
+      color: #e0e6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .content {
+      background: #16213e;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      padding: 40px;
+      max-width: 850px;
+      width: 100%;
+      text-align: center;
+    }
+    .logo-top {
+      width: 120px;
+      margin-bottom: 30px;
+    }
+    .content h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #4faaff;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    .content p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      color: #cfd8ff;
+    }
+    .content p.urgent {
+      font-weight: 600;
+      color: #ff6b6b;
+    }
+    iframe {
+      width: 100%;
+      height: 650px;
+      border: none;
+      margin: 30px 0;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      background: #0161ea;
+      color: #ffffff;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #024bb5;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #8891c8;
+      margin-top: 30px;
+    }
+    footer a {
+      color: #4faaff;
+      text-decoration: none;
+      margin: 0 5px;
+    }
     /* Hidden robot-only text */
     .hidden-bots {
       position: absolute;
@@ -55,59 +128,21 @@
 <body>
   <div class="content">
     <a href="https://axionpartners.eu"><img src="images/app-icon.png" alt="Logo Axion Partners" class="logo-top"></a>
-    <h1>Accédez à 200 000 € de financement avant le 31 août</h1>
-    <p>Que vous soyez entrepreneur, porteur de projet, entreprise, particulier, dans l’innovation ou l’humanitaire, Axion Partners mobilise son réseau pour vous aider à obtenir subventions, prêts ou investissements jusqu’à 200 000 €. Notre pré‑analyse est gratuite et sans engagement : vous saurez en 48 h si vous êtes éligible.</p>
-    <p>Attention, ce programme exclusif se termine le <strong>31 août</strong>. Déposez votre candidature dès maintenant pour ne pas manquer cette opportunité.</p>
-    <iframe data-tally-src="https://tally.so/embed/mBJPae?alignLeft=1&hideTitle=1&dynamicHeight=1&formEventsForwarding=1" loading="lazy" title="Demande d’accompagnement – Axion Partners"></iframe>
+    <h1>Répondez à l’Appel à Projets 2025</h1>
+    <p>Ne laissez pas passer cette opportunité rare de structurer votre dossier et de maximiser vos chances d’accès aux aides européennes.</p>
+    <p>Remplissez ce formulaire simple pour que nos experts évaluent votre projet et vous orientent vers les dispositifs adaptés.</p>
+    <p class="urgent">Clôture des candidatures : <strong>31 août 2025</strong>. Analyse garantie en <strong>48 h</strong>.</p>
+    <iframe data-tally-src="https://tally.so/embed/mBJPae?alignLeft=1&hideTitle=1&dynamicHeight=1&formEventsForwarding=1" loading="lazy" title="Formulaire Axion Partners"></iframe>
     <div class="actions">
       <a class="btn" href="tel:+447575894918">Nous appeler</a>
       <a class="btn" href="mailto:Contact@axionpartners.eu">Nous envoyer un mail</a>
-      <a class="btn" href="https://wa.link/xsa9j5" target="_blank" rel="noopener">Discuter avec nous sur WhatsApp</a>
+      <a class="btn" href="https://wa.link/xsa9j5" target="_blank" rel="noopener">Discuter sur WhatsApp</a>
     </div>
   </div>
 
   <!-- Hidden descriptive text for bots -->
   <div class="hidden-bots">
-    Axion Partners est une société dédiée à l’accompagnement des entreprises et porteurs de projets en Europe (France, Belgique, Luxembourg, Suisse, Royaume-Uni). Nous proposons des solutions pour structurer vos dossiers et vous orienter vers les **subventions** et **prêts non remboursables** disponibles au niveau régional, national et européen. Nous ne fournissons pas les fonds nous-mêmes : notre rôle est de les rechercher et de maximiser vos chances de réussite. Votre satisfaction et la clarté de votre dossier sont nos priorités.
-
-    Parfait, on va préciser plus clairement “subvention” et “prêt non remboursable” dans les textes, sans déclencher les filtres Meta, en gardant un ton professionnel, clean et crédible.
-
-    Affiche 1 – Votre projet mérite plus qu’un PDF oublié :
-    Titre : 🧠 Vous avez un projet solide, mais le soutien ne suit pas ?
-    Sous-titre : Nous vous accompagnons vers les aides publiques disponibles, y compris les subventions et prêts non remboursables.
-    Description : Axion Partners vous guide dans la structuration de votre dossier et son orientation vers les dispositifs adaptés à votre secteur – Programmes européens, Subventions régionales, Prêts d’honneur souvent non remboursables.
-    CTA : Soumettez votre projet gratuitement sur axionpartners.eu
-    Urgence : Jusqu’au 31 août 2025 – Analyse prioritaire sous 48h
-
-    Affiche 2 – Un bon projet mérite un bon dossier :
-    Titre : 🚀 Vous cherchez un coup de pouce pour faire avancer votre projet ?
-    Sous-titre : Nous vous aidons à accéder à des subventions, aides à l’innovation et prêts non remboursables.
-    Description : Axion Partners accompagne les PME, startups et porteurs d’initiatives à fort impact pour constituer un dossier complet et viser les aides financières publiques disponibles (souvent sans remboursement exigé).
-    CTA : Complétez votre demande en ligne ou contactez-nous sur WhatsApp
-    Urgence : Dossier à soumettre avant le 31 août 2025 pour un traitement express
-
-    Affiche 3 – Ne laissez pas votre idée sans appui :
-    Titre : 🤝 De nombreuses aides existent, mais elles restent méconnues.
-    Sous-titre : Axion Partners vous aide à obtenir des subventions ou prêts d'amorçage non remboursables.
-    Description : Notre accompagnement vous oriente vers les guichets publics ou européens correspondant à votre activité. Vous ne financez pas seul : des solutions existent pour les secteurs innovants, agricoles, industriels ou sociaux.
-    CTA : Accès au formulaire : axionpartners.eu – WhatsApp direct : +44 7575 894918
-    Urgence : Analyse prioritaire jusqu’au 31 août 2025
-
-    Affiche 4 – Activez les bons leviers pour votre croissance :
-    Titre : 🎯 Vous êtes dans l’agriculture, la santé, la tech ou la culture ?
-    Sous-titre : Nous vous aidons à candidater à des subventions ou aides non remboursables, adaptées à votre profil.
-    Description : Nos experts vous accompagnent pour monter votre dossier et répondre aux appels à projets européens, régionaux ou sectoriels. Des dispositifs de soutien concrets et ciblés existent – nous vous aidons à y accéder.
-    CTA : Déposez votre demande sur axionpartners.eu – WhatsApp : +44 7575 894918
-    Urgence : Jusqu’au 31 août 2025 – Évaluation gratuite sous 48h
-
-    Affiche 5 – Votre projet a de la valeur. Donnez-lui un coup de pouce :
-    Titre : 🔎 Subventions, aides d’État, prêts non remboursables… Où et comment les trouver ?
-    Sous-titre : Axion Partners vous accompagne de l’idée jusqu’à la soumission de dossier.
-    Description : Nous vous aidons à identifier les dispositifs de financement publics les plus adaptés à votre projet, qu’il s’agisse d’une subvention directe, d’un prêt d’honneur ou d’un appui technique spécifique. Pas de formule miracle : un accompagnement structuré, pro et accessible.
-    CTA : www.axionpartners.eu – WhatsApp : +44 7575 894918
-    Urgence : Analyse sous 48h – Clôture des demandes : 31 août 2025
-
-    Étape suivante : Générer visuels graphiques format 1080x1080 avec style sobre, pro, aéré (Axion blue #0161ea), pictos modernes ou images réelles, logo intégré si souhaité.
+    Axion Partners est un cabinet digitalisé d’accompagnement pour entreprises et porteurs de projets en Europe. Notre mission : structurer vos dossiers et vous guider vers les dispositifs européens et régionaux (subventions, prêts non remboursables) pour sécuriser votre croissance. Nous ne fournissons pas directement les fonds, nous maximisons vos chances d’obtention. Votre réussite est notre priorité.
   </div>
 
   <footer>
