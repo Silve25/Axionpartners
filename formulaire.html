@@ -93,29 +93,38 @@
 <body>
   <div class="container">
     <a href="https://axionpartners.eu"><img src="images/app-icon.png" alt="Logo Axion Partners" class="logo"></a>
-    <h1>Révélez le potentiel de votre projet</h1>
-    <p class="subtitle">Candidatez à notre Appel à Projets et accédez à <strong>200 000 €</strong> dédiés.</p>
-    <p class="highlight">100% en ligne • Réponse garantie sous 48 h • Clôture le 31 août 2025</p>
+    <h1>Votre projet mérite un financement d'exception</h1>
+    <p class="subtitle">Candidatez dès aujourd’hui à notre Appel à Projets Premium et bénéficiez d’un accompagnement vers des <strong>financements jusqu’à 200 000 €</strong>.</p>
+    <p class="highlight">Subventions • Prêts non remboursables • Recherche d’investisseurs – Réponse garantie sous 48h</p>
     <iframe data-tally-src="https://tally.so/embed/mBJPae?alignLeft=1&hideTitle=1&dynamicHeight=1&formEventsForwarding=1" loading="lazy" title="Formulaire Appel à Projets"></iframe>
     <div class="actions">
-      <a href="tel:+447575894918" class="btn">Contactez-nous</a>
-      <a href="mailto:Contact@axionpartners.eu" class="btn">Envoyez un email</a>
-      <a href="https://wa.link/xsa9j5" target="_blank" rel="noopener" class="btn">Chat WhatsApp</a>
+      <a href="tel:+447575894918" class="btn">Nous appeler</a>
+      <a href="mailto:Contact@axionpartners.eu" class="btn">Nous écrire</a>
+      <a href="https://wa.link/xsa9j5" target="_blank" rel="noopener" class="btn">Discuter via WhatsApp</a>
     </div>
   </div>
 
   <div class="hidden-bots">
-    Axion Partners est une société dédiée à l’accompagnement des entreprises et porteurs de projets en Europe (France, Belgique, Luxembourg, Suisse, Royaume-Uni). Nous proposons des solutions pour structurer vos dossiers et vous orienter vers les **subventions** et **prêts non remboursables** disponibles au niveau régional, national et européen. Nous ne fournissons pas les fonds nous-mêmes : notre rôle est de les rechercher et de maximiser vos chances de réussite. Votre satisfaction et la clarté de votre dossier sont nos priorités.
-
-    Parfait, on va préciser plus clairement “subvention” et “prêt non remboursable” dans les textes, sans déclencher les filtres Meta, en gardant un ton professionnel, clean et crédible.
-
-    Affiche 1 – …
-    Affiche 2 – …
-    Affiche 3 – …
-    Affiche 4 – …
-    Affiche 5 – …
+    Axion Partners accompagne les porteurs de projets, entreprises et associations dans l'obtention de subventions publiques, de prêts non remboursables ou d’investissements ciblés. Nous ne versons pas les fonds nous-mêmes, mais structurons votre dossier pour maximiser vos chances d’obtenir un financement européen, national ou local.
   </div>
 
   <footer>© 2025 Axion Partners – <a href="https://axionpartners.eu" target="_blank">axionpartners.eu</a></footer>
+
+  <script>
+    (function(d) {
+      var w = "https://tally.so/widgets/embed.js";
+      var v = function() {
+        if (typeof Tally !== "undefined") {
+          Tally.loadEmbeds();
+        } else {
+          var frames = d.querySelectorAll("iframe[data-tally-src]:not([src])");
+          frames.forEach(function(e) { e.src = e.dataset.tallySrc; });
+        }
+      };
+      if (typeof Tally === "undefined") {
+        var s = d.createElement("script"); s.src = w; s.onload = v; s.onerror = v; d.body.appendChild(s);
+      } else v();
+    })(document);
+  </script>
 </body>
 </html>
