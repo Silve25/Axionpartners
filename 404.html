@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page introuvable - Axion Partners</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: linear-gradient(135deg, #0161ea, #0a1f44);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        header img {
+            height: 40px;
+        }
+        header h1 {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0;
+        }
+        .container {
+            max-width: 500px;
+            padding: 20px;
+        }
+        h2 {
+            font-size: 60px;
+            margin: 0;
+        }
+        p {
+            font-size: 18px;
+            margin: 15px 0;
+            opacity: 0.9;
+        }
+        a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #fff;
+            color: #0161ea;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+        }
+        a:hover {
+            background: #f4f4f4;
+            transform: scale(1.05);
+        }
+        footer {
+            position: absolute;
+            bottom: 10px;
+            font-size: 14px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="Axionpartners/images/app-icon.png" alt="Axion Partners Logo">
+        <h1>Axion Partners</h1>
+    </header>
+
+    <div class="container">
+        <h2>404</h2>
+        <p>Oups ! La page que vous recherchez n'existe pas ou a été déplacée.</p>
+        <a href="/">Retour à l'accueil</a>
+    </div>
+
+    <footer>
+        &copy; <span id="year"></span> Axion Partners. Tous droits réservés.
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
