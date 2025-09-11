@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Axion Partners — Prêts (2,5 %) & Subventions en Europe | Étude 24 h • Réponse 48 h • Financement 72 h</title>
+  <meta name="description" content="Basés au Royaume‑Uni, Axion Partners finance projets et entreprises en Europe : prêts à taux fixe 2,5 % et subventions (aides non remboursables). Étude sous 24 h après contact, réponse sous 48 h, versement sous 72 h si accepté." />
+  <meta name="author" content="Axion Partners" />
+  <link rel="icon" href="/images/app-icon.png" />
+  <link rel="canonical" href="/Axfinancement" />
+
+  <!-- Partage social -->
+  <meta property="og:title" content="Axion Partners — Prêts 2,5 % & Subventions en Europe" />
+  <meta property="og:description" content="Étude 24 h après contact • Réponse 48 h • Financement 72 h si accepté" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/Axfinancement" />
+  <meta property="og:image" content="/images/og-axion.jpg" />
+
+  <style>
+    /* —— Thème clair —— */
+    :root{
+      --bg:#ffffff; --ink:#0f1724; --muted:#475569; --line:#e5e7eb; --card:#f8fafc;
+      --brand:#0f56ff; --brand-ink:#ffffff; --ok:#16a34a; --warn:#b45309;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; color:var(--ink); background:var(--bg); line-height:1.5}
+    img{display:block;max-width:100%;height:auto}
+    a{text-decoration:none;color:inherit}
+    .container{max-width:1000px;margin:0 auto;padding:20px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    /* Header */
+    header{display:flex;align-items:center;gap:14px;padding:8px 0 14px;border-bottom:1px solid var(--line)}
+    header img{height:54px;border-radius:10px}
+    .brand{display:flex;flex-direction:column}
+    .brand h1{font-size:22px;letter-spacing:0.1px}
+    .brand .tag{font-size:12px;color:var(--muted)}
+
+    /* Hero */
+    .hero{margin-top:18px;background:linear-gradient(180deg,#f7fbff 0%,#f2f6ff 100%);border:1px solid var(--line);border-radius:16px;padding:22px}
+    .hero h2{font-size:26px;margin:6px 0 8px}
+    .hero p{color:var(--muted)}
+    .hero .line{margin-top:8px;color:#111827}
+    .bullet{display:inline-block;background:#e9f0ff;color:#1d4ed8;font-weight:700;border-radius:999px;padding:6px 12px;font-size:12px}
+
+    /* CTAs */
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 18px;border-radius:12px;font-weight:800;border:1px solid transparent}
+    .btn.email{background:var(--brand);color:var(--brand-ink)}
+    .btn.whatsapp{background:#25d366;color:#052d18}
+
+    /* Mini‑form */
+    .formcard{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+    .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .input{display:block;width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:14px}
+    .submit{margin-top:10px;width:100%;padding:12px;border-radius:12px;border:0;background:var(--brand);color:var(--brand-ink);font-weight:800;cursor:pointer}
+    .micro{font-size:12px;color:var(--muted);margin-top:8px}
+
+    /* Value props */
+    .value3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+    .vcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+    .vcard h3{font-size:16px;margin-bottom:6px}
+    .vcard p{font-size:14px;color:var(--muted)}
+
+    /* Steps */
+    .steps{margin-top:18px}
+    .steps h3{font-size:18px;margin-bottom:8px}
+    .stepgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}
+    .step b{display:block;margin-bottom:4px}
+
+    /* Testimonials */
+    .testi{margin-top:18px}
+    .testi h3{font-size:18px;margin-bottom:8px}
+    .tgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .t{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+    .t p{color:#111827}
+    .who{margin-top:8px;color:var(--muted);font-size:14px}
+
+    /* Urgency & FAQ */
+    .urgency{margin-top:14px;background:#fff7ed;border:1px solid #fed7aa;color:var(--warn);border-radius:12px;padding:10px;font-weight:700}
+    .faq{margin-top:20px}
+    .faq h3{font-size:18px;margin-bottom:8px}
+    .qa{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}
+    .qa h4{font-size:15px}
+    .qa p{color:var(--muted)}
+
+    /* Footer */
+    footer{margin:20px auto 30px;text-align:center;color:var(--muted);font-size:13px}
+    footer a{color:#1d4ed8}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .formgrid,.value3,.stepgrid,.tgrid{grid-template-columns:1fr}
+      .hero h2{font-size:24px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- ===== Header ===== -->
+    <header data-section="header">
+      <a href="/" aria-label="Accueil Axion Partners"><img src="/images/app-icon.png" alt="Axion Partners"></a>
+      <div class="brand">
+        <h1>Axion Partners</h1>
+        <div class="tag">Basés au Royaume‑Uni — nous finançons projets et entreprises en Europe</div>
+      </div>
+    </header>
+
+    <!-- ===== Hero ===== -->
+    <section class="hero" id="top" data-section="hero">
+      <span class="bullet" aria-label="Promesse temporelle">Étude 24 h • Réponse 48 h • Financement 72 h*</span>
+      <h2>Vous avez un projet, nous vous aidons à le financer.</h2>
+      <p>Deux solutions adaptées à votre besoin : <b>prêts à taux fixe de 2,5 %</b> et <b>subventions (aides non remboursables)</b>. Dites‑nous ce dont vous avez besoin ; nous simplifions le parcours pour aller vite et droit au but.</p>
+      <p class="line"><small>*Délais indicatifs après acceptation et pièces complètes.</small></p>
+
+      <!-- CTAs principaux -->
+      <div class="cta-row" aria-label="Modes de contact">
+        <a class="btn email" href="mailto:Contact@axionpartners.eu" data-track="cta_email" aria-label="Écrire par e‑mail">Écrire par e‑mail</a>
+        <a class="btn whatsapp" href="https://wa.link/xsa9j5" target="_blank" rel="noopener" data-track="cta_whatsapp" aria-label="Écrire sur WhatsApp">Écrire sur WhatsApp</a>
+      </div>
+
+      <!-- Mini‑form: 4 champs simples (à relier côté JS/Apps Script) -->
+      <form class="formcard" id="miniForm" method="post" action="" data-track="mini_form" aria-label="Mini‑formulaire">
+        <div class="formgrid">
+          <label class="sr-only" for="prenom">Prénom</label>
+          <input class="input" id="prenom" name="prenom" placeholder="Prénom" required />
+          <label class="sr-only" for="nom">Nom</label>
+          <input class="input" id="nom" name="nom" placeholder="Nom" required />
+        </div>
+        <div class="formgrid" style="margin-top:10px">
+          <label class="sr-only" for="telephone">Téléphone</label>
+          <input class="input" id="telephone" name="telephone" placeholder="Téléphone" inputmode="tel" required />
+          <label class="sr-only" for="email">Email</label>
+          <input class="input" id="email" name="email" type="email" placeholder="Email" required />
+        </div>
+        <button class="submit" type="submit" aria-label="Ouvrir mon dossier">Ouvrir mon dossier (2 min)</button>
+        <div class="micro">Vos informations servent uniquement à l’étude de votre dossier et à la prise de contact.</div>
+      </form>
+
+      <!-- Bénéfices -->
+      <div class="value3" id="benefices" data-section="benefices">
+        <div class="vcard">
+          <h3>⏳ Rapidité</h3>
+          <p>Analyse sous 24 h, réponse sous 48 h, versement sous 72 h si accepté.</p>
+        </div>
+        <div class="vcard">
+          <h3>💶 Deux formules simples</h3>
+          <p>Prêt à 2,5 % fixe ou subvention non remboursable — on vous oriente selon votre besoin.</p>
+        </div>
+        <div class="vcard">
+          <h3>🤝 Accompagnement clair</h3>
+          <p>Un interlocuteur qui explique les étapes et vous aide à fournir juste l’essentiel.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Étapes ===== -->
+    <section class="steps" id="etapes" data-section="etapes">
+      <h3>Comment ça marche ?</h3>
+      <div class="stepgrid">
+        <div class="step"><b>1) Vous nous contactez</b> par e‑mail, WhatsApp ou via le mini‑formulaire.</div>
+        <div class="step"><b>2) Étude sous 24 h</b> après réception de vos besoins et pièces.</div>
+        <div class="step"><b>3) Réponse sous 48 h</b> prêt (2,5 %) ou subvention selon votre profil.</div>
+        <div class="step"><b>4) Versement sous 72 h</b> maximum après acceptation.</div>
+      </div>
+    </section>
+
+    <!-- ===== Témoignages ===== -->
+    <section class="testi" id="temoignages" data-section="temoignages">
+      <h3>Ils ont financé leur projet avec Axion Partners</h3>
+      <div class="tgrid">
+        <div class="t"><p>« Contact par WhatsApp le lundi matin, étude le jour même, réponse deux jours après, et 25 000 € reçus le jeudi. J’ai pu ouvrir ma boutique sans retard. »</p><div class="who">— Sophie, Bruxelles</div></div>
+        <div class="t"><p>« Je ne savais pas ce qu’était une subvention. On m’a expliqué simplement : une aide, sans remboursement. 40 000 € accordés pour notre association culturelle. »</p><div class="who">— Karim, Liège</div></div>
+        <div class="t"><p>« Besoin d’un tracteur : prêt de 60 000 € à 2,5 % fixe, argent reçu sous trois jours. Process clair, aucune perte de temps. »</p><div class="who">— Jean‑Pierre, Namur</div></div>
+        <div class="t"><p>« Un mail lundi, un appel pour préciser mes besoins, et l’argent sur le compte le vendredi. Ça m’a permis de relancer mon commerce. »</p><div class="who">— Laura, Lille</div></div>
+        <div class="t"><p>« Notre ONG a été financée à hauteur de 80 000 € en subvention. Dossier regardé en 24 h, confirmation en 48 h. On a gagné des mois. »</p><div class="who">— Fatima, Anvers</div></div>
+        <div class="t"><p>« Ils ne poussent rien d’inutile : ils financent, point. Prêt de 20 000 € accepté, tout s’est déroulé comme annoncé. »</p><div class="who">— Olivier, Charleroi</div></div>
+        <div class="t"><p>« Réponse claire et 50 000 € reçus en moins d’une semaine. Les étapes sont expliquées sans jargon. »</p><div class="who">— Isabelle, Liège</div></div>
+        <div class="t"><p>« 2,5 % fixe pour 15 000 € de prêt. Ce qu’on m’a dit au départ est ce que j’ai eu à l’arrivée. »</p><div class="who">— Thomas, Bruxelles</div></div>
+        <div class="t"><p>« La subvention de 30 000 € a équipé notre atelier. L’équipe va droit au but et respecte les délais. »</p><div class="who">— Clara, Mons</div></div>
+        <div class="t"><p>« J’étais sceptique. Résultat : étude en 24 h, réponse en 48 h, 10 000 € sur le compte en 72 h. Mon projet a enfin démarré. »</p><div class="who">— Samir, Gand</div></div>
+      </div>
+    </section>
+
+    <!-- ===== Urgence ===== -->
+    <div class="urgency" role="status">Capacité limitée : nous traitons un nombre restreint de demandes chaque semaine. Ouvrez votre dossier dès maintenant.</div>
+
+    <!-- ===== FAQ ===== -->
+    <section class="faq" aria-labelledby="faq-title" data-section="faq">
+      <h3 id="faq-title">Questions fréquentes</h3>
+      <div class="qa"><h4>Quel type de financement proposez‑vous ?</h4><p>Deux solutions : <b>prêt à taux fixe de 2,5 %</b> et <b>subvention</b> (aide financière qui <b>ne se rembourse pas</b>).</p></div>
+      <div class="qa"><h4>Quel montant puis‑je obtenir ?</h4><p>Selon le projet, jusqu’à <b>200 000 €</b>. Le montant exact dépend de votre besoin et de l’évaluation de votre dossier.</p></div>
+      <div class="qa"><h4>Quels sont les délais ?</h4><p><b>Étude sous 24 h</b> après votre premier message et vos informations de base, <b>réponse sous 48 h</b>, et <b>versement sous 72 h</b> après acceptation.</p></div>
+      <div class="qa"><h4>Financer en Europe, ça veut dire où ?</h4><p>Nous sommes basés au Royaume‑Uni et finançons des projets et entreprises <b>partout en Europe</b>.</p></div>
+      <div class="qa"><h4>Comment ouvrir mon dossier ?</h4><p>Écrivez‑nous <a href="mailto:Contact@axionpartners.eu">par e‑mail</a>, sur <a href="https://wa.link/xsa9j5" target="_blank" rel="noopener">WhatsApp</a>, ou utilisez le mini‑formulaire ci‑dessus.</p></div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer id="legal">
+      © 2025 Axion Partners — Tous droits réservés • <a href="/">axionpartners.eu</a><br/>
+      Basés au Royaume‑Uni, nous finançons projets et entreprises en Europe. Les montants et délais dépendent de l’éligibilité et des pièces fournies. Nous garantissons des <b>délais de traitement</b> (étude 24 h, réponse 48 h) ; le financement intervient sous 72 h après acceptation.
+    </footer>
+  </div>
+
+  <!-- JS à ajouter plus tard dans /Axfinancement.js (Apps Script + pixel Telegram). Aucun <script> ici, HTML pur. -->
+</body>
+</html>
