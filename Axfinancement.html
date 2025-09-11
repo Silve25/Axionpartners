@@ -17,90 +17,113 @@
   <meta property="og:image" content="/images/og-axion.jpg" />
 
   <style>
-    /* —— Thème clair —— */
+    /* —— Thème clair & micro‑animations —— */
     :root{
       --bg:#ffffff; --ink:#0f1724; --muted:#475569; --line:#e5e7eb; --card:#f8fafc;
-      --brand:#0f56ff; --brand-ink:#ffffff; --ok:#16a34a; --warn:#b45309;
+      --brand:#0f56ff; --brand-ink:#ffffff; --ok:#16a34a; --warn:#b45309; --accent:#e9f0ff;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; color:var(--ink); background:var(--bg); line-height:1.5}
     img{display:block;max-width:100%;height:auto}
     a{text-decoration:none;color:inherit}
-    .container{max-width:1000px;margin:0 auto;padding:20px}
+    .container{max-width:1100px;margin:0 auto;padding:20px}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
     /* Header */
     header{display:flex;align-items:center;gap:14px;padding:8px 0 14px;border-bottom:1px solid var(--line)}
-    header img{height:54px;border-radius:10px}
+    header img{height:56px;border-radius:12px}
     .brand{display:flex;flex-direction:column}
     .brand h1{font-size:22px;letter-spacing:0.1px}
     .brand .tag{font-size:12px;color:var(--muted)}
 
-    /* Hero */
-    .hero{margin-top:18px;background:linear-gradient(180deg,#f7fbff 0%,#f2f6ff 100%);border:1px solid var(--line);border-radius:16px;padding:22px}
-    .hero h2{font-size:26px;margin:6px 0 8px}
-    .hero p{color:var(--muted)}
+    /* Hero élargi + décor doux */
+    .hero{position:relative;margin-top:18px;background:linear-gradient(180deg,#f7fbff 0%,#f2f6ff 100%);border:1px solid var(--line);border-radius:20px;padding:28px 24px 26px;overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:-40% -10% auto -10%;height:260px;background:radial-gradient(60% 60% at 30% 50%, rgba(15,86,255,0.15), transparent 60%);filter:blur(6px);animation:float 10s ease-in-out infinite alternate}
+    @keyframes float{to{transform:translateY(8px)}}
+    .hero h2{font-size:30px;margin:8px 0 10px}
+    .hero p{color:var(--muted);max-width:940px}
     .hero .line{margin-top:8px;color:#111827}
-    .bullet{display:inline-block;background:#e9f0ff;color:#1d4ed8;font-weight:700;border-radius:999px;padding:6px 12px;font-size:12px}
+    .bullets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+    .bullet{display:inline-block;background:var(--accent);color:#1d4ed8;font-weight:700;border-radius:999px;padding:6px 12px;font-size:12px}
 
-    /* CTAs */
-    .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 18px;border-radius:12px;font-weight:800;border:1px solid transparent}
+    /* Mini‑form d'abord (gating CTAs) */
+    .formcard{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 10px 24px rgba(15,86,255,0.06)}
+    .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .input{display:block;width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:#fff;transition:box-shadow .2s, border-color .2s}
+    .input:focus{outline:none;border-color:#c3d0ff;box-shadow:0 0 0 3px rgba(15,86,255,0.12)}
+    .submit{margin-top:10px;width:100%;padding:12px;border-radius:12px;border:0;background:var(--brand);color:var(--brand-ink);font-weight:800;cursor:pointer;transition:transform .06s ease}
+    .submit:active{transform:translateY(1px)}
+    .micro{font-size:12px;color:var(--muted);margin-top:8px}
+
+    /* CTAs — désactivés tant que le formulaire n'est pas valide */
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;transition:opacity .25s ease}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 18px;border-radius:12px;font-weight:800;border:1px solid transparent;transition:transform .06s ease, filter .2s ease, opacity .2s}
     .btn.email{background:var(--brand);color:var(--brand-ink)}
     .btn.whatsapp{background:#25d366;color:#052d18}
 
-    /* Mini‑form */
-    .formcard{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
-    .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .input{display:block;width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:14px}
-    .submit{margin-top:10px;width:100%;padding:12px;border-radius:12px;border:0;background:var(--brand);color:var(--brand-ink);font-weight:800;cursor:pointer}
-    .micro{font-size:12px;color:var(--muted);margin-top:8px}
+    /* état par défaut : bloqué */
+    .cta-row .btn{pointer-events:none;opacity:.45;filter:saturate(.2) contrast(.9)}
+    .cta-hint{font-size:13px;color:var(--muted);margin-top:2px}
+
+    /* une fois tous les champs valides, on active */
+    .formcard:has(#prenom:valid):has(#nom:valid):has(#telephone:valid):has(#email:valid) ~ .cta-row .btn{pointer-events:auto;opacity:1;filter:none}
+    .formcard:has(#prenom:valid):has(#nom:valid):has(#telephone:valid):has(#email:valid) ~ .cta-row .cta-hint::before{content:"Parfait ! Choisissez votre canal."}
+    .formcard:not(:has(#prenom:valid):has(#nom:valid):has(#telephone:valid):has(#email:valid)) ~ .cta-row .cta-hint::before{content:"Remplissez le mini‑formulaire pour activer les contacts."}
 
     /* Value props */
     .value3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
-    .vcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+    .vcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;transition:transform .08s ease, box-shadow .2s}
+    .vcard:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(2,6,23,0.06)}
     .vcard h3{font-size:16px;margin-bottom:6px}
     .vcard p{font-size:14px;color:var(--muted)}
 
     /* Steps */
-    .steps{margin-top:18px}
+    .steps{margin-top:20px}
     .steps h3{font-size:18px;margin-bottom:8px}
     .stepgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
     .step{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}
     .step b{display:block;margin-bottom:4px}
 
-    /* Testimonials */
-    .testi{margin-top:18px}
+    /* Témoignages — carrousel vertical, scroll-snap */
+    .testi{margin-top:20px}
     .testi h3{font-size:18px;margin-bottom:8px}
-    .tgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .t{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
-    .t p{color:#111827}
+    .viewport{border:1px solid var(--line);border-radius:16px;background:#fff;max-height:420px;overflow:auto;scroll-snap-type:y mandatory;scroll-behavior:smooth;box-shadow:0 14px 28px rgba(2,6,23,0.04)}
+    .slide{scroll-snap-align:start;padding:16px;border-bottom:1px solid var(--line)}
+    .slide:last-child{border-bottom:0}
+    .slide p{color:#111827}
     .who{margin-top:8px;color:var(--muted);font-size:14px}
+    .vcontrols{display:flex;justify-content:space-between;gap:8px;margin-top:8px}
+    .navbtn{display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-weight:700}
 
-    /* Urgency & FAQ */
-    .urgency{margin-top:14px;background:#fff7ed;border:1px solid #fed7aa;color:var(--warn);border-radius:12px;padding:10px;font-weight:700}
-    .faq{margin-top:20px}
+    /* FAQ déroulante */
+    .faq{margin-top:22px}
     .faq h3{font-size:18px;margin-bottom:8px}
-    .qa{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}
-    .qa h4{font-size:15px}
-    .qa p{color:var(--muted)}
+    details.qa{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+    .qa summary{cursor:pointer;font-weight:700;list-style:none}
+    .qa summary::-webkit-details-marker{display:none}
+    .qa[open]{box-shadow:0 10px 24px rgba(2,6,23,0.05)}
+    .qa p{color:var(--muted);margin-top:8px}
+
+    /* Urgency */
+    .urgency{margin-top:14px;background:#fff7ed;border:1px solid #fed7aa;color:var(--warn);border-radius:12px;padding:10px;font-weight:700}
 
     /* Footer */
-    footer{margin:20px auto 30px;text-align:center;color:var(--muted);font-size:13px}
+    footer{margin:22px auto 34px;text-align:center;color:var(--muted);font-size:13px}
     footer a{color:#1d4ed8}
 
     /* Responsive */
-    @media (max-width:900px){
-      .formgrid,.value3,.stepgrid,.tgrid{grid-template-columns:1fr}
-      .hero h2{font-size:24px}
+    @media (max-width:980px){
+      .formgrid,.value3,.stepgrid{grid-template-columns:1fr}
+      .hero h2{font-size:26px}
+      .viewport{max-height:360px}
     }
   </style>
 </head>
 <body>
   <div class="container">
     <!-- ===== Header ===== -->
-    <header data-section="header">
+    <header>
       <a href="/" aria-label="Accueil Axion Partners"><img src="/images/app-icon.png" alt="Axion Partners"></a>
       <div class="brand">
         <h1>Axion Partners</h1>
@@ -108,21 +131,19 @@
       </div>
     </header>
 
-    <!-- ===== Hero ===== -->
-    <section class="hero" id="top" data-section="hero">
-      <span class="bullet" aria-label="Promesse temporelle">Étude 24 h • Réponse 48 h • Financement 72 h*</span>
+    <!-- ===== Hero élargi ===== -->
+    <section class="hero" id="top">
+      <div class="bullets">
+        <span class="bullet">Étude 24 h</span>
+        <span class="bullet">Réponse 48 h</span>
+        <span class="bullet">Financement 72 h*</span>
+      </div>
       <h2>Vous avez un projet, nous vous aidons à le financer.</h2>
-      <p>Deux solutions adaptées à votre besoin : <b>prêts à taux fixe de 2,5 %</b> et <b>subventions (aides non remboursables)</b>. Dites‑nous ce dont vous avez besoin ; nous simplifions le parcours pour aller vite et droit au but.</p>
+      <p>Deux solutions adaptées à votre besoin : <b>prêts à taux fixe de 2,5 %</b> et <b>subventions (aides non remboursables)</b>. Dites‑nous votre objectif ; nous simplifions le parcours pour aller vite et droit au but.</p>
       <p class="line"><small>*Délais indicatifs après acceptation et pièces complètes.</small></p>
 
-      <!-- CTAs principaux -->
-      <div class="cta-row" aria-label="Modes de contact">
-        <a class="btn email" href="mailto:Contact@axionpartners.eu" data-track="cta_email" aria-label="Écrire par e‑mail">Écrire par e‑mail</a>
-        <a class="btn whatsapp" href="https://wa.link/xsa9j5" target="_blank" rel="noopener" data-track="cta_whatsapp" aria-label="Écrire sur WhatsApp">Écrire sur WhatsApp</a>
-      </div>
-
-      <!-- Mini‑form: 4 champs simples (à relier côté JS/Apps Script) -->
-      <form class="formcard" id="miniForm" method="post" action="" data-track="mini_form" aria-label="Mini‑formulaire">
+      <!-- Mini‑formulaire AVANT les boutons (obligatoire) -->
+      <form class="formcard" id="miniForm" method="post" action="">
         <div class="formgrid">
           <label class="sr-only" for="prenom">Prénom</label>
           <input class="input" id="prenom" name="prenom" placeholder="Prénom" required />
@@ -139,8 +160,15 @@
         <div class="micro">Vos informations servent uniquement à l’étude de votre dossier et à la prise de contact.</div>
       </form>
 
+      <!-- CTAs (activés uniquement quand le formulaire est valide) -->
+      <div class="cta-row" aria-label="Modes de contact">
+        <a class="btn email" href="mailto:Contact@axionpartners.eu" aria-label="Écrire par e‑mail">Écrire par e‑mail</a>
+        <a class="btn whatsapp" href="https://wa.link/xsa9j5" target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp">Écrire sur WhatsApp</a>
+        <div class="cta-hint" aria-live="polite"></div>
+      </div>
+
       <!-- Bénéfices -->
-      <div class="value3" id="benefices" data-section="benefices">
+      <div class="value3" id="benefices">
         <div class="vcard">
           <h3>⏳ Rapidité</h3>
           <p>Analyse sous 24 h, réponse sous 48 h, versement sous 72 h si accepté.</p>
@@ -157,7 +185,7 @@
     </section>
 
     <!-- ===== Étapes ===== -->
-    <section class="steps" id="etapes" data-section="etapes">
+    <section class="steps" id="etapes">
       <h3>Comment ça marche ?</h3>
       <div class="stepgrid">
         <div class="step"><b>1) Vous nous contactez</b> par e‑mail, WhatsApp ou via le mini‑formulaire.</div>
@@ -167,34 +195,63 @@
       </div>
     </section>
 
-    <!-- ===== Témoignages ===== -->
-    <section class="testi" id="temoignages" data-section="temoignages">
+    <!-- ===== Témoignages — carrousel vertical ===== -->
+    <section class="testi" id="temoignages">
       <h3>Ils ont financé leur projet avec Axion Partners</h3>
-      <div class="tgrid">
-        <div class="t"><p>« Contact par WhatsApp le lundi matin, étude le jour même, réponse deux jours après, et 25 000 € reçus le jeudi. J’ai pu ouvrir ma boutique sans retard. »</p><div class="who">— Sophie, Bruxelles</div></div>
-        <div class="t"><p>« Je ne savais pas ce qu’était une subvention. On m’a expliqué simplement : une aide, sans remboursement. 40 000 € accordés pour notre association culturelle. »</p><div class="who">— Karim, Liège</div></div>
-        <div class="t"><p>« Besoin d’un tracteur : prêt de 60 000 € à 2,5 % fixe, argent reçu sous trois jours. Process clair, aucune perte de temps. »</p><div class="who">— Jean‑Pierre, Namur</div></div>
-        <div class="t"><p>« Un mail lundi, un appel pour préciser mes besoins, et l’argent sur le compte le vendredi. Ça m’a permis de relancer mon commerce. »</p><div class="who">— Laura, Lille</div></div>
-        <div class="t"><p>« Notre ONG a été financée à hauteur de 80 000 € en subvention. Dossier regardé en 24 h, confirmation en 48 h. On a gagné des mois. »</p><div class="who">— Fatima, Anvers</div></div>
-        <div class="t"><p>« Ils ne poussent rien d’inutile : ils financent, point. Prêt de 20 000 € accepté, tout s’est déroulé comme annoncé. »</p><div class="who">— Olivier, Charleroi</div></div>
-        <div class="t"><p>« Réponse claire et 50 000 € reçus en moins d’une semaine. Les étapes sont expliquées sans jargon. »</p><div class="who">— Isabelle, Liège</div></div>
-        <div class="t"><p>« 2,5 % fixe pour 15 000 € de prêt. Ce qu’on m’a dit au départ est ce que j’ai eu à l’arrivée. »</p><div class="who">— Thomas, Bruxelles</div></div>
-        <div class="t"><p>« La subvention de 30 000 € a équipé notre atelier. L’équipe va droit au but et respecte les délais. »</p><div class="who">— Clara, Mons</div></div>
-        <div class="t"><p>« J’étais sceptique. Résultat : étude en 24 h, réponse en 48 h, 10 000 € sur le compte en 72 h. Mon projet a enfin démarré. »</p><div class="who">— Samir, Gand</div></div>
+      <div class="viewport">
+        <article id="t1" class="slide"><p>« Contact par WhatsApp le lundi matin, étude le jour même, réponse deux jours après, et 25 000 € reçus le jeudi. J’ai pu ouvrir ma boutique sans retard. »</p><div class="who">— Sophie, Bruxelles</div></article>
+        <article id="t2" class="slide"><p>« Je ne savais pas ce qu’était une subvention. On m’a expliqué simplement : une aide, sans remboursement. 40 000 € accordés pour notre association culturelle. »</p><div class="who">— Karim, Liège</div></article>
+        <article id="t3" class="slide"><p>« Besoin d’un tracteur : prêt de 60 000 € à 2,5 % fixe, argent reçu sous trois jours. Process clair, aucune perte de temps. »</p><div class="who">— Jean‑Pierre, Namur</div></article>
+        <article id="t4" class="slide"><p>« Un mail lundi, un appel pour préciser mes besoins, et l’argent sur le compte le vendredi. Ça m’a permis de relancer mon commerce. »</p><div class="who">— Laura, Lille</div></article>
+        <article id="t5" class="slide"><p>« Notre ONG a été financée à hauteur de 80 000 € en subvention. Dossier regardé en 24 h, confirmation en 48 h. On a gagné des mois. »</p><div class="who">— Fatima, Anvers</div></article>
+        <article id="t6" class="slide"><p>« Ils ne poussent rien d’inutile : ils financent, point. Prêt de 20 000 € accepté, tout s’est déroulé comme annoncé. »</p><div class="who">— Olivier, Charleroi</div></article>
+        <article id="t7" class="slide"><p>« Réponse claire et 50 000 € reçus en moins d’une semaine. Les étapes sont expliquées sans jargon. »</p><div class="who">— Isabelle, Liège</div></article>
+        <article id="t8" class="slide"><p>« 2,5 % fixe pour 15 000 € de prêt. Ce qu’on m’a dit au départ est ce que j’ai eu à l’arrivée. »</p><div class="who">— Thomas, Bruxelles</div></article>
+        <article id="t9" class="slide"><p>« La subvention de 30 000 € a équipé notre atelier. L’équipe va droit au but et respecte les délais. »</p><div class="who">— Clara, Mons</div></article>
+        <article id="t10" class="slide"><p>« J’étais sceptique. Résultat : étude en 24 h, réponse en 48 h, 10 000 € sur le compte en 72 h. Mon projet a enfin démarré. »</p><div class="who">— Samir, Gand</div></article>
+      </div>
+      <div class="vcontrols">
+        <a class="navbtn" href="#t1">Haut</a>
+        <a class="navbtn" href="#t10">Bas</a>
       </div>
     </section>
 
     <!-- ===== Urgence ===== -->
     <div class="urgency" role="status">Capacité limitée : nous traitons un nombre restreint de demandes chaque semaine. Ouvrez votre dossier dès maintenant.</div>
 
-    <!-- ===== FAQ ===== -->
-    <section class="faq" aria-labelledby="faq-title" data-section="faq">
+    <!-- ===== FAQ déroulante ===== -->
+    <section class="faq" aria-labelledby="faq-title">
       <h3 id="faq-title">Questions fréquentes</h3>
-      <div class="qa"><h4>Quel type de financement proposez‑vous ?</h4><p>Deux solutions : <b>prêt à taux fixe de 2,5 %</b> et <b>subvention</b> (aide financière qui <b>ne se rembourse pas</b>).</p></div>
-      <div class="qa"><h4>Quel montant puis‑je obtenir ?</h4><p>Selon le projet, jusqu’à <b>200 000 €</b>. Le montant exact dépend de votre besoin et de l’évaluation de votre dossier.</p></div>
-      <div class="qa"><h4>Quels sont les délais ?</h4><p><b>Étude sous 24 h</b> après votre premier message et vos informations de base, <b>réponse sous 48 h</b>, et <b>versement sous 72 h</b> après acceptation.</p></div>
-      <div class="qa"><h4>Financer en Europe, ça veut dire où ?</h4><p>Nous sommes basés au Royaume‑Uni et finançons des projets et entreprises <b>partout en Europe</b>.</p></div>
-      <div class="qa"><h4>Comment ouvrir mon dossier ?</h4><p>Écrivez‑nous <a href="mailto:Contact@axionpartners.eu">par e‑mail</a>, sur <a href="https://wa.link/xsa9j5" target="_blank" rel="noopener">WhatsApp</a>, ou utilisez le mini‑formulaire ci‑dessus.</p></div>
+
+      <details class="qa">
+        <summary>Quel type de financement proposez‑vous ?</summary>
+        <p>Nous proposons deux solutions complémentaires : <b>le prêt à taux fixe de 2,5 %</b>, adapté lorsque vous souhaitez un calendrier de remboursement connu à l’avance ; et <b>la subvention</b>, qui est une <b>aide non remboursable</b> destinée à soutenir des projets présentant un intérêt économique ou social. Lors de l’étude, nous vous orientons vers l’option la plus pertinente en fonction de votre objectif, de votre timing et des pièces disponibles.</p>
+      </details>
+
+      <details class="qa">
+        <summary>Quel montant puis‑je obtenir ?</summary>
+        <p>Le montant dépend de la nature du projet, des besoins réels et des éléments fournis (budget, devis, plan). À titre indicatif, nous finançons jusqu’à <b>200 000 €</b>. Lorsque nous analysons votre dossier, nous précisons le montant recommandé et la répartition prêt/subvention possible, de manière à sécuriser votre calendrier sans surdimensionner la charge financière.</p>
+      </details>
+
+      <details class="qa">
+        <summary>Quels sont les délais exacts ?</summary>
+        <p>Après votre premier message (e‑mail/WhatsApp) et les informations de base, nous réalisons une <b>étude sous 24 h</b>. Vous recevez une <b>réponse sous 48 h</b> indiquant l’éligibilité, le montant proposé et les prochaines étapes. Pour les dossiers acceptés avec pièces complètes, le <b>versement intervient sous 72 h</b>. Nous vous communiquons un récapitulatif clair des jalons afin d’éviter les attentes inutiles.</p>
+      </details>
+
+      <details class="qa">
+        <summary>Dans quels pays intervenez‑vous ?</summary>
+        <p>Axion Partners est basé au Royaume‑Uni et finance des projets et des entreprises <b>partout en Europe</b>. Si vous avez un doute sur l’éligibilité géographique de votre projet, contactez‑nous : nous vous répondrons rapidement avec une confirmation et la marche à suivre.</p>
+      </details>
+
+      <details class="qa">
+        <summary>Comment ouvrir mon dossier ?</summary>
+        <p>Trois options : nous écrire <a href="mailto:Contact@axionpartners.eu">par e‑mail</a>, nous contacter sur <a href="https://wa.link/xsa9j5" target="_blank" rel="noopener">WhatsApp</a>, ou utiliser le <b>mini‑formulaire</b> en haut de page (Nom, Prénom, Téléphone, E‑mail). Dès réception, nous vous indiquons les pièces nécessaires et lançons l’étude.</p>
+      </details>
+
+      <details class="qa">
+        <summary>Que se passe‑t‑il si mon dossier est refusé ?</summary>
+        <p>Vous recevez une explication factuelle (points bloquants, alternatives possibles) pour que vous puissiez réajuster votre projet ou rassembler les éléments manquants. L’objectif est que vous ne perdiez pas de temps : même en cas de refus, vous repartez avec des indications concrètes pour retenter rapidement.</p>
+      </details>
     </section>
 
     <!-- ===== Footer ===== -->
@@ -204,6 +261,6 @@
     </footer>
   </div>
 
-  <!-- JS à ajouter plus tard dans /Axfinancement.js (Apps Script + pixel Telegram). Aucun <script> ici, HTML pur. -->
+  <!-- HTML pur (aucun <script>). Le gating des CTAs s’appuie sur :has() et la validation native HTML5. -->
 </body>
 </html>
