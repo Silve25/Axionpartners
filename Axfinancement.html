@@ -3,28 +3,27 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Axion Partners — Prêts (2,5 %) & Subventions en Europe | Réponse 48 h • Versement 72 h</title>
-  <meta name="description" content="Basés au Royaume‑Uni, Axion Partners accompagne entrepreneurs et particuliers en Europe : prêts à taux fixe 2,5 % et subventions (aides non remboursables). Réponse sous 48 h, versement sous 72 h après validation du dossier." />
+  <title>Axion Partners — Prêts (2,5 %) & Subventions en Europe | Étude 24 h • Réponse 48 h • Financement 72 h</title>
+  <meta name="description" content="Basés au Royaume‑Uni, Axion Partners finance projets et entreprises en Europe : prêts à taux fixe 2,5 % et subventions (aides non remboursables). Étude sous 24 h après contact, réponse sous 48 h, versement sous 72 h si accepté." />
   <meta name="author" content="Axion Partners" />
   <link rel="icon" href="/images/app-icon.png" />
   <link rel="canonical" href="/Axfinancement" />
 
-  <!-- Social -->
+  <!-- OpenGraph -->
   <meta property="og:title" content="Axion Partners — Prêts 2,5 % & Subventions en Europe" />
-  <meta property="og:description" content="Vous avez un projet, nous vous aidons à le financer. Réponse 48 h • Versement 72 h." />
+  <meta property="og:description" content="Étude 24 h • Réponse 48 h • Financement 72 h si accepté" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="/Axfinancement" />
   <meta property="og:image" content="/images/og-axion.jpg" />
 
   <style>
-    :root{ --bg:#ffffff; --ink:#0f1724; --ink-strong:#0b1220; --muted:#475569; --line:#e7eaf0; --card:#f8fafc; --brand:#0f56ff; --brand-ink:#ffffff; --accent:#e9f0ff; --wa:#25d366; --wa-ink:#052d18; }
+    :root{ --bg:#ffffff; --ink:#0f1724; --ink-strong:#0b1220; --muted:#475569; --line:#e7eaf0; --card:#f8fafc; --brand:#0f56ff; --brand-ink:#ffffff; --accent:#e9f0ff; --wa:#25d366; --wa-ink:#052d18 }
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; color:var(--ink); background:var(--bg); line-height:1.55}
     img{display:block;max-width:100%;height:auto}
     a{text-decoration:none;color:inherit}
     .container{max-width:1140px;margin:0 auto;padding:20px}
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
     /* Header */
     header{display:flex;align-items:center;gap:14px;padding:8px 0 14px;border-bottom:1px solid var(--line)}
@@ -38,19 +37,30 @@
     .shape{position:absolute;inset:-30% -10% auto -10%;height:360px;background:radial-gradient(60% 60% at 30% 50%,rgba(15,86,255,.18),transparent 60%);filter:blur(8px);animation:float 9s ease-in-out infinite alternate}
     @keyframes float{to{transform:translateY(10px)}}
     .hero h2{font-size:34px;margin:12px 0 12px;color:var(--ink-strong)}
-    .hero p, .hero li{color:var(--muted)}
-    .hero ul{margin:6px 0 6px 20px}
-    .hero .line{margin-top:12px;color:#111827}
+    .hero p{color:var(--muted);max-width:980px}
+    .hero .bullets{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px 0}
+    .hero .bullet{display:inline-block;background:var(--accent);color:#1d4ed8;font-weight:800;border-radius:999px;padding:7px 12px;font-size:12px}
+    .hero .line{margin-top:10px;color:#111827}
 
-    /* Form card (SIMPLE, toujours visible) */
+    /* Form */
     .formcard{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 14px 30px rgba(15,86,255,.06)}
+    .legend{font-weight:900;font-size:13px;color:#0b1220;margin-bottom:6px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{position:relative}
+    .chip input{position:absolute;opacity:0;pointer-events:none}
+    .chip label{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:800;font-size:13px;cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .05s}
+    .chip label:active{transform:translateY(1px)}
+    .chip input:checked + label{background:var(--brand);color:var(--brand-ink);border-color:transparent;box-shadow:0 10px 24px rgba(15,86,255,.18)}
+
     .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
     .input{display:block;width:100%;padding:13px 12px;border:1px solid var(--line);border-radius:12px;font-size:15px;background:#fff;transition:box-shadow .2s,border-color .2s}
     .input:focus{outline:none;border-color:#c3d0ff;box-shadow:0 0 0 4px rgba(15,86,255,.12)}
-    fieldset{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
-    fieldset legend{font-weight:800;font-size:13px;color:#0b1220;padding:0 6px}
-    .radios{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
-    .radios label{display:flex;align-items:center;gap:8px;font-weight:600}
+    .hint{font-size:12px;color:#64748b;margin-top:10px}
+
+    /* Conditional blocks */
+    .indiv,.ent{display:none}
+    #type-particulier:checked ~ .who .indiv{display:block}
+    #type-entreprise:checked ~ .who .ent{display:block}
 
     /* CTAs */
     .cta-wrap{margin-top:16px;text-align:center}
@@ -60,48 +70,25 @@
     .btn.email{background:var(--brand);color:var(--brand-ink);box-shadow:0 10px 24px rgba(15,86,255,.18)}
     .btn.whatsapp{background:var(--wa);color:var(--wa-ink);box-shadow:0 10px 24px rgba(37,211,102,.18)}
     .btn:hover{box-shadow:0 16px 36px rgba(2,6,23,.12)}
-
-    /* Value props */
-    .value3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-    .vcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;transition:transform .08s ease, box-shadow .2s}
-    .vcard:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(2,6,23,.06)}
-    .vcard h3{font-size:16px;margin-bottom:6px}
-    .vcard p{font-size:14px;color:var(--muted)}
-
-    /* Steps */
-    .steps{margin-top:22px}
-    .steps h3{font-size:18px;margin-bottom:10px}
-    .stepgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
-    .step b{display:block;margin-bottom:4px;color:var(--ink-strong)}
+    .notice{margin-top:10px;display:none;align-items:center;justify-content:center;gap:10px;background:#fff4f4;border:1px solid #ffd7d7;color:#7a1111;padding:10px 12px;border-radius:12px;box-shadow:0 10px 20px rgba(122,17,17,.05)}
 
     /* Testimonials */
-    .testi{margin-top:24px}
+    .testi{margin-top:26px}
     .testi h3{font-size:18px;margin-bottom:10px}
     .carousel{position:relative;padding:0 8px}
     .track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:6px}
     .track::-webkit-scrollbar{height:10px}
     .track::-webkit-scrollbar-thumb{background:#cfd8ff;border-radius:10px}
-    .slide{flex:0 0 360px;scroll-snap-align:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 16px 36px rgba(2,6,23,.05);transition:transform .12s ease}
-    .slide:hover{transform:translateY(-2px)}
+    .slide{flex:0 0 360px;scroll-snap-align:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 16px 36px rgba(2,6,23,.05)}
     .slide p{color:#0f1724}
-    .who{margin-top:10px;color:#848fa0;font-size:14px}
-
-    /* FAQ */
-    .faq{margin-top:26px}
-    .faq h3{font-size:18px;margin-bottom:10px}
-    details.qa{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;transition:box-shadow .2s}
-    .qa summary{cursor:pointer;font-weight:800;list-style:none}
-    .qa summary::-webkit-details-marker{display:none}
-    .qa[open]{box-shadow:0 16px 36px rgba(2,6,23,.06)}
-    .qa p{color:var(--muted);margin-top:8px}
+    .who{margin-top:10px;color:#667085;font-size:14px}
 
     /* Footer */
-    footer{margin:26px auto 38px;text-align:center;color:var(--muted);font-size:13px}
+    footer{margin:26px auto 38px;text-align:center;color:#64748b;font-size:13px}
     footer a{color:#1d4ed8}
 
     /* Responsive */
-    @media (max-width:920px){ .formgrid,.value3,.stepgrid{grid-template-columns:1fr} .slide{flex-basis:86vw} .hero h2{font-size:30px} }
+    @media (max-width:920px){ .formgrid{grid-template-columns:1fr} .slide{flex-basis:86vw} .hero h2{font-size:30px} }
   </style>
 </head>
 <body>
@@ -115,80 +102,93 @@
       </div>
     </header>
 
-    <!-- Hero / promesse -->
+    <!-- Hero -->
     <section class="hero" id="top">
       <i class="shape" aria-hidden="true"></i>
+      <div class="bullets"><span class="bullet">Étude 24 h</span><span class="bullet">Réponse 48 h</span><span class="bullet">Financement 72 h*</span></div>
       <h2>Vous avez un projet, nous vous aidons à le financer.</h2>
-      <p>Axion Partners accompagne entrepreneurs et particuliers en Europe avec deux solutions :</p>
-      <ul>
-        <li><b>Prêts</b> (taux fixe de 2,5 %).</li>
-        <li><b>Subventions</b> (un soutien financier qui ne doit pas être remboursé).</li>
-      </ul>
-      <p>Notre objectif : permettre à ceux qui ont une idée ou un projet de passer à l’action, sans blocage financier.</p>
-      <p class="line"><b>Réponse sous 48 h</b> • <b>Versement sous 72 h après validation du dossier</b>.</p>
+      <p>Deux solutions adaptées à votre besoin : <b>prêts à taux fixe de 2,5 %</b> et <b>subventions (aides non remboursables)</b>. Dites‑nous votre objectif ; nous simplifions le parcours pour aller vite et droit au but.</p>
+      <p class="line"><small>*Délais indicatifs après acceptation et pièces complètes.</small></p>
 
-      <!-- Formulaire SIMPLE (toujours visible) -->
-      <form class="formcard" id="miniForm" method="post" action="">
-        <fieldset>
-          <legend>Vous êtes</legend>
-          <div class="radios">
-            <label><input type="radio" name="mode" value="particulier" checked> Particulier</label>
-            <label><input type="radio" name="mode" value="entreprise"> Entreprise</label>
+      <!-- Formulaire simple avec chips cliquables -->
+      <form id="miniForm" class="formcard" novalidate>
+        <!-- Vous êtes -->
+        <div class="legend">Vous êtes</div>
+        <div class="chips" role="radiogroup" aria-label="Type de demande">
+          <div class="chip">
+            <input type="radio" id="type-particulier" name="mode" value="particulier" checked>
+            <label for="type-particulier">Particulier</label>
           </div>
-        </fieldset>
-
-        <fieldset style="margin-top:12px">
-          <legend>Je cherche</legend>
-          <div class="radios">
-            <label><input type="radio" name="produit" value="pret" checked> Un prêt à 2,5 %</label>
-            <label><input type="radio" name="produit" value="subvention"> Une subvention</label>
-            <label><input type="radio" name="produit" value="indecis"> Je ne sais pas encore</label>
+          <div class="chip">
+            <input type="radio" id="type-entreprise" name="mode" value="entreprise">
+            <label for="type-entreprise">Entreprise</label>
           </div>
-        </fieldset>
+        </div>
 
-        <div class="formgrid" style="margin-top:12px">
-          <label class="sr-only" for="nomComplet">Nom complet</label>
-          <input class="input" id="nomComplet" name="nomComplet" placeholder="Nom complet" autocomplete="name" required />
-          <label class="sr-only" for="societe">Société (si entreprise)</label>
-          <input class="input" id="societe" name="societe" placeholder="Société (si entreprise)" autocomplete="organization" />
+        <!-- Je cherche -->
+        <div class="legend" style="margin-top:12px">Je cherche</div>
+        <div class="chips" role="radiogroup" aria-label="Type de financement">
+          <div class="chip">
+            <input type="radio" id="prod-pret" name="produit" value="un prêt à 2,5 %" checked>
+            <label for="prod-pret">Un prêt à 2,5 %</label>
+          </div>
+          <div class="chip">
+            <input type="radio" id="prod-subv" name="produit" value="une subvention">
+            <label for="prod-subv">Une subvention</label>
+          </div>
+          <div class="chip">
+            <input type="radio" id="prod-indecis" name="produit" value="je ne sais pas encore">
+            <label for="prod-indecis">Je ne sais pas encore</label>
+          </div>
         </div>
-        <div class="formgrid" style="margin-top:12px">
-          <label class="sr-only" for="telephone">Téléphone</label>
-          <input class="input" id="telephone" name="telephone" placeholder="Ex. +32 470 12 34 56" inputmode="tel" pattern="^\+?[0-9][0-9\s().-]{7,}$" title="Numéro international valide (ex. +32 470 12 34 56)" autocomplete="tel" required />
-          <label class="sr-only" for="email">Email</label>
-          <input class="input" id="email" name="email" type="email" placeholder="Ex. prenom.nom@email.com" autocomplete="email" required />
+
+        <!-- Champs -->
+        <div class="who">
+          <div class="indiv">
+            <div class="formgrid" style="margin-top:12px">
+              <input class="input" id="nomComplet" name="nomComplet" placeholder="Nom complet" autocomplete="name">
+              <input class="input" id="telIndiv" name="telephone" placeholder="Ex. +32 470 12 34 56" inputmode="tel" pattern="^\+?[0-9][0-9\s().-]{7,}$" title="Numéro international valide (ex. +32 470 12 34 56)" autocomplete="tel">
+            </div>
+            <div class="formgrid" style="margin-top:12px">
+              <input class="input" id="emailIndiv" name="email" type="email" placeholder="Ex. prenom.nom@email.com" autocomplete="email">
+              <input class="input" id="villeIndiv" name="ville" placeholder="Ville (optionnel)" autocomplete="address-level2">
+            </div>
+          </div>
+          <div class="ent">
+            <div class="formgrid" style="margin-top:12px">
+              <input class="input" id="societe" name="societe" placeholder="Nom de la société" autocomplete="organization">
+              <input class="input" id="contact" name="contact" placeholder="Contact (nom & prénom)" autocomplete="name">
+            </div>
+            <div class="formgrid" style="margin-top:12px">
+              <input class="input" id="telEnt" name="telephone" placeholder="Ex. +32 470 12 34 56" inputmode="tel" pattern="^\+?[0-9][0-9\s().-]{7,}$" title="Numéro international valide (ex. +32 470 12 34 56)" autocomplete="tel">
+              <input class="input" id="emailEnt" name="email" type="email" placeholder="Ex. contact@societe.com" autocomplete="email">
+            </div>
+          </div>
         </div>
+
+        <div class="hint">Ces informations serviront à <b>préremplir automatiquement</b> votre message E‑mail ou WhatsApp. Vous pourrez l’envoyer tel quel ou le modifier.</div>
       </form>
 
-      <!-- CTAs (centrés, cliquables SANS JS) -->
+      <!-- CTAs (JS remplira & validera) -->
       <div class="cta-wrap">
         <div class="cta-row">
-          <a class="btn email" id="ctaEmail"
-             href="mailto:Contact@axionpartners.eu?subject=Ouverture%20de%20dossier&body=Bonjour%20Axion%20Partners,%20je%20souhaite%20ouvrir%20mon%20dossier."
-             aria-label="Écrire par E‑mail">Écrire par E‑mail</a>
+          <a id="ctaEmail" class="btn email" role="button" tabindex="0" href="#"
+             data-email-to="Contact@axionpartners.eu"
+             data-subject-indiv="Ouverture de dossier — {NOM}"
+             data-subject-ent="Ouverture de dossier — {SOCIETE}"
+             data-template-indiv="Bonjour Axion Partners,|Je suis {NOM} et je souhaite obtenir {PRODUIT}.|Voici mon numéro WhatsApp : {TEL}. Vous pouvez me contacter dessus.| |Merci,|{NOM}"
+             data-template-ent="Bonjour Axion Partners,|Nous sommes {SOCIETE}. Je suis {CONTACT}.|Nous souhaitons obtenir {PRODUIT}.|Voici notre numéro WhatsApp : {TEL}.| |Merci,|{SOCIETE}">
+            Écrire par E‑mail
+          </a>
 
-          <a class="btn whatsapp" id="ctaWhats"
-             href="https://api.whatsapp.com/send?phone=447403650201&text=Bonjour%20Axion%20Partners,%20je%20souhaite%20ouvrir%20mon%20dossier."
-             target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp">Écrire sur WhatsApp</a>
+          <a id="ctaWhats" class="btn whatsapp" role="button" tabindex="0" href="#"
+             data-wa-phone="447403650201"
+             data-template-indiv="Bonjour Axion Partners, Je suis {NOM} et je souhaite obtenir {PRODUIT}. Voici mon numéro WhatsApp : {TEL}. Vous pouvez me contacter dessus. Merci, {NOM}"
+             data-template-ent="Bonjour Axion Partners, Nous sommes {SOCIETE}. Je suis {CONTACT}. Nous souhaitons obtenir {PRODUIT}. Voici notre numéro WhatsApp : {TEL}. Merci, {SOCIETE}">
+            Écrire sur WhatsApp
+          </a>
         </div>
-      </div>
-
-      <!-- Bénéfices -->
-      <div class="value3" id="benefices">
-        <div class="vcard"><h3>⏳ Rapidité</h3><p>Réponse sous 48 h, versement sous 72 h après validation.</p></div>
-        <div class="vcard"><h3>💶 Deux Formules Simples</h3><p>Prêt à 2,5 % fixe ou subvention non remboursable — on vous oriente selon votre besoin.</p></div>
-        <div class="vcard"><h3>🤝 Accompagnement Clair</h3><p>Un interlocuteur dédié qui explique les étapes et vous aide à fournir juste l’essentiel.</p></div>
-      </div>
-    </section>
-
-    <!-- Étapes -->
-    <section class="steps" id="etapes">
-      <h3>Comment ça marche ?</h3>
-      <div class="stepgrid">
-        <div class="step"><b>1) Vous nous contactez</b> par E‑mail, WhatsApp ou via le mini‑formulaire.</div>
-        <div class="step"><b>2) Étude rapide</b> nous validons votre besoin et les pièces utiles.</div>
-        <div class="step"><b>3) Réponse sous 48 h</b> prêt (2,5 %) ou subvention selon votre profil.</div>
-        <div class="step"><b>4) Versement sous 72 h</b> maximum après acceptation.</div>
+        <div id="ctaNotice" class="notice" role="status" aria-live="polite" style="display:none">Veuillez compléter le mini‑formulaire (nom/société, téléphone, e‑mail) pour envoyer votre message.</div>
       </div>
     </section>
 
@@ -196,28 +196,28 @@
     <section class="testi" id="temoignages">
       <h3>Ils ont financé leur projet avec Axion Partners</h3>
       <div class="carousel">
-        <div class="track" id="track" tabindex="0" aria-roledescription="carrousel" aria-label="Témoignages (défilement horizontal)">
-          <article id="s1" class="slide"><p>« Contact par WhatsApp le lundi matin, étude le jour même, réponse deux jours après, et 25 000 € reçus le jeudi. J’ai pu ouvrir ma boutique sans retard. »</p><div class="who">— Sophie, Bruxelles</div></article>
-          <article id="s2" class="slide"><p>« Je ne savais pas ce qu’était une subvention. On m’a expliqué clairement : une aide, sans remboursement. 40 000 € accordés pour notre association culturelle. »</p><div class="who">— Karim, Liège</div></article>
-          <article id="s3" class="slide"><p>« Besoin d’un tracteur : prêt de 60 000 € à 2,5 % fixe, argent reçu sous trois jours. Process clair, aucune perte de temps. »</p><div class="who">— Jean‑Pierre, Namur</div></article>
-          <article id="s4" class="slide"><p>« Un mail lundi, un appel pour préciser mes besoins, et l’argent sur le compte le vendredi. Ça m’a permis de relancer mon commerce. »</p><div class="who">— Laura, Lille</div></article>
-          <article id="s5" class="slide"><p>« Notre ONG a été financée à hauteur de 80 000 € en subvention. Dossier regardé en 24 h, confirmation en 48 h. On a gagné des mois. »</p><div class="who">— Fatima, Anvers</div></article>
-          <article id="s6" class="slide"><p>« Ils ne poussent rien d’inutile : ils financent, point. Prêt de 20 000 € accepté, tout s’est déroulé comme annoncé. »</p><div class="who">— Olivier, Charleroi</div></article>
-          <article id="s7" class="slide"><p>« Réponse claire et 50 000 € reçus en moins d’une semaine. Les étapes sont expliquées sans jargon. »</p><div class="who">— Isabelle, Liège</div></article>
-          <article id="s8" class="slide"><p>« 2,5 % fixe pour 15 000 € de prêt. Ce qu’on m’a dit au départ est ce que j’ai eu à l’arrivée. »</p><div class="who">— Thomas, Bruxelles</div></article>
-          <article id="s9" class="slide"><p>« La subvention de 30 000 € a équipé notre atelier. L’équipe va droit au but et respecte les délais. »</p><div class="who">— Clara, Mons</div></article>
-          <article id="s10" class="slide"><p>« J’étais sceptique. Résultat : étude en 24 h, réponse en 48 h, 10 000 € sur le compte en 72 h. Mon projet a enfin démarré. »</p><div class="who">— Samir, Gand</div></article>
+        <div class="track" id="track">
+          <article id="t1" class="slide"><p>« Contact WhatsApp lundi matin, étude le jour même, réponse 48 h après et 25 000 € reçus le jeudi. Ouverture de boutique dans la foulée. »</p><div class="who">— Sophie, Bruxelles</div></article>
+          <article id="t2" class="slide"><p>« On m’a expliqué simplement la subvention : une aide non remboursable. 40 000 € accordés à notre association culturelle. »</p><div class="who">— Karim, Liège</div></article>
+          <article id="t3" class="slide"><p>« Prêt 60 000 € à 2,5 % pour un tracteur. Argent reçu en trois jours, zéro perte de temps. »</p><div class="who">— Jean‑Pierre, Namur</div></article>
+          <article id="t4" class="slide"><p>« Un mail lundi, un appel pour préciser, virement le vendredi. J’ai pu relancer mon commerce. »</p><div class="who">— Laura, Lille</div></article>
+          <article id="t5" class="slide"><p>« ONG financée à 80 000 € via subvention. Dossier regardé en 24 h, confirmation en 48 h. »</p><div class="who">— Fatima, Anvers</div></article>
+          <article id="t6" class="slide"><p>« Ils financent, point. Prêt 20 000 € accepté, étapes claires et respectées. »</p><div class="who">— Olivier, Charleroi</div></article>
+          <article id="t7" class="slide"><p>« Réponse claire, 50 000 € reçus en moins d’une semaine. Pas de jargon, juste utile. »</p><div class="who">— Isabelle, Liège</div></article>
+          <article id="t8" class="slide"><p>« 2,5 % fixe pour 15 000 €. Ce qui est annoncé est tenu. »</p><div class="who">— Thomas, Bruxelles</div></article>
+          <article id="t9" class="slide"><p>« Subvention de 30 000 € pour équiper l’atelier. Délais respectés. »</p><div class="who">— Clara, Mons</div></article>
+          <article id="t10" class="slide"><p>« Sceptique au départ, puis étude 24 h, réponse 48 h, 10 000 € versés 72 h après. »</p><div class="who">— Samir, Gand</div></article>
         </div>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer id="legal">
-      © 2025 Axion Partners — Tous droits réservés • <a href="/">axionpartners.eu</a><br/>
-      Basés au Royaume‑Uni, nous finançons projets et entreprises en Europe. Les montants et délais dépendent de l’éligibilité et des pièces fournies. Réponse 48 h, versement 72 h après validation du dossier.
+    <footer style="margin-top:28px" id="legal">
+      © 2025 Axion Partners — Tous droits réservés • <a href="/">axionpartners.eu</a><br/>
+      Basés au Royaume‑Uni, nous finançons projets et entreprises en Europe. Les montants et délais dépendent de l’éligibilité et des pièces fournies. Étude 24 h, réponse 48 h ; financement 72 h après acceptation.
     </footer>
   </div>
 
-  <!-- HTML pur, sans JS nécessaire pour voir le formulaire et cliquer les boutons -->
+  <!-- Référence au JS : génère les messages dynamiques & bloque l’envoi si form incomplet -->
+  <script src="/Axfinancement.js" defer></script>
 </body>
 </html>
