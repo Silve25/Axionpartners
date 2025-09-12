@@ -1,9 +1,9 @@
-/* Axfinancement.js — v3
- * - Valide le mini-formulaire (Particulier / Entreprise)
- * - Génère les messages E-mail & WhatsApp (CRLF corrects)
- * - Bloque les CTAs si incomplet (+ notice)
- * - Pixel robuste vers Apps Script (batch côté serveur) avec sid + ip
- * - Mesure scroll, temps par section, progression formulaire, clics clés
+/* Axfinancement.js — v4 (anti-spam, 2–3 messages max par session)
+ * - Envoie 'page_open' (avec IP) une seule fois
+ * - Détecte "formulaire complet" et envoie 'form_progress' (snapshot final) une seule fois
+ * - Au clic CTA, ouvre mail/WhatsApp et envoie 'cta_*_opened' une seule fois
+ * - Valide le formulaire et bloque les CTAs si incomplet
+ * - Aucun autre event (pas de scroll/time/etc.)
  */
 (function(){
   'use strict';
@@ -21,12 +21,7 @@
   const trim = (s) => (s||'').toString().trim();
   const digits = (s) => (s||'').replace(/\D+/g,'');
   const encodeWA   = (txt) => encodeURIComponent(txt);
-  const encodeMail = (txt) => encodeURIComponent(String(txt).replace(/\r?\n/g, '\r\n'));
-  const throttle = (fn, wait=600) => {
-    let last=0, tmr=null;
-    return (...a)=>{ const t=now(); if(t-last>=wait){ last=t; fn.apply(null,a); }
-      else if(!tmr){ tmr=setTimeout(()=>{ last=now(); tmr=null; fn.apply(null,a); }, wait-(t-last)); } };
-  };
+  const encodeMail = (txt) => encodeURIComponent(String(txt).replace(/\r?\n/g, '\r\n')); // CRLF OK
 
   // Session ID (stable pour l’onglet)
   function getSID(){
@@ -41,17 +36,20 @@
   }
   const SID = getSID();
 
-  // IP client (pour pays côté serveur)
+  // IP client (pour pays côté serveur) — on attend un court instant avant d'envoyer page_open
   let CLIENT_IP = '';
-  (async function fetchIP(){
+  async function fetchIP(timeoutMs=1500){
     try{
-      const r = await fetch('https://api.ipify.org?format=json',{cache:'no-store'});
+      const ctrl = new AbortController();
+      const t = setTimeout(()=>ctrl.abort(), timeoutMs);
+      const r = await fetch('https://api.ipify.org?format=json', {cache:'no-store', signal:ctrl.signal});
+      clearTimeout(t);
       const j = await r.json();
       CLIENT_IP = j.ip || '';
-    }catch(_){}
-  })();
+    }catch(_){ /* pas grave */ }
+  }
 
-  // ====== PIXEL ROBUSTE ======
+  // ====== PIXEL ======
   function b64(str){ try{ return btoa(unescape(encodeURIComponent(str))); }catch(_){ return ''; } }
   function logEvent(event, payload={}){
     const bodyObj = {
@@ -70,7 +68,7 @@
     };
     const textBody = JSON.stringify(bodyObj);
 
-    // 1) sendBeacon (text/plain)
+    // 1) sendBeacon
     try{
       if(navigator.sendBeacon){
         const ok = navigator.sendBeacon(PIXEL_ENDPOINT, new Blob([textBody], {type:'text/plain'}));
@@ -78,13 +76,14 @@
       }
     }catch(_){}
 
-    // 2) fetch POST no-cors keepalive
+    // 2) fetch POST
     try{
       fetch(PIXEL_ENDPOINT, {
         method:'POST', mode:'no-cors', keepalive:true,
         headers:{'Content-Type':'text/plain'},
         body:textBody
       });
+      return;
     }catch(_){}
 
     // 3) GET fallback
@@ -131,6 +130,7 @@
     if(m==='entreprise'){ if(fSociete) fSociete.required=true; if(fTelEnt) fTelEnt.required=true; if(fEmailEnt) fEmailEnt.required=true; }
     else { if(fPrenom) fPrenom.required=true; if(fNom) fNom.required=true; if(fTel) fTel.required=true; if(fEmail) fEmail.required=true; }
   }
+
   function collectData(){
     const mode = getMode();
     const produit = getProduit();
@@ -151,21 +151,45 @@
       email:  trim(fEmail && fEmail.value),
     };
   }
-  function firstInvalid(fields){
-    return fields.find(el => !el || !trim(el.value))
-        || fields.find(el => el && el.type==='email' && !el.value.includes('@'))
-        || fields.find(el => el && el.dataset._phoneInvalid==='1');
+
+  function isFormComplete(){
+    const d = collectData();
+    if(d.mode==='entreprise'){
+      return !!(d.societe && d.tel && d.email);
+    }
+    return !!(d.prenom && d.nom && d.tel && d.email);
   }
+
   function validate(){
     const m = getMode();
-    let required = (m==='entreprise') ? [fSociete, fTelEnt, fEmailEnt] : [fPrenom, fNom, fTel, fEmail];
-
     const telField = (m==='entreprise') ? fTelEnt : fTel;
     if(telField){ telField.dataset._phoneInvalid = phoneLooksValid(telField.value) ? '' : '1'; }
 
-    const bad = firstInvalid(required);
+    let required = (m==='entreprise') ? [fSociete, fTelEnt, fEmailEnt] : [fPrenom, fNom, fTel, fEmail];
+    const bad =
+      required.find(el => !el || !trim(el.value)) ||
+      required.find(el => el && el.type==='email' && !el.value.includes('@')) ||
+      required.find(el => el && el.dataset._phoneInvalid==='1');
     return { ok: !bad, badEl: bad };
   }
+
+  function snapshotForm(){
+    const d = collectData();
+    if(d.mode==='entreprise'){
+      return {
+        mode:d.mode, produit:d.produit,
+        societe:d.societe||'', contact:d.contact||'',
+        tel:d.tel||'', email:d.email||''
+      };
+    }
+    return {
+      mode:d.mode, produit:d.produit,
+      prenom:d.prenom||'', nom:d.nom||'',
+      tel:d.tel||'', email:d.email||''
+    };
+  }
+
+  // ——— Génération des messages
   function buildMessages(d){
     const produit = d.produit || 'je ne sais pas encore';
     if(d.mode==='entreprise'){
@@ -196,33 +220,35 @@ ${fullName}`;
   function toWhats(body){
     return `https://api.whatsapp.com/send?phone=${WHATS_PHONE}&text=${encodeWA(body)}`;
   }
+
   function showNotice(msg){
     if(!ctaNotice) return;
     ctaNotice.textContent = msg || 'Veuillez compléter le mini-formulaire (nom/société, téléphone, e-mail).';
     ctaNotice.classList.remove('hidden');
-    setTimeout(()=>ctaNotice.classList.add('hidden'), 5000);
+    setTimeout(()=>ctaNotice.classList.add('hidden'), 4500);
   }
   function focusFirstBad(el){ try{ el && el.focus && el.focus(); }catch(_){} }
 
+  // ——— CTA handlers
   function handleCTA(kind){
     const valid = validate();
     const data  = collectData();
 
-    logEvent('cta_click_attempt', { mode:data.mode, produit:data.produit, valid:valid.ok });
-
     if(!valid.ok){
       showNotice("Formulaire incomplet. Merci d'ajouter vos coordonnées.");
       focusFirstBad(valid.badEl);
-      logEvent('cta_blocked', { kind });
       return;
     }
     const { subject, body } = buildMessages(data);
+
+    // notifier le serveur (1 seul message CTA sera envoyé côté Apps Script)
+    const snap = snapshotForm();
     if(kind==='email'){
+      logEvent('cta_email_opened', { mode:data.mode, produit:data.produit, form:snap });
       location.href = toMailto(subject, body);
-      logEvent('cta_email_opened', { mode:data.mode, produit:data.produit, form: snapshotForm() });
     }else{
+      logEvent('cta_whatsapp_opened', { mode:data.mode, produit:data.produit, form:snap });
       window.open(toWhats(body), '_blank', 'noopener');
-      logEvent('cta_whatsapp_opened', { mode:data.mode, produit:data.produit, form: snapshotForm() });
     }
   }
 
@@ -237,115 +263,47 @@ ${fullName}`;
     }
   }
 
-  // ====== PROGRESSION FORM & SNAPSHOT ======
-  function snapshotForm(){
-    const d = collectData();
-    if(d.mode==='entreprise'){
-      return {
-        mode:d.mode, produit:d.produit,
-        societe:d.societe || '', contact:d.contact || '',
-        tel:(d.tel||''), email:(d.email||'')
-      };
+  // ——— Détection “form complet” (transition false -> true)
+  let lastComplete = false;
+  function onInputChange(){
+    const isComplete = isFormComplete();
+    if(isComplete && !lastComplete){
+      // On envoie un SEUL snapshot final; le serveur déclenchera un seul message “formulaire complet”
+      logEvent('form_progress', { mode:getMode(), produit:getProduit(), form: snapshotForm() });
     }
-    return {
-      mode:d.mode, produit:d.produit,
-      prenom:(d.prenom||''), nom:(d.nom||''),
-      tel:(d.tel||''), email:(d.email||'')
-    };
-  }
-
-  let progTimer=null, lastProgSent=0;
-  function scheduleProgress(){
-    clearTimeout(progTimer);
-    progTimer = setTimeout(()=>{
-      const d  = collectData();
-      const filled = Object.entries(d).filter(([k,v])=> !!v && !['mode','produit'].includes(k)).length;
-      const snap = snapshotForm();
-      // n’envoie pas plus d’un progress toutes les 10 s
-      const t = now();
-      if(t - lastProgSent > 10000){
-        logEvent('form_progress', { mode:d.mode, produit:d.produit, filled, form:snap });
-        lastProgSent = t;
-      }
-    }, 1200);
+    lastComplete = isComplete;
   }
   function bindFormInputs(){
     $$('#miniForm input').forEach(el=>{
-      el.addEventListener('input', scheduleProgress);
-      el.addEventListener('change', scheduleProgress);
+      el.addEventListener('input', onInputChange);
+      el.addEventListener('change', onInputChange);
     });
   }
 
-  // Segment change
+  // ——— Segmentation
   function bindSegmentation(){
     [rParticulier, rEntreprise].forEach(r=>{
       if(!r) return;
       r.addEventListener('change', ()=>{
         applyRequired();
-        logEvent('segment_change', { mode:getMode() });
+        // quand on change de segment, on ré-évalue la complétude pour déclencher si besoin
+        onInputChange();
       });
     });
     applyRequired();
   }
 
-  // ====== SCROLL & SECTIONS ======
-  let maxDepth=0;
-  function onScroll(){
-    const d = Math.floor((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
-    if(d > maxDepth){
-      maxDepth = d;
-      [25,50,75,90].forEach(m => { if(d>=m && maxDepth===d) logEvent('scroll_depth', { depth:m }); });
-    }
-  }
-  function bindScroll(){ window.addEventListener('scroll', throttle(onScroll,600)); onScroll(); }
-
-  // Section time
-  const sections = [
-    {el: $('.hero'), key:'hero'},
-    {el: $('#miniForm'), key:'form'},
-    {el: $('#temoignages'), key:'temoignages'},
-    {el: $('#faq'), key:'faq'},
-  ].filter(x=>x.el);
-  const timers={};
-  function startTimer(k){ timers[k]=now(); }
-  function stopTimer(k){ if(timers[k]){ const dt=Math.round((now()-timers[k])/1000); logEvent('section_time',{ section:k, seconds:dt }); delete timers[k]; } }
-  function bindSectionObserver(){
-    if(!('IntersectionObserver' in window)) return;
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        const key = e.target.getAttribute('data-section-key');
-        if(!key) return;
-        if(e.isIntersecting) startTimer(key); else stopTimer(key);
-      });
-    }, {threshold:0.6});
-    sections.forEach(({el,key})=>{ el.setAttribute('data-section-key',key); io.observe(el); });
-  }
-
-  // Clic logo (retour accueil)
-  const logoLink = document.querySelector('header a[href="/"]');
-  if(logoLink){
-    logoLink.addEventListener('click', ()=> logEvent('ui_click', { target:'logo_home' }));
-  }
-
-  // ====== EXIT ======
-  const T0 = now();
-  function sendExit(){
-    const d = collectData();
-    const dt = Math.round((now()-T0)/1000);
-    logEvent('page_exit', { mode:d.mode, produit:d.produit, seconds:dt, form_valid: validate().ok, form: snapshotForm() });
-  }
-  window.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') sendExit(); });
-  window.addEventListener('beforeunload', sendExit);
-
-  // ====== INIT ======
-  function init(){
+  // ——— INIT
+  async function init(){
     bindSegmentation();
     bindFormInputs();
     bindCTAs();
-    bindScroll();
-    bindSectionObserver();
+
+    // Attendre brièvement l’IP pour que le 1er message contienne le pays
+    await fetchIP(1500);
     logEvent('page_open', { mode:getMode(), produit:getProduit() });
   }
+
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
