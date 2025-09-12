@@ -1,66 +1,71 @@
-/* Axfinancement.js — v5 (message unique, édition + abandon)
- * Comportement :
- *  - N’ENVOIE PAS d’“ouverture” au chargement pour éviter le spam “Particulier/Prêt” par défaut.
- *  - Envoie "page_open" UNE FOIS dès la 1re interaction utile (saisie, choix segment/produit, scroll significatif).
- *  - Sur formulaire :
- *      • Dès que ≥ 2 champs clés sont remplis -> envoie "form_partial" (snapshot).
- *      • Si l’utilisateur complète davantage -> "form_update" (éditer le même message).
- *      • Si formulaire complet -> "form_complete" (éditer le même message).
- *    (Debounce & déduplication pour éviter tout spam.)
- *  - Sur changement de segment/produit -> "segment_change" (édition du message).
- *  - Sur CTA (Email/WhatsApp) -> validation + "cta_*_opened" (édition finale), puis ouverture.
- *  - Mailto propre (CRLF encodés).
+/* Axfinancement.js — 3 événements max par visiteur
+ * 1) page_open (avec IP si dispo)
+ * 2) form_complete (une fois)
+ * 3) cta (premier clic Email OU WhatsApp)
+ *
+ * Nécessite dans le HTML :
+ *  - form#miniForm, radios #modeParticulier / #modeEntreprise
+ *  - champs Particulier: #prenom #nom #telephone #email
+ *  - champs Entreprise : #societe #contact #telEntreprise #emailEntreprise
+ *  - CTAs: #ctaEmail #ctaWhats
+ *  - avis/notice (optionnel): #ctaNotice
  */
 
 (function(){
   'use strict';
 
-  // ====== CONFIG ======
+  /* ===== CONFIG ===== */
   const PIXEL_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyAks9NK0jJH03CjpYbw_DyKEDf8bU6g8lZ_zGbC-hgTc37WFVZv1bth171R41C8pbj_A/exec';
-  const EMAIL_TO = 'Contact@axionpartners.eu';
-  const WHATS_PHONE = '447403650201'; // sans '+'
-  const SID_KEY = 'axion_sid_v5';
+  const EMAIL_TO   = 'Contact@axionpartners.eu';
+  const WHATS_APP  = '447403650201'; // sans '+'
 
-  // ====== UTILS ======
-  const $  = (s, root=document) => root.querySelector(s);
-  const $$ = (s, root=document) => Array.from(root.querySelectorAll(s));
-  const now = () => Date.now();
-  const trim = (s) => (s||'').toString().trim();
-  const digits = (s) => (s||'').replace(/\D+/g,'');
-  const encodeWA   = (txt) => encodeURIComponent(txt);
-  const encodeMail = (txt) => encodeURIComponent(String(txt).replace(/\r?\n/g, '\r\n'));
+  const SS_KEYS = {
+    SID:      'ax_sid',
+    SENT_OPEN:'ax_sent_open',
+    SENT_FORM:'ax_sent_form',
+    SENT_CTA: 'ax_sent_cta',
+  };
 
-  function sid(){
-    try{
-      const ss = sessionStorage;
-      let v = ss.getItem(SID_KEY);
-      if(!v){ v = (Date.now().toString(36)+Math.random().toString(36).slice(2,10)); ss.setItem(SID_KEY, v); }
-      return v;
-    }catch(_){
-      return (Date.now().toString(36)+Math.random().toString(36).slice(2,10));
+  /* ===== UTILS ===== */
+  const $  = (s,root=document)=>root.querySelector(s);
+  const $$ = (s,root=document)=>Array.from(root.querySelectorAll(s));
+  const now = ()=>Date.now();
+  const trim = (s)=> (s||'').toString().trim();
+  const digits = (s)=> (s||'').replace(/\D+/g,'');
+
+  const encodeWA   = (txt)=> encodeURIComponent(txt);
+  const encodeMail = (txt)=> encodeURIComponent(String(txt).replace(/\r?\n/g, '\r\n'));
+
+  function ssGet(k){ try{return sessionStorage.getItem(k);}catch(_){return null;} }
+  function ssSet(k,v){ try{ sessionStorage.setItem(k,v);}catch(_){ } }
+
+  function getSID(){
+    let sid = ssGet(SS_KEYS.SID);
+    if(!sid){
+      sid = (Date.now().toString(36)+Math.random().toString(36).slice(2,10));
+      ssSet(SS_KEYS.SID, sid);
     }
+    return sid;
   }
-  const SID = sid();
+  const SID = getSID();
 
-  // IP (pour pays côté serveur). On ne bloque jamais sur l’IP.
+  // IP rapide (best effort)
   let CLIENT_IP = '';
-  const ipReady = (async function(){
+  async function fetchIP(timeoutMs=1200){
     try{
       const ctrl = new AbortController();
-      const timeout = setTimeout(()=>ctrl.abort(), 1500);
-      const r = await fetch('https://api.ipify.org?format=json', {cache:'no-store', signal:ctrl.signal});
-      clearTimeout(timeout);
+      const t = setTimeout(()=>ctrl.abort(), timeoutMs);
+      const r = await fetch('https://api.ipify.org?format=json', {signal:ctrl.signal, cache:'no-store'});
+      clearTimeout(t);
       const j = await r.json();
-      CLIENT_IP = j.ip || '';
+      CLIENT_IP = j && j.ip || '';
     }catch(_){}
-  })();
+  }
 
-  // ====== PIXEL ======
+  // Envoi unique (sendBeacon > fetch > img)
   function logEvent(event, payload={}){
     const body = JSON.stringify({
-      event,
-      ts: now(),
-      sid: SID,
+      event, ts: now(), sid: SID,
       ip: CLIENT_IP || undefined,
       href: location.href,
       path: location.pathname+location.hash,
@@ -78,14 +83,24 @@
         if(ok) return;
       }
     }catch(_){}
+
     try{
-      fetch(PIXEL_ENDPOINT, { method:'POST', mode:'no-cors', keepalive:true, headers:{'Content-Type':'text/plain'}, body });
-    }catch(_){}
+      fetch(PIXEL_ENDPOINT, {
+        method:'POST', mode:'no-cors', keepalive:true,
+        headers:{'Content-Type':'text/plain'},
+        body
+      });
+    }catch(_){
+      try{
+        const img = new Image();
+        img.src = `${PIXEL_ENDPOINT}?v=1&data=${encodeURIComponent(btoa(unescape(encodeURIComponent(body))))}`;
+      }catch(__){}
+    }
   }
 
-  // ====== FORM/CTAs ELEMENTS ======
+  /* ===== FORM / CTAs ===== */
   const form = $('#miniForm');
-  if(!form){ console.warn('[Axfinancement] #miniForm introuvable'); return; }
+  if(!form){ console.warn('[Axfinancement] Formulaire #miniForm introuvable'); return; }
 
   const rParticulier = $('#modeParticulier');
   const rEntreprise  = $('#modeEntreprise');
@@ -102,29 +117,32 @@
   const fTelEnt   = $('#telEntreprise');
   const fEmailEnt = $('#emailEntreprise');
 
-  // Produit (si présent dans la page)
+  // Produit (radios optionnels)
   function getProduit(){
     const r = $('input[name="produit"]:checked');
-    return r ? r.value : '';
+    return r ? r.value : 'je ne sais pas encore';
   }
   function getMode(){ return (rEntreprise && rEntreprise.checked) ? 'entreprise' : 'particulier'; }
   function phoneLooksValid(s){ return digits(s).length >= 8; }
 
-  // CTAs
-  const ctaEmail  = $('#ctaEmail');
-  const ctaWhats  = $('#ctaWhats');
-  const ctaNotice = $('#ctaNotice');
-
   function applyRequired(){
     const m = getMode();
     [fPrenom,fNom,fTel,fEmail,fSociete,fTelEnt,fEmailEnt].forEach(el=>{ if(el) el.required=false; });
-    if(m==='entreprise'){ if(fSociete) fSociete.required=true; if(fTelEnt) fTelEnt.required=true; if(fEmailEnt) fEmailEnt.required=true; }
-    else { if(fPrenom) fPrenom.required=true; if(fNom) fNom.required=true; if(fTel) fTel.required=true; if(fEmail) fEmail.required=true; }
+    if(m==='entreprise'){
+      if(fSociete)  fSociete.required  = true;
+      if(fTelEnt)   fTelEnt.required   = true;
+      if(fEmailEnt) fEmailEnt.required = true;
+    }else{
+      if(fPrenom) fPrenom.required = true;
+      if(fNom)    fNom.required    = true;
+      if(fTel)    fTel.required    = true;
+      if(fEmail)  fEmail.required  = true;
+    }
   }
 
   function collectData(){
     const mode = getMode();
-    const produit = getProduit(); // peut être vide (tant que l’utilisateur n’a pas choisi)
+    const produit = getProduit();
     if(mode==='entreprise'){
       return {
         mode, produit,
@@ -143,150 +161,15 @@
     };
   }
 
-  function isComplete(d){
-    return d.mode==='entreprise'
-      ? !!(d.societe && d.tel && d.email)
-      : !!(d.prenom && d.nom && d.tel && d.email);
-  }
-
-  function filledCount(d){
-    const keys = d.mode==='entreprise'
-      ? ['societe','tel','email','contact']
-      : ['prenom','nom','tel','email'];
-    return keys.reduce((n,k)=> n + (d[k] ? 1 : 0), 0);
-  }
-
-  function snapshotForm(d){
-    if(d.mode==='entreprise'){
-      return {
-        mode: d.mode,
-        produit: d.produit || '',
-        societe: d.societe || '',
-        contact: d.contact || '',
-        tel: d.tel || '',
-        email: d.email || ''
-      };
+  function validateComplete(){
+    const m = getMode();
+    if(m==='entreprise'){
+      return !!(trim(fSociete?.value) && phoneLooksValid(fTelEnt?.value) && trim(fEmailEnt?.value));
     }
-    return {
-      mode: d.mode,
-      produit: d.produit || '',
-      prenom: d.prenom || '',
-      nom: d.nom || '',
-      tel: d.tel || '',
-      email: d.email || ''
-    };
+    return !!(trim(fPrenom?.value) && trim(fNom?.value) && phoneLooksValid(fTel?.value) && trim(fEmail?.value));
   }
 
-  // ====== PAGE OPEN (après 1re interaction utile seulement) ======
-  let pageOpenSent = false;
-  async function sendPageOpenIfNeeded(reason){
-    if(pageOpenSent) return;
-    await Promise.race([ipReady, new Promise(r=>setTimeout(r, 400))]);
-    // IMPORTANT : n’envoie PAS mode/produit si l’utilisateur n’a pas choisi (évite le “par défaut”).
-    const d = collectData();
-    const explicit = userChoseSegment || userChoseProduit;
-    logEvent('page_open', {
-      mode: explicit ? d.mode : '',
-      produit: explicit ? (d.produit || '') : '',
-      reason: reason || 'interaction'
-    });
-    pageOpenSent = true;
-  }
-
-  let userChoseSegment = false;
-  let userChoseProduit = false;
-
-  // ====== ABANDON / PARTIAL / COMPLETE ======
-  let lastSig = '';         // pour dédupliquer
-  let partialSent = false;  // a-t-on déjà signalé un "form_partial" ?
-  let completeSent = false; // a-t-on déjà signalé "form_complete" ?
-
-  function signature(d){
-    // on ne signe que les champs utiles pour éviter les envois inutiles
-    const s = d.mode==='entreprise'
-      ? [d.mode, d.produit, d.societe, d.contact, d.tel, d.email].join('|')
-      : [d.mode, d.produit, d.prenom, d.nom, d.tel, d.email].join('|');
-    return s;
-  }
-
-  // debounce anti-spam (envoi “update” au plus toutes les 6 s)
-  let lastUpdateTs = 0;
-  function canUpdateNow(){
-    const t = now();
-    if (t - lastUpdateTs >= 6000){ lastUpdateTs = t; return true; }
-    return false;
-  }
-
-  async function onFormChange(){
-    await sendPageOpenIfNeeded('form_input');
-
-    const d = collectData();
-    const sig = signature(d);
-    if(sig === lastSig) return; // rien de neuf
-    lastSig = sig;
-
-    const count = filledCount(d);
-    const snap = snapshotForm(d);
-
-    // 1) Premier seuil : abandon / partiel (dès 2 champs utiles)
-    if(!partialSent && count >= 2){
-      logEvent('form_partial', { form: snap });
-      partialSent = true;
-      return; // on coupe ici pour éviter d’enchainer partial + update en 1 frappe
-    }
-
-    // 2) Mise à jour si progrès réel ET cooldown OK
-    if(partialSent && !completeSent && !isComplete(d)){
-      if(canUpdateNow()){
-        logEvent('form_update', { form: snap });
-      }
-    }
-
-    // 3) Complet
-    if(!completeSent && isComplete(d)){
-      logEvent('form_complete', { form: snap });
-      completeSent = true;
-    }
-  }
-
-  // ====== SEGMENT / PRODUIT ======
-  function onSegmentChange(){
-    userChoseSegment = true;
-    applyRequired();
-    sendPageOpenIfNeeded('segment_change');
-    const d = collectData();
-    logEvent('segment_change', { mode: d.mode });
-    onFormChange(); // re-évalue partial/complete après switch
-  }
-
-  function onProduitChange(){
-    userChoseProduit = true;
-    sendPageOpenIfNeeded('product_change');
-    const d = collectData();
-    logEvent('product_change', { produit: d.produit || '' });
-    onFormChange();
-  }
-
-  // ====== CTAs ======
-  function showNotice(msg){
-    if(!ctaNotice) return;
-    ctaNotice.textContent = msg || 'Veuillez compléter le mini-formulaire (coordonnées).';
-    ctaNotice.classList.remove('hidden');
-    setTimeout(()=>ctaNotice.classList.add('hidden'), 4500);
-  }
-  function focusEl(el){ try{ el && el.focus && el.focus(); }catch(_){} }
-
-  function validate(){
-    const d = collectData();
-    const telOk = phoneLooksValid(d.mode==='entreprise' ? d.tel : d.tel);
-    if(d.mode==='entreprise'){
-      if(!(d.societe && d.email && d.tel && telOk && d.email.includes('@'))) return {ok:false, bad:true};
-    }else{
-      if(!(d.prenom && d.nom && d.email && d.tel && telOk && d.email.includes('@'))) return {ok:false, bad:true};
-    }
-    return {ok:true};
-  }
-
+  // Messages e-mail / WhatsApp bien formatés
   function buildMessages(d){
     const produit = d.produit || 'je ne sais pas encore';
     if(d.mode==='entreprise'){
@@ -301,86 +184,126 @@ Merci,
 ${d.societe}`;
       return { subject:`Ouverture de dossier — ${d.societe}`, body };
     }
-    const full = `${d.prenom} ${d.nom}`.trim();
+    const fullName = `${d.prenom} ${d.nom}`.replace(/\s+/g,' ').trim();
     const body =
 `Bonjour Axion Partners,
-Je suis ${full} et je souhaite obtenir ${produit}.
+Je suis ${fullName} et je souhaite obtenir ${produit}.
 Voici mon numéro WhatsApp : ${d.tel}. Vous pouvez me contacter dessus.
 
 Merci,
-${full}`;
-    return { subject:`Ouverture de dossier — ${full}`, body };
+${fullName}`;
+    return { subject:`Ouverture de dossier — ${fullName}`, body };
   }
-  const toMailto = (sub, body) => `mailto:${EMAIL_TO}?subject=${encodeMail(sub)}&body=${encodeMail(body)}`;
-  const toWhats  = (body) => `https://api.whatsapp.com/send?phone=${WHATS_PHONE}&text=${encodeURIComponent(body)}`;
+  function toMailto(subject, body){
+    return `mailto:${EMAIL_TO}?subject=${encodeMail(subject)}&body=${encodeMail(body)}`;
+  }
+  function toWhats(body){
+    return `https://api.whatsapp.com/send?phone=${WHATS_APP}&text=${encodeWA(body)}`;
+  }
+
+  // Notice
+  const ctaNotice = $('#ctaNotice');
+  function showNotice(msg){
+    if(!ctaNotice) return;
+    ctaNotice.textContent = msg || 'Merci de compléter le formulaire (coordonnées).';
+    ctaNotice.classList.remove('hidden');
+    setTimeout(()=>ctaNotice.classList.add('hidden'), 4000);
+  }
+
+  // CTA handlers — un seul envoi “cta” (premier clic)
+  const ctaEmail = $('#ctaEmail');
+  const ctaWhats = $('#ctaWhats');
 
   function handleCTA(kind){
-    sendPageOpenIfNeeded('cta_click'); // au cas où rien n’a encore été envoyé
-    const v = validate();
-    const d = collectData();
-    if(!v.ok){
-      showNotice("Formulaire incomplet. Merci d’ajouter vos coordonnées.");
-      // focus heuristique
-      if(d.mode==='entreprise'){ focusEl(fSociete || fTelEnt || fEmailEnt); } else { focusEl(fPrenom || fNom || fTel || fEmail); }
+    // Valide et bloque si incomplet
+    if(!validateComplete()){
+      showNotice("Formulaire incomplet. Merci d'ajouter vos coordonnées.");
       return;
     }
-    const snap = snapshotForm(d);
-    const {subject, body} = buildMessages(d);
 
+    const data = collectData();
+    const { subject, body } = buildMessages(data);
+
+    // Pixel CTA (une seule fois côté client)
+    if(!ssGet(SS_KEYS.SENT_CTA)){
+      logEvent('cta', { kind, mode:data.mode, produit:data.produit, form: snapshotForm(data) });
+      ssSet(SS_KEYS.SENT_CTA, '1');
+    }
+
+    // Ouvre le canal
     if(kind==='email'){
-      logEvent('cta_email_opened', { form: snap });
       location.href = toMailto(subject, body);
     }else{
-      logEvent('cta_whatsapp_opened', { form: snap });
       window.open(toWhats(body), '_blank', 'noopener');
     }
   }
 
   function bindCTAs(){
     if(ctaEmail){
-      ctaEmail.addEventListener('click',  e=>{ e.preventDefault(); handleCTA('email'); });
-      ctaEmail.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handleCTA('email'); }});
+      ctaEmail.addEventListener('click',  (e)=>{ e.preventDefault(); handleCTA('email'); });
+      ctaEmail.addEventListener('keydown',(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handleCTA('email'); }});
     }
     if(ctaWhats){
-      ctaWhats.addEventListener('click',  e=>{ e.preventDefault(); handleCTA('whatsapp'); });
-      ctaWhats.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handleCTA('whatsapp'); }});
+      ctaWhats.addEventListener('click',  (e)=>{ e.preventDefault(); handleCTA('whatsapp'); });
+      ctaWhats.addEventListener('keydown',(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handleCTA('whatsapp'); }});
     }
   }
 
-  // ====== INTERACTIONS QUI DÉCLENCHENT "page_open" ======
-  let firstScrollSent = false;
-  function onFirstSignificantScroll(){
-    const depth = Math.floor((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
-    if(depth >= 20 && !firstScrollSent){
-      firstScrollSent = true;
-      sendPageOpenIfNeeded('scroll');
+  // Form snapshot pour l’event form_complete / cta
+  function snapshotForm(d){
+    const x = d || collectData();
+    if(x.mode==='entreprise'){
+      return {
+        mode:x.mode, produit:x.produit,
+        societe:(x.societe||''), contact:(x.contact||''),
+        tel:(x.tel||''), email:(x.email||'')
+      };
     }
+    return {
+      mode:x.mode, produit:x.produit,
+      prenom:(x.prenom||''), nom:(x.nom||''),
+      tel:(x.tel||''), email:(x.email||'')
+    };
   }
 
-  // ====== INIT ======
-  function init(){
-    applyRequired();
+  // Envoi “form_complete” — une seule fois
+  function maybeSendFormComplete(){
+    if(ssGet(SS_KEYS.SENT_FORM)) return;
+    if(!validateComplete()) return;
+    const snap = snapshotForm();
+    logEvent('form_complete', { form: snap });
+    ssSet(SS_KEYS.SENT_FORM, '1');
+  }
 
-    // Saisie/changement : abandon & updates
+  function bindFormWatchers(){
     $$('#miniForm input').forEach(el=>{
-      el.addEventListener('input', onFormChange);
-      el.addEventListener('change', onFormChange);
+      el.addEventListener('input', maybeSendFormComplete);
+      el.addEventListener('change', maybeSendFormComplete);
     });
+  }
 
-    // Segment/produit
-    [rParticulier, rEntreprise].forEach(r=> r && r.addEventListener('change', onSegmentChange));
-    $$('input[name="produit"]').forEach(r=> r.addEventListener('change', onProduitChange));
+  function bindSegmentation(){
+    [rParticulier, rEntreprise].forEach(r=>{
+      if(!r) return;
+      r.addEventListener('change', ()=> applyRequired());
+    });
+    applyRequired();
+  }
 
-    // CTAs
+  // 1) PAGE OPEN — une fois, après tentative IP
+  async function sendPageOpenOnce(){
+    if(ssGet(SS_KEYS.SENT_OPEN)) return;
+    await fetchIP(1200); // best-effort IP
+    logEvent('page_open', { mode:getMode(), produit:getProduit() });
+    ssSet(SS_KEYS.SENT_OPEN, '1');
+  }
+
+  // INIT
+  function init(){
+    bindSegmentation();
+    bindFormWatchers();
     bindCTAs();
-
-    // Scroll significatif
-    window.addEventListener('scroll', onFirstSignificantScroll, { passive:true });
-
-    // 1re interaction clavier/souris sur la page -> peut déclencher page_open si besoin
-    ['pointerdown','keydown','touchstart'].forEach(ev=>{
-      window.addEventListener(ev, ()=> sendPageOpenIfNeeded('interaction'), { once:true, passive:true });
-    });
+    sendPageOpenOnce();
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
