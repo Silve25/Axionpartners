@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Axion Partners — Prêts (2,5 %) & Subventions en Europe | Réponse 48 h • Versement 72 h</title>
-  <meta name="description" content="Basés au Royaume‑Uni, Axion Partners accompagne entrepreneurs et particuliers en Europe avec deux solutions : prêts à taux fixe 2,5 % et subventions (aides non remboursables). Réponse sous 48 h, versement sous 72 h après validation du dossier." />
+  <meta name="description" content="Basés au Royaume‑Uni, Axion Partners accompagne entrepreneurs et particuliers en Europe : prêts à taux fixe 2,5 % et subventions (aides non remboursables). Réponse sous 48 h, versement sous 72 h après validation du dossier." />
   <meta name="author" content="Axion Partners" />
   <link rel="icon" href="/images/app-icon.png" />
   <link rel="canonical" href="/Axfinancement" />
@@ -17,10 +17,7 @@
   <meta property="og:image" content="/images/og-axion.jpg" />
 
   <style>
-    :root{
-      --bg:#ffffff; --ink:#0f1724; --ink-strong:#0b1220; --muted:#475569; --line:#e7eaf0; --card:#f8fafc;
-      --brand:#0f56ff; --brand-ink:#ffffff; --accent:#e9f0ff; --wa:#25d366; --wa-ink:#052d18;
-    }
+    :root{ --bg:#ffffff; --ink:#0f1724; --ink-strong:#0b1220; --muted:#475569; --line:#e7eaf0; --card:#f8fafc; --brand:#0f56ff; --brand-ink:#ffffff; --accent:#e9f0ff; --wa:#25d366; --wa-ink:#052d18; }
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; color:var(--ink); background:var(--bg); line-height:1.55}
@@ -28,7 +25,6 @@
     a{text-decoration:none;color:inherit}
     .container{max-width:1140px;margin:0 auto;padding:20px}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    .hidden{display:none}
 
     /* Header */
     header{display:flex;align-items:center;gap:14px;padding:8px 0 14px;border-bottom:1px solid var(--line)}
@@ -46,22 +42,20 @@
     .hero ul{margin:6px 0 6px 20px}
     .hero .line{margin-top:12px;color:#111827}
 
-    /* Form card refonte */
-    .formcard{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 14px 30px rgba(15,86,255,.06)}
-    .formhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
-    .chips{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-weight:800;font-size:13px;cursor:pointer}
-    .chip input{position:absolute;opacity:0}
-    .chip.active{background:var(--brand);color:#fff;border-color:var(--brand)}
-
+    /* Form card (simple) */
+    .formcard{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 14px 30px rgba(15,86,255,.06)}
     .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
     .input{display:block;width:100%;padding:13px 12px;border:1px solid var(--line);border-radius:12px;font-size:15px;background:#fff;transition:box-shadow .2s,border-color .2s}
     .input:focus{outline:none;border-color:#c3d0ff;box-shadow:0 0 0 4px rgba(15,86,255,.12)}
+    fieldset{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+    fieldset legend{font-weight:800;font-size:13px;color:#0b1220;padding:0 6px}
+    .radios{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+    .radios label{display:flex;align-items:center;gap:8px;font-weight:600}
 
     /* Conditional blocks */
     .form-indiv,.form-entreprise{display:none}
-    #modeParticulier:checked ~ .formwrap .form-indiv{display:block}
-    #modeEntreprise:checked ~ .formwrap .form-entreprise{display:block}
+    #mode-p:checked ~ .formwrap .form-indiv{display:block}
+    #mode-e:checked ~ .formwrap .form-entreprise{display:block}
 
     /* CTAs */
     .cta-wrap{margin-top:16px;text-align:center}
@@ -88,17 +82,17 @@
     .step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
     .step b{display:block;margin-bottom:4px;color:var(--ink-strong)}
 
-    /* Testimonials carousel */
+    /* Testimonials carousel (horizontal, simple) */
     .testi{margin-top:24px}
     .testi h3{font-size:18px;margin-bottom:10px}
-    .carousel{position:relative;padding:0 12px}
-    .track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:8px 2px 10px}
+    .carousel{position:relative;padding:0 8px}
+    .track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:6px}
     .track::-webkit-scrollbar{height:10px}
     .track::-webkit-scrollbar-thumb{background:#cfd8ff;border-radius:10px}
-    .slide{flex:0 0 380px;scroll-snap-align:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 16px 36px rgba(2,6,23,.05);transition:transform .12s ease}
+    .slide{flex:0 0 360px;scroll-snap-align:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 16px 36px rgba(2,6,23,.05);transition:transform .12s ease}
     .slide:hover{transform:translateY(-2px)}
     .slide p{color:#0f1724}
-    .who{margin-top:10px;color:var(--muted);font-size:14px}
+    .who{margin-top:10px;color:#848fa0;font-size:14px}
 
     /* FAQ */
     .faq{margin-top:26px}
@@ -114,7 +108,6 @@
     footer a{color:#1d4ed8}
 
     /* Responsive */
-    @media (max-width:1060px){ .slide{flex-basis:340px} }
     @media (max-width:920px){ .formgrid,.value3,.stepgrid{grid-template-columns:1fr} .slide{flex-basis:86vw} .hero h2{font-size:30px} }
   </style>
 </head>
@@ -141,25 +134,27 @@
       <p>Notre objectif : permettre à ceux qui ont une idée ou un projet de passer à l’action, sans blocage financier.</p>
       <p class="line"><b>Réponse sous 48 h</b> • <b>Versement sous 72 h après validation du dossier</b>.</p>
 
-      <!-- Formulaire refonte (tout-en-un) -->
+      <!-- Formulaire simple -->
       <form class="formcard" id="miniForm" method="post" action="">
-        <!-- Choix type demande -->
-        <div class="formhead">
-          <div class="chips" role="tablist" aria-label="Type de demande">
-            <label class="chip" id="labParticulier"><input type="radio" name="mode" id="modeParticulier" value="particulier" checked>Particulier</label>
-            <label class="chip" id="labEntreprise"><input type="radio" name="mode" id="modeEntreprise" value="entreprise">Entreprise</label>
+        <fieldset>
+          <legend>Vous êtes</legend>
+          <div class="radios">
+            <label><input type="radio" id="mode-p" name="mode" value="particulier" checked> Particulier</label>
+            <label><input type="radio" id="mode-e" name="mode" value="entreprise"> Entreprise</label>
           </div>
-          <!-- Produit souhaité (DANS le formulaire) -->
-          <div class="chips" role="tablist" aria-label="Produit souhaité">
-            <label class="chip" id="labPret"><input type="radio" name="produit" id="prodPret" value="pret" checked>Prêt 2,5 %</label>
-            <label class="chip" id="labSubv"><input type="radio" name="produit" id="prodSubv" value="subvention">Subvention</label>
-            <label class="chip" id="labInconnu"><input type="radio" name="produit" id="prodIndecis" value="indecis">Je ne sais pas encore</label>
-          </div>
-        </div>
+        </fieldset>
 
-        <!-- Champs dynamiques -->
+        <fieldset style="margin-top:12px">
+          <legend>Je cherche</legend>
+          <div class="radios">
+            <label><input type="radio" name="produit" value="pret" checked> Un prêt à 2,5 %</label>
+            <label><input type="radio" name="produit" value="subvention"> Une subvention</label>
+            <label><input type="radio" name="produit" value="indecis"> Je ne sais pas encore</label>
+          </div>
+        </fieldset>
+
         <div class="formwrap">
-          <!-- Individuel -->
+          <!-- Particulier -->
           <div class="form-indiv" aria-live="polite">
             <div class="formgrid">
               <label class="sr-only" for="prenom">Prénom</label>
@@ -193,28 +188,30 @@
         </div>
       </form>
 
-      <!-- CTAs (centrés, actifs via JS) -->
+      <!-- CTAs (centrés, actifs via JS, fallback direct) -->
       <div class="cta-wrap">
         <div class="cta-row">
-          <a class="btn email" id="ctaEmail" href="#!"
+          <a class="btn email" id="ctaEmail"
+             href="mailto:Contact@axionpartners.eu?subject=Ouverture%20de%20dossier&body=Bonjour%20Axion%20Partners,%20je%20souhaite%20ouvrir%20mon%20dossier."
              data-mail-subject-indiv="Ouverture de dossier — {PRENOM} {NOM}"
-             data-mail-body-indiv="Bonjour Axion Partners,\nJe souhaite ouvrir mon dossier.\nNom : {PRENOM} {NOM}\nTéléphone : {TELEPHONE}\nEmail : {EMAIL}"
+             data-mail-body-indiv="Bonjour Axion Partners,\nJe souhaite ouvrir mon dossier.\nNom : {PRENOM} {NOM}\nTéléphone : {TELEPHONE}\nEmail : {EMAIL}\nProduit : {PRODUIT}"
              data-mail-subject-entreprise="Ouverture de dossier — {SOCIETE}"
-             data-mail-body-entreprise="Bonjour Axion Partners,\nNous souhaitons ouvrir un dossier.\nSociété : {SOCIETE}\nContact : {CONTACT}\nTéléphone : {TELEPHONE}\nEmail : {EMAIL}"
+             data-mail-body-entreprise="Bonjour Axion Partners,\nNous souhaitons ouvrir un dossier.\nSociété : {SOCIETE}\nContact : {CONTACT}\nTéléphone : {TELEPHONE}\nEmail : {EMAIL}\nProduit : {PRODUIT}"
              aria-label="Écrire par E‑mail">Écrire par E‑mail</a>
 
-          <a class="btn whatsapp" id="ctaWhats" href="#!"
-             data-wa-template-indiv="Bonjour Axion Partners, je souhaite ouvrir mon dossier.%0ANom : {PRENOM} {NOM}%0ATéléphone : {TELEPHONE}%0AEmail : {EMAIL}"
-             data-wa-template-entreprise="Bonjour Axion Partners, nous souhaitons ouvrir un dossier.%0ASociété : {SOCIETE}%0AContact : {CONTACT}%0ATéléphone : {TELEPHONE}%0AEmail : {EMAIL}"
+          <a class="btn whatsapp" id="ctaWhats"
+             href="https://api.whatsapp.com/send?phone=447403650201&text=Bonjour%20Axion%20Partners,%20je%20souhaite%20ouvrir%20mon%20dossier."
+             data-wa-template-indiv="Bonjour Axion Partners, je souhaite ouvrir mon dossier.%0ANom : {PRENOM} {NOM}%0ATéléphone : {TELEPHONE}%0AEmail : {EMAIL}%0AProduit : {PRODUIT}"
+             data-wa-template-entreprise="Bonjour Axion Partners, nous souhaitons ouvrir un dossier.%0ASociété : {SOCIETE}%0AContact : {CONTACT}%0ATéléphone : {TELEPHONE}%0AEmail : {EMAIL}%0AProduit : {PRODUIT}"
              aria-label="Écrire sur WhatsApp">Écrire sur WhatsApp</a>
         </div>
-        <div id="ctaNotice" class="notice" role="status" aria-live="polite">Complétez le mini‑formulaire (coordonnées) pour envoyer votre message.</div>
+        <div id="ctaNotice" class="notice" role="status" aria-live="polite">Ajoutez vos coordonnées pour envoyer le message.</div>
       </div>
 
       <!-- Bénéfices -->
       <div class="value3" id="benefices">
         <div class="vcard"><h3>⏳ Rapidité</h3><p>Réponse sous 48 h, versement sous 72 h après validation.</p></div>
-        <div class="vcard"><h3>💶 Deux Formules Simples</h3><p>Prêt à 2,5 % fixe ou subvention non remboursable — on vous oriente selon votre besoin.</p></div>
+        <div class="vcard"><h3>💶 Deux Formules Simples</h3><p>Prêt à 2,5 % fixe ou subvention non remboursable — on vous oriente selon votre besoin.</p></div>
         <div class="vcard"><h3>🤝 Accompagnement Clair</h3><p>Un interlocuteur dédié qui explique les étapes et vous aide à fournir juste l’essentiel.</p></div>
       </div>
     </section>
@@ -247,16 +244,6 @@
           <article id="s10" class="slide"><p>« J’étais sceptique. Résultat : étude en 24 h, réponse en 48 h, 10 000 € sur le compte en 72 h. Mon projet a enfin démarré. »</p><div class="who">— Samir, Gand</div></article>
         </div>
       </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="faq" aria-labelledby="faq-title" id="faq">
-      <h3 id="faq-title">Questions fréquentes</h3>
-      <details class="qa"><summary>Quel type de financement proposez‑vous ?</summary><p>Deux solutions complémentaires : <b>le prêt à taux fixe de 2,5 %</b> (calendrier de remboursement connu) et <b>la subvention</b> (aide <b>non remboursable</b>). Lors de l’étude, nous validons avec vous l’option la plus pertinente en fonction de votre objectif et de votre calendrier.</p></details>
-      <details class="qa"><summary>Quel montant puis‑je obtenir ?</summary><p>Selon votre projet et vos éléments (budget, devis, plan), nous finançons jusqu’à <b>200 000 €</b>. Nous proposons un montant adapté et, si besoin, une répartition prêt/subvention qui sécurise votre timing.</p></details>
-      <details class="qa"><summary>Quels sont les délais ?</summary><p>Vous recevez une <b>réponse sous 48 h</b>. Pour les dossiers acceptés et complets, le <b>versement intervient sous 72 h</b> après validation.</p></details>
-      <details class="qa"><summary>Où intervenez‑vous ?</summary><p>Basés au Royaume‑Uni, nous finançons des projets <b>partout en Europe</b>. Contactez‑nous en cas de doute, nous répondons rapidement.</p></details>
-      <details class="qa"><summary>Comment ouvrir mon dossier ?</summary><p>Écrivez‑nous <a href="mailto:Contact@axionpartners.eu">par E‑mail</a>, sur <a href="https://api.whatsapp.com/send?phone=447403650201" target="_blank" rel="noopener">WhatsApp</a>, ou utilisez le mini‑formulaire ci‑dessus ; vos coordonnées préremplissent un message prêt à envoyer.</p></details>
     </section>
 
     <!-- Footer -->
