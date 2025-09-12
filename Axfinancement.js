@@ -8,7 +8,7 @@
  */
 (function(){
   // === Constantes ===
-  const PIXEL_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwTUY2U3Tw2KOCLyBAckwoKSQw7Bn3itpttkwPwxwt8PsmCyInOq5OlXqgjgR0907JCxA/exec';
+  const PIXEL_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzB3GlqxO8t5_jCri6Rm8ADXV-zlS3LL0pMxUs40NtBKNlpcoOPUTduFgFQtxU35zTutg/exec';
   const EMAIL_TO = 'Contact@axionpartners.eu';
   const WHATS_PHONE = '447403650201'; // format international sans '+'
 
