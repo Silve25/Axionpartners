@@ -35,7 +35,7 @@
 
   function ssGet(k){ try{return sessionStorage.getItem(k);}catch(_){return null;} }
   function ssSet(k,v){ try{sessionStorage.setItem(k,v);}catch(_){ } }
-  function ssHas(k){ return DEBUG ? false : !!ssGet(k); } // en debug, on renvoie toujours false pour rerouter les envois
+  function ssHas(k){ return DEBUG ? false : !!ssGet(k); } // en debug, on renvoie toujours false
 
   function getSID(){
     var sid = ssGet(SS.SID);
@@ -173,29 +173,62 @@
     return !!( d.vous_etes && d.je_cherche && d.nom && d.prenom && phoneOK(d.telephone) && emailOK(d.email) );
   }
 
-  // Messages CTA (identiques à l’ancien)
+  /* ===== Messages CTA — VERSION ACTUALISÉE =====
+   * - style “demande d’informations”
+   * - inclut WhatsApp + E-mail dans le texte (mail ET WhatsApp)
+   * - produit dynamique; si indécis → “un financement (prêt ou subvention)”
+   */
   function buildMessages(d){
-    var produit = d.je_cherche || 'je ne sais pas encore';
+    var produit = d.je_cherche || 'un financement';
+    if (/je ne sais pas encore/i.test(produit)) {
+      produit = 'un financement (prêt ou subvention)';
+    }
+
     if(d.vous_etes==='Entreprise'){
       var soc = trim(fSociete && fSociete.value) || d.nom || '';
-      var who = (fContact && trim(fContact.value))
-        ? ('Nous sommes '+soc+'. Je suis '+trim(fContact.value)+'.')
-        : ('Nous sommes '+soc+'.');
-      var body = 'Bonjour Axion Partners,\n'+
-                 who+'\n'+
-                 'Nous souhaitons obtenir '+produit+'.\n'+
-                 'Voici notre numéro WhatsApp : '+d.telephone+'.\n\n'+
-                 'Merci,\n'+
-                 soc;
-      return { subject:'Ouverture de dossier — '+soc, body: body };
+      var contactName = trim(fContact && fContact.value);
+      var whoLine = soc
+        ? (contactName ? ('Nous sommes '+soc+'. Je suis '+contactName+'.') : ('Nous sommes '+soc+'.'))
+        : (contactName ? ('Je suis '+contactName+'.') : '');
+
+      var bodyE = [
+        'Bonjour Axion Partners,',
+        '',
+        'Je vous écris pour obtenir plus d’informations sur l’obtention de '+produit+'.',
+        whoLine,
+        '',
+        'Pouvez-vous nous indiquer les pièces à fournir et les prochaines étapes pour ouvrir le dossier ?',
+        '',
+        'Nos coordonnées :',
+        '• WhatsApp : '+ d.telephone,
+        '• E-mail : '   + d.email,
+        '',
+        'Merci,',
+        contactName || soc || '—'
+      ].join('\n');
+
+      return { subject: 'Demande d’informations — '+ (soc || 'Entreprise'), body: bodyE };
     }
+
+    // Particulier
     var fullName = (d.prenom+' '+d.nom).replace(/\s+/g,' ').trim();
-    var body2 = 'Bonjour Axion Partners,\n'+
-                'Je suis '+fullName+' et je souhaite obtenir '+produit+'.\n'+
-                'Voici mon numéro WhatsApp : '+d.telephone+'. Vous pouvez me contacter dessus.\n\n'+
-                'Merci,\n'+
-                fullName;
-    return { subject:'Ouverture de dossier — '+fullName, body: body2 };
+    var bodyP = [
+      'Bonjour Axion Partners,',
+      '',
+      'Je vous écris pour obtenir plus d’informations sur l’obtention de '+produit+'.',
+      'Je suis '+ fullName +'.',
+      '',
+      'Mes coordonnées :',
+      '• WhatsApp : '+ d.telephone,
+      '• E-mail : '   + d.email,
+      '',
+      'Vous pouvez me contacter sur l’un ou l’autre canal.',
+      '',
+      'Merci,',
+      fullName
+    ].join('\n');
+
+    return { subject: 'Demande d’informations — '+ fullName, body: bodyP };
   }
 
   /* ===== Trigger #1 — page_loaded (avec watchdog) =====
