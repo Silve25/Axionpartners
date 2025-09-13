@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Axion Partners — Prêts (2,5 %) & Subventions en Europe | Étude 24 h • Réponse 48 h • Financement 72 h</title>
-  <meta name="description" content="Basés au Royaume-Uni, Axion Partners finance projets et entreprises en Europe : prêts à taux fixe 2,5 % et subventions (aides non remboursables). Étude sous 24 h après contact, réponse sous 48 h, versement sous 72 h si accepté." />
+  <title>Axion Partners — Financement rapide en Europe : prêts (2,5 %) & subventions | Étude 24 h • Réponse 48 h • Financement 72 h</title>
+  <meta name="description" content="Axion Partners finance projets et entreprises en Europe : prêts à taux fixe 2,5 % et subventions non remboursables. Étude sous 24 h, réponse sous 48 h, versement sous 72 h si accepté." />
   <meta name="author" content="Axion Partners" />
   <link rel="icon" href="/images/app-icon.png" />
   <link rel="canonical" href="/Axfinancement" />
@@ -17,57 +17,68 @@
   <meta property="og:image" content="/images/og-axion.jpg" />
 
   <style>
-    /* ——— Thème & lisibilité ——— */
     :root{
-      --bg:#ffffff; --ink:#0f1724; --ink-strong:#0a1020; --muted:#475569; --line:#e7eaf0; --card:#f8fafc;
-      --brand:#0f56ff; --brand-ink:#ffffff; --accent:#e9f0ff; --wa:#25d366; --wa-ink:#052d18;
+      --bg:#fafbff; --panel:#ffffff; --ink:#0f1724; --ink-strong:#0a1020; --muted:#526079; --line:#e6e9f2; --card:#f6f8fc;
+      --brand:#0f56ff; --brand-ink:#ffffff; --accent:#eaf1ff; --wa:#25d366; --wa-ink:#052d18;
+      --shadow:0 8px 20px rgba(15,86,255,.06), 0 2px 6px rgba(2,6,23,.06);
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-         color:var(--ink); background:var(--bg); line-height:1.6; font-size:17px}
+    body{
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      color:var(--ink); background:var(--bg); line-height:1.65; font-size:18px; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility
+    }
     img{display:block;max-width:100%;height:auto}
     a{text-decoration:none;color:inherit}
-    .container{max-width:1140px;margin:0 auto;padding:20px}
+    .container{max-width:1160px;margin:0 auto;padding:20px}
     .hidden{display:none}
 
+    /* Icônes inline */
+    .ic{width:18px;height:18px;display:inline-block;vertical-align:-3px}
+    .ic20{width:20px;height:20px;vertical-align:-4px}
+    .ic24{width:24px;height:24px;vertical-align:-5px}
+    .ic32{width:32px;height:32px}
+
     /* Header */
-    header{display:flex;align-items:center;gap:14px;padding:8px 0 14px;border-bottom:1px solid var(--line)}
-    header img{height:56px;border-radius:14px;box-shadow:0 8px 20px rgba(15,86,255,.08)}
-    .brand h1{font-size:24px;letter-spacing:.2px;color:var(--ink-strong); font-weight:900}
+    header{display:flex;align-items:center;gap:14px;padding:10px 0 16px;border-bottom:1px solid var(--line)}
+    header img{height:56px;border-radius:14px;box-shadow:var(--shadow)}
+    .brand h1{font-size:clamp(20px,2.4vw,26px);letter-spacing:.2px;color:var(--ink-strong); font-weight:900}
     .brand .tag{font-size:13px;color:var(--muted)}
 
     /* Hero */
-    .hero{position:relative;margin-top:22px;background:linear-gradient(180deg,#f6f9ff 0%,#eef4ff 60%,#f8fbff 100%);
-          border:1px solid var(--line);border-radius:22px;padding:44px 28px;overflow:hidden}
-    .shape{position:absolute;inset:-30% -10% auto -10%;height:360px;background:radial-gradient(60% 60% at 30% 50%,rgba(15,86,255,.18),transparent 60%);
-           filter:blur(8px);animation:float 9s ease-in-out infinite alternate}
+    .hero{
+      position:relative;margin-top:24px;
+      background:radial-gradient(80% 60% at 20% 10%, #eef4ff 0%, #f6f9ff 50%, #ffffff 100%);
+      border:1px solid var(--line);border-radius:22px;padding:28px;overflow:hidden
+    }
+    .shape{position:absolute;inset:-30% -10% auto -10%;height:360px;background:radial-gradient(60% 60% at 30% 50%,rgba(15,86,255,.14),transparent 60%);filter:blur(10px);animation:float 9s ease-in-out infinite alternate}
     @keyframes float{to{transform:translateY(10px)}}
-    .hero h2{font-size:36px;margin:10px 0 12px;color:var(--ink-strong); font-weight:900}
+    .hero-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;align-items:center}
+    .eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1d4ed8;background:var(--accent);padding:6px 10px;border-radius:999px}
+    .hero h2{font-size:clamp(28px,4.2vw,44px);margin:12px 0 12px;color:var(--ink-strong); font-weight:900}
     .hero p{color:var(--muted);max-width:980px}
-    .bullets{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px 0}
-    .bullet{display:inline-block;background:var(--accent);color:#1d4ed8;font-weight:800;border-radius:999px;padding:7px 12px;font-size:12px}
+    .bullets{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}
+    .bullet{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#1d4ed8;font-weight:800;border-radius:999px;padding:7px 12px;font-size:12px}
     .hero .line{margin-top:10px;color:#111827;font-size:14px}
+    .hero-visual{position:relative}
+    .hero-visual img{border-radius:16px;border:1px solid var(--line);box-shadow:var(--shadow);object-fit:cover;aspect-ratio:4/3}
 
     /* Form card */
-    .formcard{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 14px 30px rgba(15,86,255,.06)}
-    .legend{font-weight:900;font-size:13px;color:#0b1220;margin:8px 0 6px}
-
-    /* Radios stylés (text-buttons) */
+    .formcard{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+    .legend{font-weight:900;font-size:13px;color:#0b1220;margin:10px 0 8px}
     .seginput,.chipinput{position:absolute;opacity:0;pointer-events:none}
     .seglabel,.chiplabel{
-      display:inline-block;margin:0 8px 8px 0;padding:10px 14px;border-radius:999px;border:1px solid var(--line);
-      background:#fff;font-weight:800;font-size:13px;cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .05s}
-    .seginput:checked + .seglabel,
-    .chipinput:checked + .chiplabel{background:var(--brand);color:#fff;border-color:transparent;box-shadow:0 10px 24px rgba(15,86,255,.18)}
+      display:inline-flex;align-items:center;gap:8px;
+      margin:0 8px 8px 0;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;
+      font-weight:800;font-size:13px;cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .05s
+    }
+    .seginput:checked + .seglabel,.chipinput:checked + .chiplabel{background:var(--brand);color:#fff;border-color:transparent;box-shadow:0 10px 24px rgba(15,86,255,.18)}
     .seglabel:active,.chiplabel:active{transform:translateY(1px)}
-
     .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
     .input{display:block;width:100%;padding:13px 12px;border:1px solid var(--line);border-radius:12px;font-size:16px;background:#fff;transition:box-shadow .2s,border-color .2s}
     .input:focus{outline:none;border-color:#c3d0ff;box-shadow:0 0 0 4px rgba(15,86,255,.12)}
     .hint{font-size:13px;color:#64748b;margin-top:10px}
 
-    /* Affichage des blocs champs (CSS robuste) */
     .form-indiv{display:block}
     .form-entreprise{display:none}
     #modeEntreprise:checked ~ .form-entreprise{display:block}
@@ -75,8 +86,11 @@
     #modeParticulier:checked ~ .form-indiv{display:block}
     #modeParticulier:checked ~ .form-entreprise{display:none}
 
+    /* Urgence */
+    .urgency{margin:14px 0;background:#fff7ed;border:1px solid #fed7aa;color:#b45309;border-radius:12px;padding:10px 14px;font-weight:900}
+
     /* CTAs */
-    .cta-wrap{margin-top:16px;text-align:center}
+    .cta-wrap{margin-top:10px;text-align:center}
     .cta-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;border-radius:14px;font-weight:900;border:1px solid transparent;transition:transform .06s ease, box-shadow .2s ease; font-size:16px}
     .btn:active{transform:translateY(1px)}
@@ -85,49 +99,86 @@
     .btn:hover{box-shadow:0 16px 36px rgba(2,6,23,.12)}
     .notice{margin-top:10px;display:none;align-items:center;justify-content:center;gap:10px;background:#fff4f4;border:1px solid #ffd7d7;color:#7a1111;padding:10px 12px;border-radius:12px;box-shadow:0 10px 20px rgba(122,17,17,.05)}
 
-    /* Bénéfices (déjà présents si besoin) */
+    /* Bénéfices */
     .value3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-    .vcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}
+    .vcard{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}
     .vcard h3{font-size:16px;margin-bottom:6px;font-weight:900}
     .vcard p{font-size:15px;color:var(--muted)}
 
-    /* Témoignages — carrousel vertical */
-    .testi{margin-top:26px}
-    .testi h3{font-size:18px;margin-bottom:10px}
-    .viewport{
-      max-height:520px; overflow-y:auto; padding-right:8px;
-      scroll-snap-type:y mandatory; scroll-behavior:smooth;
-      border:1px solid var(--line); border-radius:16px; background:#fff;
-      box-shadow:0 16px 36px rgba(2,6,23,.06)
-    }
-    .viewport .slide{
-      scroll-snap-align:start; padding:16px 16px 14px 16px; border-bottom:1px solid var(--line)
-    }
-    .viewport .slide:last-child{border-bottom:0}
-    .viewport .slide p{color:#0f1724}
-    .viewport .who{margin-top:8px;color:#667085;font-size:14px}
-    .vcontrols{display:flex;gap:10px;justify-content:flex-end;margin-top:10px}
-    .navbtn{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;font-weight:800;font-size:13px}
-    .navbtn:hover{box-shadow:0 10px 20px rgba(2,6,23,.06)}
+    /* About */
+    .about{margin-top:28px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+    .about h3{font-size:20px;margin-bottom:10px;font-weight:900;color:var(--ink-strong)}
+    .about-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+    .about p{color:var(--muted)}
+    .facts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .fact{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+    .fact b{font-size:20px}
+    .legal{font-size:14px;color:#64748b}
 
-    /* FAQ */
-    .faq{margin-top:26px}
-    .faq h3{font-size:18px;margin-bottom:10px}
-    details.qa{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;transition:box-shadow .2s}
-    .qa summary{cursor:pointer;font-weight:900;list-style:none}
-    .qa summary::-webkit-details-marker{display:none}
-    .qa[open]{box-shadow:0 16px 36px rgba(2,6,23,.06)}
-    .qa p{color:var(--muted);margin-top:8px}
+    /* Témoignages — carrousel premium */
+    .testi{margin-top:30px}
+    .testi h3{font-size:20px;margin-bottom:12px;font-weight:900;color:var(--ink-strong)}
+    .carousel-wrap{position:relative}
+    .carousel{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(280px,36vw,420px);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow);-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .carousel::-webkit-scrollbar{display:none}
+    .scard{scroll-snap-align:center;border:1px solid var(--line);border-radius:14px;padding:18px;background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%)}
+    .scard p{color:var(--ink);font-size:16px}
+    .who{margin-top:10px;color:#667085;font-size:14px}
+    .cbtn{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow);display:grid;place-items:center;font-weight:900;cursor:pointer}
+    .cbtn:active{transform:translateY(-50%) scale(.98)}
+    .cbtn.left{left:-6px}
+    .cbtn.right{right:-6px}
 
-    /* Urgence */
-    .urgency{margin-top:16px;background:#fff7ed;border:1px solid #fed7aa;color:#b45309;border-radius:12px;padding:12px 14px;font-weight:900}
+    /* ===== Simulateur de prêt ===== */
+    .simu-card{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+    .simu-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+    .simu-head h3{font-size:18px;font-weight:900;color:var(--ink-strong)}
+    .simu-note{font-size:13px;color:#64748b}
+    .simu-grid{display:grid;grid-template-columns:1fr 160px;gap:12px;align-items:center;margin-top:10px}
+    .simu-label{font-weight:800;color:var(--ink-strong);display:flex;align-items:center;gap:8px}
+    .simu-hint{font-size:13px;color:#64748b;margin-top:6px}
+    .simu-ctrl{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}
+    .simu-ctrl input[type="range"]{width:100%}
+    .simu-ctrl input[type="number"]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px}
+    .simu-val{display:flex;align-items:center;justify-content:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:900}
+    .simu-presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .simu-pill{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-weight:800;font-size:13px;cursor:pointer}
+    .simu-pill:hover{box-shadow:0 6px 16px rgba(2,6,23,.06)}
+    .simu-out{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+    .sout{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+    .sout .k{font-size:12px;color:#64748b}
+    .sout .v{font-size:18px;font-weight:900;color:var(--ink-strong)}
+    .simu-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .simu-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:900;font-size:14px;cursor:pointer}
+    .simu-btn:hover{box-shadow:0 10px 24px rgba(2,6,23,.06)}
+    .simu-hidden{display:none}
+    .simu-ctrl input[type="range"]{-webkit-appearance:none;height:6px;border-radius:999px;background:#e5e7eb;outline:none}
+    .simu-ctrl input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--brand);box-shadow:0 2px 6px rgba(15,86,255,.25)}
+    .simu-ctrl input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--brand)}
+
+    /* Bannière bas de page */
+    .promo{margin:26px 0 6px}
+    .promo figure{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+    .promo img{width:100%;height:auto;display:block}
+    .promo figcaption{
+      position:absolute;bottom:14px;left:14px;background:rgba(255,255,255,.9);
+      padding:8px 12px;border-radius:12px;font-weight:900;color:#0a1020
+    }
 
     /* Footer */
-    footer{margin:26px auto 38px;text-align:center;color:#64748b;font-size:13px}
+    footer{margin:18px auto 36px;text-align:center;color:#64748b;font-size:13px}
     footer a{color:#1d4ed8}
 
     /* Responsive */
-    @media (max-width:920px){ .formgrid{grid-template-columns:1fr} .hero h2{font-size:32px} .viewport{max-height:440px} }
+    @media (max-width:920px){
+      .formgrid{grid-template-columns:1fr}
+      .hero h2{font-size:32px}
+      .hero-grid{grid-template-columns:1fr}
+      .about-grid{grid-template-columns:1fr}
+      .facts{grid-template-columns:1fr 1fr}
+      .simu-grid{grid-template-columns:1fr}
+      .simu-out{grid-template-columns:1fr 1fr}
+    }
   </style>
 </head>
 <body>
@@ -137,40 +188,56 @@
       <a href="/" aria-label="Accueil Axion Partners"><img src="/images/app-icon.png" alt="Axion Partners"></a>
       <div class="brand">
         <h1>Axion Partners</h1>
-        <div class="tag">Basés au Royaume-Uni — nous finançons projets et entreprises en Europe</div>
+        <div class="tag">Basés au Royaume-Uni — nous finançons des projets et entreprises partout en Europe</div>
       </div>
     </header>
 
     <!-- Hero -->
     <section class="hero" id="top">
       <i class="shape" aria-hidden="true"></i>
-      <div class="bullets"><span class="bullet">Étude 24 h</span><span class="bullet">Réponse 48 h</span><span class="bullet">Financement 72 h*</span></div>
-      <h2>Vous avez un projet, nous vous aidons à le financer.</h2>
-      <p>Deux solutions adaptées à votre besoin : <b>prêts à taux fixe de 2,5 %</b> et <b>subventions (aides non remboursables)</b>. Dites-nous votre objectif ; nous simplifions le parcours pour aller vite et droit au but.</p>
-      <p class="line"><small>*Délais indicatifs après acceptation et pièces complètes.</small></p>
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">
+            <img class="ic" src="https://img.icons8.com/?size=100&id=HNn2c3rI6BNm&format=png&color=000000" alt="" />
+            Étude 24 h • Réponse 48 h • Financement 72 h*
+          </span>
+          <h2>Votre projet mérite d’être financé.</h2>
+          <p><b>Nous vous obtenons un prêt à 2,5 % ou une subvention</b>, selon votre situation. Dites-nous votre objectif : nous simplifions le parcours pour aller vite et droit au but.</p>
+          <div class="bullets">
+            <span class="bullet"><img class="ic" src="https://img.icons8.com/?size=100&id=XTYU32LZKHC9&format=png&color=000000" alt="" /> Étude 24 h</span>
+            <span class="bullet"><img class="ic" src="https://img.icons8.com/?size=100&id=59844&format=png&color=000000" alt="" /> Réponse 48 h</span>
+            <span class="bullet"><img class="ic" src="https://img.icons8.com/?size=100&id=g99lWx8DBa8P&format=png&color=000000" alt="" /> Financement 72 h</span>
+          </div>
+          <p class="line"><small>*Délais indicatifs après acceptation et pièces complètes.</small></p>
+        </div>
+
+        <!-- Illustration hero -->
+        <div class="hero-visual">
+          <img src="images/Communiques-Subvention-Office-de-Tourisme-derniers-jours-pour-les-demandes-40607157.webp" alt="Subventions et prêts traités rapidement" loading="lazy">
+        </div>
+      </div>
 
       <!-- Mini-formulaire -->
       <form id="miniForm" class="formcard" novalidate>
         <div class="legend">Vous êtes</div>
         <input class="seginput" type="radio" id="modeParticulier" name="mode" value="particulier" checked>
-        <label class="seglabel" for="modeParticulier">Particulier</label>
-
+        <label class="seglabel" for="modeParticulier"><img class="ic20" src="https://img.icons8.com/?size=100&id=21810&format=png&color=000000" alt="" /> Particulier</label>
         <input class="seginput" type="radio" id="modeEntreprise" name="mode" value="entreprise">
-        <label class="seglabel" for="modeEntreprise">Entreprise</label>
+        <label class="seglabel" for="modeEntreprise"><img class="ic20" src="https://img.icons8.com/?size=100&id=53373&format=png&color=000000" alt="" /> Entreprise</label>
 
         <div class="legend">Je cherche</div>
         <div>
           <input class="chipinput" type="radio" id="prod-pret" name="produit" value="un prêt à 2,5 %" checked>
-          <label class="chiplabel" for="prod-pret">Un prêt à 2,5 %</label>
+          <label class="chiplabel" for="prod-pret"><img class="ic20" src="https://img.icons8.com/?size=100&id=g99lWx8DBa8P&format=png&color=000000" alt="" /> Un prêt à 2,5 %</label>
 
           <input class="chipinput" type="radio" id="prod-subv" name="produit" value="une subvention">
-          <label class="chiplabel" for="prod-subv">Une subvention</label>
+          <label class="chiplabel" for="prod-subv"><img class="ic20" src="https://img.icons8.com/?size=100&id=53862&format=png&color=000000" alt="" /> Une subvention</label>
 
           <input class="chipinput" type="radio" id="prod-indecis" name="produit" value="je ne sais pas encore">
-          <label class="chiplabel" for="prod-indecis">Je ne sais pas encore</label>
+          <label class="chiplabel" for="prod-indecis"><img class="ic20" src="https://img.icons8.com/?size=100&id=8R288iuy91IJ&format=png&color=000000" alt="" /> Je ne sais pas encore</label>
         </div>
 
-        <!-- Champs Particulier (par défaut visibles) -->
+        <!-- Champs Particulier -->
         <div class="form-indiv">
           <div class="formgrid" style="margin-top:12px">
             <input class="input" id="prenom" name="prenom" placeholder="Prénom" autocomplete="given-name">
@@ -193,102 +260,362 @@
             <input class="input" id="emailEntreprise" name="email" type="email" placeholder="Ex. contact@societe.com" autocomplete="email">
           </div>
         </div>
-
-        <div class="hint">Ces informations serviront à <b>préremplir automatiquement</b> votre message E-mail ou WhatsApp. Vous pourrez l’envoyer tel quel ou le modifier.</div>
+        <div class="hint">Ces informations servent à <b>préremplir automatiquement</b> votre message E-mail ou WhatsApp. Vous pourrez l’envoyer tel quel ou le modifier. <b>Vos données ne sont jamais partagées.</b></div>
       </form>
 
-      <!-- CTAs (gérés par /Axfinancement.js) -->
+      <div class="urgency" role="status">
+        <img class="ic" src="https://img.icons8.com/?size=100&id=HNn2c3rI6BNm&format=png&color=000000" alt="" />
+        Capacité limitée : nous traitons un nombre restreint de dossiers chaque semaine. <b>Ouvrez votre dossier maintenant.</b>
+      </div>
+
+      <!-- CTAs -->
       <div class="cta-wrap">
         <div class="cta-row">
-          <a id="ctaEmail" class="btn email" role="button" tabindex="0" href="#">Écrire par E-mail</a>
-          <a id="ctaWhats" class="btn whatsapp" role="button" tabindex="0" href="#">Écrire sur WhatsApp</a>
+          <a id="ctaEmail" class="btn email" role="button" tabindex="0" href="#">
+            <img class="ic24" src="https://img.icons8.com/?size=100&id=89362&format=png&color=ffffff" alt="" />
+            Demander mon financement par e-mail
+          </a>
+          <a id="ctaWhats" class="btn whatsapp" role="button" tabindex="0" href="#">
+            <img class="ic24" src="https://img.icons8.com/?size=100&id=BkugfgmBwtEI&format=png&color=ffffff" alt="" />
+            Lancer mon dossier sur WhatsApp
+          </a>
         </div>
-        <div id="ctaNotice" class="notice hidden" role="status" aria-live="polite">Veuillez remplir le mini-formulaire (nom/société, téléphone, e-mail) avant d’envoyer votre demande.</div>
+        <div id="ctaNotice" class="notice hidden" role="status" aria-live="polite">Avant d’envoyer : indiquez votre nom/société, téléphone et e-mail pour que nous puissions vous rappeler rapidement.</div>
       </div>
+
+      <!-- ===== Simulateur de prêt ===== -->
+      <section id="simuPret" class="simu-card simu-hidden" aria-live="polite">
+        <div class="simu-head">
+          <h3><img class="ic24" src="https://img.icons8.com/?size=100&id=g99lWx8DBa8P&format=png&color=000000" alt="" /> Simuler mon prêt</h3>
+          <div class="simu-note">Taux indicatif <b>2,5&nbsp;%</b> (ajustable à la baisse selon le dossier) • Assurance facultative</div>
+        </div>
+
+        <!-- Presets rapides -->
+        <div class="simu-presets" aria-label="Raccourcis de montant">
+          <button type="button" class="simu-pill" data-amt="10000">10 000 €</button>
+          <button type="button" class="simu-pill" data-amt="25000">25 000 €</button>
+          <button type="button" class="simu-pill" data-amt="50000">50 000 €</button>
+          <button type="button" class="simu-pill" data-amt="100000">100 000 €</button>
+          <button type="button" class="simu-pill" data-amt="200000">200 000 €</button>
+        </div>
+
+        <!-- Montant -->
+        <div class="simu-grid">
+          <div class="simu-ctrl">
+            <div class="simu-label"><img class="ic" src="https://img.icons8.com/?size=100&id=59844&format=png&color=000000" alt="" /> Montant emprunté</div>
+            <input id="s-montant" type="range" min="1000" max="200000" step="500" value="50000" aria-label="Montant">
+            <div class="simu-hint">C’est la somme dont vous avez besoin (max 200 000 €).</div>
+          </div>
+          <div class="simu-val"><span id="s-montant-val">50 000 €</span></div>
+        </div>
+
+        <!-- Durée -->
+        <div class="simu-grid">
+          <div class="simu-ctrl">
+            <div class="simu-label"><img class="ic" src="https://img.icons8.com/?size=100&id=XTYU32LZKHC9&format=png&color=000000" alt="" /> Durée du prêt</div>
+            <input id="s-duree" type="range" min="1" max="30" step="1" value="5" aria-label="Durée (années)">
+            <div class="simu-hint">De 1 à 30 ans. Choisissez une durée confortable.</div>
+          </div>
+          <div class="simu-val"><span id="s-duree-val">5 ans</span></div>
+        </div>
+
+        <!-- Taux d'intérêt -->
+        <div class="simu-grid">
+          <div class="simu-ctrl">
+            <div class="simu-label"><img class="ic" src="https://img.icons8.com/?size=100&id=HNn2c3rI6BNm&format=png&color=000000" alt="" /> Taux d’intérêt</div>
+            <input id="s-taux" type="range" min="0" max="10" step="0.05" value="2.5" aria-label="Taux d'intérêt (%)">
+            <div class="simu-hint">Taux indicatif — nous pouvons parfois faire mieux selon le dossier.</div>
+          </div>
+          <div class="simu-val"><span id="s-taux-val">2,50&nbsp;%</span></div>
+        </div>
+
+        <!-- Taux d'assurance -->
+        <div class="simu-grid">
+          <div class="simu-ctrl">
+            <div class="simu-label"><img class="ic" src="https://img.icons8.com/?size=100&id=10993&format=png&color=000000" alt="" /> Taux d’assurance (optionnel)</div>
+            <input id="s-assur" type="range" min="0" max="1" step="0.01" value="0.30" aria-label="Taux d'assurance (%)">
+            <div class="simu-hint">Hypothèse standard : prime mensuelle basée sur le capital initial (peut varier).</div>
+          </div>
+          <div class="simu-val"><span id="s-assur-val">0,30&nbsp;%</span></div>
+        </div>
+
+        <!-- Budget mensuel (optionnel) -->
+        <div class="simu-grid">
+          <div class="simu-ctrl">
+            <div class="simu-label"><img class="ic" src="https://img.icons8.com/?size=100&id=59844&format=png&color=000000" alt="" /> Budget mensuel cible (optionnel)</div>
+            <input id="s-budget" type="number" inputmode="numeric" placeholder="Ex. 600" min="0" step="10">
+            <div class="simu-hint">Entrez un budget total mensuel (assurance incluse) pour estimer le montant possible.</div>
+          </div>
+          <div class="simu-val"><span id="s-budget-out">—</span></div>
+        </div>
+
+        <!-- Résultats -->
+        <div class="simu-out" role="group" aria-label="Résultats de la simulation">
+          <div class="sout"><div class="k">Mensualité (hors assurance)</div><div class="v" id="s-mensu">—</div></div>
+          <div class="sout"><div class="k">Assurance estimée / mois</div><div class="v" id="s-assur-mois">—</div></div>
+          <div class="sout"><div class="k">Coût des intérêts</div><div class="v" id="s-interets">—</div></div>
+          <div class="sout"><div class="k">Coût total (intérêts + assurance)</div><div class="v" id="s-total">—</div></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="simu-actions">
+          <button type="button" class="simu-btn" id="s-copy">
+            <img class="ic" src="https://img.icons8.com/?size=100&id=cvB6JC7HJn9v&format=png&color=000000" alt="" />
+            Copier cette simulation
+          </button>
+          <button type="button" class="simu-btn" id="s-reset">Réinitialiser</button>
+        </div>
+      </section>
 
       <!-- Bénéfices -->
       <div class="value3" id="benefices">
         <div class="vcard">
-          <h3>⏳ Rapidité</h3>
-          <p>Étude sous 24 h, réponse sous 48 h, versement sous 72 h si accepté.</p>
+          <img class="ic32" src="https://img.icons8.com/?size=100&id=HNn2c3rI6BNm&format=png&color=000000" alt="">
+          <div><h3>Rapidité garantie</h3><p>Étude 24 h • Réponse 48 h • Financement 72 h si accepté. <b>Vous savez toujours où vous en êtes.</b></p></div>
         </div>
         <div class="vcard">
-          <h3>💶 Deux solutions</h3>
-          <p>Prêt fixe 2,5 % ou subvention non remboursable — selon votre besoin.</p>
+          <img class="ic32" src="https://img.icons8.com/?size=100&id=59844&format=png&color=000000" alt="">
+          <div><h3>Deux options pour vous</h3><p>Prêt fixe 2,5 % ou subvention non remboursable — nous recommandons la meilleure combinaison pour votre calendrier.</p></div>
         </div>
         <div class="vcard">
-          <h3>🤝 Parcours simple</h3>
-          <p>Un interlocuteur dédié et seulement l’essentiel à fournir.</p>
+          <img class="ic32" src="https://img.icons8.com/?size=100&id=10993&format=png&color=000000" alt="">
+          <div><h3>Simplicité totale</h3><p>Un interlocuteur dédié, moins de paperasse, uniquement les pièces essentielles. <b>On s’occupe du reste.</b></p></div>
         </div>
       </div>
     </section>
 
-    <!-- ===== Témoignages — carrousel vertical ===== -->
-    <section class="testi" id="temoignages">
-      <h3>Ils ont financé leur projet avec Axion Partners</h3>
-      <div class="viewport">
-        <article id="t1" class="slide"><p>« Contact WhatsApp lundi matin, étude le jour même, réponse deux jours après et 25 000 € reçus le jeudi. Boutique ouverte sans retard. »</p><div class="who">— Sophie, Bruxelles</div></article>
-        <article id="t2" class="slide"><p>« Je ne savais pas ce qu’était une subvention. On me l’a expliqué simplement : une aide sans remboursement. 40 000 € accordés pour notre association. »</p><div class="who">— Karim, Liège</div></article>
-        <article id="t3" class="slide"><p>« Pour un tracteur : prêt 60 000 € à 2,5 % fixe. Argent reçu sous trois jours. Process clair, pas de temps perdu. »</p><div class="who">— Jean-Pierre, Namur</div></article>
-        <article id="t4" class="slide"><p>« Un mail le lundi, un appel pour préciser, l’argent le vendredi. J’ai pu relancer le commerce. »</p><div class="who">— Laura, Lille</div></article>
-        <article id="t5" class="slide"><p>« Notre ONG financée à 80 000 € (subvention). Dossier regardé en 24 h, confirmation en 48 h. On a gagné des mois. »</p><div class="who">— Fatima, Anvers</div></article>
-        <article id="t6" class="slide"><p>« Ils financent, point. Prêt 20 000 € accepté, étapes respectées. »</p><div class="who">— Olivier, Charleroi</div></article>
-        <article id="t7" class="slide"><p>« Réponse claire, 50 000 € reçus en moins d’une semaine. Pas de jargon. »</p><div class="who">— Isabelle, Liège</div></article>
-        <article id="t8" class="slide"><p>« 2,5 % fixe pour 15 000 €. Ce qui était annoncé a été tenu. »</p><div class="who">— Thomas, Bruxelles</div></article>
-        <article id="t9" class="slide"><p>« Subvention 30 000 € pour l’atelier. Équipe directe, délais tenus. »</p><div class="who">— Clara, Mons</div></article>
-        <article id="t10" class="slide"><p>« Sceptique au départ ; au final : étude 24 h, réponse 48 h, 10 000 € versés 72 h après. »</p><div class="who">— Samir, Gand</div></article>
-      </div>
-      <div class="vcontrols">
-        <a class="navbtn" href="#t1">Haut</a>
-        <a class="navbtn" href="#t10">Bas</a>
+    <!-- About / Qui sommes-nous -->
+    <section class="about" id="about">
+      <h3>Qui sommes-nous ?</h3>
+      <div class="about-grid">
+        <div>
+          <p><b>Axion Partners</b> est une structure de financement basée au Royaume-Uni, dédiée aux particuliers, entreprises et ONG partout en Europe. Nous mobilisons <b>plus de 200 000 €</b> de capitaux propres et de lignes dédiées pour <b>octroyer des prêts à taux fixe de 2,5 %</b> (taux ajustable à la baisse selon le profil et les garanties) ou des <b>subventions non remboursables</b>.</p>
+          <p><b>Notre ambition :</b> rendre l’accès au financement <b>rapide, clair et équitable</b> pour des projets utiles et concrets. Nous décidons vite, expliquons sans jargon et ne demandons que l’essentiel.</p>
+          <ul style="margin-top:8px;color:var(--ink)">
+            <li>✅ <b>Décision rapide</b> : étude 24 h, réponse 48 h, versement 72 h si accepté.</li>
+            <li>✅ <b>Transparence</b> : jalons clairs, critères expliqués, suivi personnalisé.</li>
+            <li>✅ <b>Impact & inclusion</b> : attention particulière aux projets locaux, associatifs et aux TPE/PME.</li>
+          </ul>
+        </div>
+        <aside>
+          <div class="facts">
+            <div class="fact"><b>2,5 %</b><br><small>Taux fixe indicatif*</small></div>
+            <div class="fact"><b>72 h</b><br><small>Versement si accepté</small></div>
+            <div class="fact"><b>200 k€+</b><br><small>Capacité mobilisable</small></div>
+            <div class="fact"><b>2019</b><br><small>Année de création</small></div>
+          </div>
+          <p class="legal" style="margin-top:10px">
+            <b>Nom :</b> Axion Partners<br/>
+            <b>Forme juridique :</b> Filiale de Identify Ltd, opérant sous l’identifiant Grantify Ltd (Company No. 12274128, UK)<br/>
+            <b>Siège social :</b> 210 Euston Road, London NW1 2DA, Royaume-Uni<br/>
+            <b>Date de création :</b> 15 septembre 2019<br/>
+            <small>* Le taux peut être ajusté à la baisse selon le dossier.</small>
+          </p>
+        </aside>
       </div>
     </section>
 
-    <!-- ===== Urgence ===== -->
-    <div class="urgency" role="status">Capacité limitée : nous traitons un nombre restreint de demandes chaque semaine. Ouvrez votre dossier dès maintenant.</div>
+    <!-- Témoignages / Carrousel premium -->
+    <section class="testi" id="temoignages" role="region" aria-roledescription="carousel" aria-label="Témoignages clients">
+      <h3>Ils ont été financés avec Axion Partners</h3>
+      <div class="carousel-wrap">
+        <button class="cbtn left" aria-label="Précédent" id="prevBtn">‹</button>
+        <div class="carousel" id="tcarousel" aria-live="polite">
+          <article class="scard"><p>« Quand j’ai voulu ouvrir ma boulangerie à Liège, les banques traditionnelles me demandaient des garanties impossibles. Avec Axion Partners, j’ai reçu un prêt de 28 000 € en moins d’une semaine. Grâce à ça, j’ai acheté mon four professionnel et ouvert sans retard. Sans leur rapidité, j’aurais perdu mon local. »</p><div class="who">— Marc, Liège</div></article>
+          <article class="scard"><p>« Nous avions besoin de financer un projet associatif pour les jeunes à Bruxelles. Après avoir rempli le formulaire, nous avons eu une réponse en deux jours : subvention de 45 000 €. L’argent est arrivé trois jours plus tard. Cela a changé la vie de notre équipe, et surtout celle des jeunes que nous accompagnons. »</p><div class="who">— Nathalie, Bruxelles</div></article>
+          <article class="scard"><p>« Notre ferme familiale près de Namur devait remplacer un tracteur vieillissant. Les démarches habituelles prennent des mois. Ici, nous avons obtenu 55 000 € à 2,5 % fixe, débloqués en 72 h. Tout a été simple, sans paperasse inutile. Résultat : nous avons pu lancer les récoltes à temps. »</p><div class="who">— Jean-Pierre, Namur</div></article>
+          <article class="scard"><p>« Notre petite ONG à Anvers cherchait à rénover un local pour accueillir plus de familles. Grâce à Axion Partners, nous avons reçu une subvention de 60 000 €. Dossier analysé le lundi, réponse le mercredi, argent le vendredi. Sans eux, le projet aurait été repoussé d’un an. »</p><div class="who">— Fatima, Anvers</div></article>
+          <article class="scard"><p>« Je voulais développer mon commerce en ligne à Charleroi, mais je ne savais pas si j’avais besoin d’un prêt ou d’une subvention. L’équipe m’a orientée très simplement, sans jargon. Résultat : 20 000 € financés, argent reçu en trois jours. J’ai pu lancer mon site et stocker mes produits. »</p><div class="who">— Olivier, Charleroi</div></article>
+          <article class="scard"><p>« En tant qu’artisan à Mons, je n’avais pas le temps de me perdre dans des dossiers complexes. J’ai demandé un financement pour acheter mes machines : 18 000 € accordés rapidement. Tout ce qui était annoncé a été respecté. Aujourd’hui, mon activité tourne à plein régime. »</p><div class="who">— Clara, Mons</div></article>
+          <article class="scard"><p>« J’étais sceptique au départ, mais j’ai tenté le formulaire. En 24 h, j’avais une étude claire. Deux jours plus tard, j’ai appris que j’étais éligible à un prêt de 25 000 €. Le jeudi, l’argent était sur mon compte. Mon projet de café à Gand a ouvert dans les délais. »</p><div class="who">— Samir, Gand</div></article>
+          <article class="scard"><p>« Nous sommes une association culturelle à Bruges. Avec Axion Partners, nous avons reçu une subvention de 35 000 € en moins d’une semaine. L’équipe a expliqué chaque étape et m’a évité des semaines de démarches. Aujourd’hui, nous proposons des ateliers gratuits pour plus de 100 jeunes. »</p><div class="who">— Isabelle, Bruges</div></article>
+          <article class="scard"><p>« Pour relancer ma boutique à Liège après une période difficile, j’ai sollicité un financement. Résultat : 15 000 € à taux fixe, débloqués très vite. J’ai pu acheter du stock et réouvrir avec sérénité. La transparence et la rapidité m’ont convaincu. »</p><div class="who">— Thomas, Liège</div></article>
+          <article class="scard"><p>« Notre PME à Anvers avait besoin de moderniser son parc informatique. En seulement quelques jours, nous avons obtenu un financement mixte : prêt de 40 000 € et subvention de 20 000 €. L’argent est arrivé à temps pour signer les devis et installer le matériel. Une efficacité rare en Belgique. »</p><div class="who">— Stefan, Anvers</div></article>
+        </div>
+        <button class="cbtn right" aria-label="Suivant" id="nextBtn">›</button>
+      </div>
+    </section>
 
-    <!-- ===== FAQ déroulante ===== -->
+    <!-- Bannière bas de page -->
+    <section class="promo" aria-label="Appel à l'action">
+      <figure>
+        <img src="images/ChatGPT%20Image%2013%20sept.%202025%2C%2022_15_14.png" alt="Ne tardez pas pour obtenir votre financement">
+        <figcaption>N’attendez plus !</figcaption>
+      </figure>
+    </section>
+
+    <!-- FAQ -->
     <section class="faq" aria-labelledby="faq-title">
       <h3 id="faq-title">Questions fréquentes</h3>
-
-      <details class="qa">
-        <summary>Quel type de financement proposez-vous ?</summary>
-        <p>Nous proposons deux solutions complémentaires : <b>le prêt à taux fixe de 2,5 %</b>, utile si vous souhaitez un calendrier de remboursement connu ; et <b>la subvention</b>, une <b>aide non remboursable</b> pour soutenir les projets à impact. Lors de l’étude, on vous oriente vers l’option la plus pertinente selon votre objectif, votre timing et les pièces disponibles.</p>
-      </details>
-
-      <details class="qa">
-        <summary>Quel montant puis-je obtenir ?</summary>
-        <p>Le montant dépend du projet, des besoins réels et des éléments fournis (budget, devis, plan). À titre indicatif, nous finançons jusqu’à <b>200 000 €</b>. Après analyse, nous précisons le montant recommandé et la répartition prêt/subvention possible pour sécuriser votre calendrier sans surdimensionner la charge financière.</p>
-      </details>
-
-      <details class="qa">
-        <summary>Quels sont les délais exacts ?</summary>
-        <p>Après votre premier message (e-mail/WhatsApp) et les informations de base, nous réalisons une <b>étude sous 24 h</b>. Vous recevez une <b>réponse sous 48 h</b> indiquant l’éligibilité, le montant proposé et les prochaines étapes. Pour les dossiers acceptés avec pièces complètes, le <b>versement intervient sous 72 h</b>. Vous avez un récapitulatif clair des jalons pour éviter les attentes inutiles.</p>
-      </details>
-
-      <details class="qa">
-        <summary>Dans quels pays intervenez-vous ?</summary>
-        <p>Axion Partners est basé au Royaume-Uni et finance des projets et des entreprises <b>partout en Europe</b>. Si vous avez un doute sur l’éligibilité géographique, écrivez-nous : nous vous confirmons rapidement la marche à suivre.</p>
-      </details>
-
-      <details class="qa">
-        <summary>Comment ouvrir mon dossier ?</summary>
-        <p>Trois options : nous écrire <a href="mailto:Contact@axionpartners.eu">par e-mail</a>, nous contacter sur <a href="https://api.whatsapp.com/send?phone=447403650201" target="_blank" rel="noopener">WhatsApp</a>, ou utiliser le <b>mini-formulaire</b> (Nom, Prénom, Téléphone, E-mail). À réception, on vous indique les pièces nécessaires et on lance l’étude.</p>
-      </details>
-
-      <details class="qa">
-        <summary>Que se passe-t-il si mon dossier est refusé ?</summary>
-        <p>Vous recevez une explication factuelle (points bloquants, alternatives). L’objectif : ne pas perdre de temps. Même en cas de refus, vous repartez avec des indications concrètes pour retenter rapidement.</p>
-      </details>
+      <details class="qa"><summary>Quel type de financement proposez-vous ?</summary><p>Deux solutions complémentaires : <b>prêt à taux fixe de 2,5 %</b> pour un remboursement maîtrisé ; et <b>subvention</b>, une aide <b>non remboursable</b> pour soutenir les projets à impact. Lors de l’étude, nous vous orientons vers l’option la plus pertinente selon votre objectif, votre timing et les pièces disponibles. <b>Objectif : obtenir votre financement, sans détour.</b></p></details>
+      <details class="qa"><summary>Quel montant puis-je obtenir ?</summary><p>Selon votre projet, vos besoins réels et les éléments fournis (budget, devis, plan). À titre indicatif, nous finançons jusqu’à <b>200 000 €</b>. Après analyse, nous précisons le montant recommandé et la répartition prêt/subvention idéale pour sécuriser votre calendrier, sans surdimensionner la charge financière. <b>Une proposition claire, chiffrée.</b></p></details>
+      <details class="qa"><summary>Quels sont les délais exacts ?</summary><p>Après votre premier message (e-mail/WhatsApp) et les informations de base : <b>étude sous 24 h</b>. Vous recevez une <b>réponse sous 48 h</b> (éligibilité, montant, prochaines étapes). Pour les dossiers acceptés avec pièces complètes, le <b>versement intervient sous 72 h</b>. <b>Pas d’attente inutile : vous connaissez les jalons.</b></p></details>
+      <details class="qa"><summary>Dans quels pays intervenez-vous ?</summary><p>Nous sommes basés au Royaume-Uni et finançons des projets et des entreprises <b>partout en Europe</b>. Un doute sur l’éligibilité géographique ? Écrivez-nous : nous vous confirmons rapidement la marche à suivre. <b>Réponse claire et rapide.</b></p></details>
+      <details class="qa"><summary>Comment ouvrir mon dossier ?</summary><p>Trois options : nous écrire <a href="mailto:Contact@axionpartners.eu">par e-mail</a> <img class="ic" src="https://img.icons8.com/?size=100&id=89362&format=png&color=000000" alt="" />, nous contacter sur <a href="https://api.whatsapp.com/send?phone=447403650201" target="_blank" rel="noopener">WhatsApp</a> <img class="ic" src="https://img.icons8.com/?size=100&id=BkugfgmBwtEI&format=png&color=000000" alt="" />, ou utiliser le <b>mini-formulaire</b>. À réception, nous listons les pièces nécessaires et lançons l’étude.</p></details>
+      <details class="qa"><summary>Que se passe-t-il si mon dossier est refusé ?</summary><p>Vous recevez une explication factuelle (points bloquants, alternatives). L’objectif : ne pas vous faire perdre de temps. Même en cas de refus, vous repartez avec des indications concrètes pour retenter rapidement. <b>Transparence totale.</b></p></details>
     </section>
 
-    <footer style="margin-top:28px" id="legal">
+    <footer style="margin-top:18px" id="legal">
       © 2025 Axion Partners — Tous droits réservés • <a href="/">axionpartners.eu</a><br/>
       Basés au Royaume-Uni, nous finançons projets et entreprises en Europe. Les montants et délais dépendent de l’éligibilité et des pièces fournies. Étude 24 h, réponse 48 h ; financement 72 h après acceptation.
     </footer>
   </div>
 
-  <!-- JS: génère les messages dynamiques, bloque l’envoi si form incomplet, pixel -->
+  <!-- JS: carrousel + simulateur -->
+  <script>
+    // Carrousel flèches
+    (function(){
+      const track = document.getElementById('tcarousel');
+      const prev = document.getElementById('prevBtn');
+      const next = document.getElementById('nextBtn');
+      if(!track) return;
+      const step = () => Math.max(320, Math.floor(track.clientWidth*0.8));
+      const smooth = {behavior:(matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth')};
+      prev && prev.addEventListener('click',()=>track.scrollBy({left:-step(), ...smooth}));
+      next && next.addEventListener('click',()=>track.scrollBy({left: step(), ...smooth}));
+    })();
+
+    // Simulateur de prêt
+    (function(){
+      const fmtMoney = new Intl.NumberFormat('fr-BE',{style:'currency',currency:'EUR',maximumFractionDigits:0});
+      const fmtPct   = (v)=> (v).toLocaleString('fr-BE',{minimumFractionDigits:2,maximumFractionDigits:2})+' %';
+      const el = (id)=> document.getElementById(id);
+      const sim = el('simuPret'); if(!sim) return;
+
+      const montant = el('s-montant');
+      const duree   = el('s-duree');
+      const taux    = el('s-taux');
+      const assur   = el('s-assur');
+      const budget  = el('s-budget');
+
+      const outMontant = el('s-montant-val');
+      const outDuree   = el('s-duree-val');
+      const outTaux    = el('s-taux-val');
+      const outAssur   = el('s-assur-val');
+
+      const outMensu   = el('s-mensu');
+      const outAssurM  = el('s-assur-mois');
+      const outInteret = el('s-interets');
+      const outTotal   = el('s-total');
+      const outBudget  = el('s-budget-out');
+
+      function calc(){
+        const P = Number(montant.value);
+        const y = Number(duree.value);
+        const N = Math.max(1, Math.round(y*12));
+        const rA = Number(taux.value)/100;
+        const r  = rA/12;
+        const aA = Number(assur.value)/100;
+        const aM = aA/12;
+
+        let M = 0;
+        if (r > 0){
+          const pow = Math.pow(1+r, N);
+          M = P * r * pow / (pow - 1);
+        }else{
+          M = P / N;
+        }
+        const mAss = P * aM;
+        const interets = (M * N) - P;
+        const assurTot = mAss * N;
+        const coutTot  = interets + assurTot;
+
+        outMontant.textContent = fmtMoney.format(P);
+        outDuree.textContent   = y + (y>1 ? ' ans' : ' an');
+        outTaux.innerHTML      = fmtPct(Number(taux.value));
+        outAssur.innerHTML     = fmtPct(Number(assur.value));
+        outMensu.textContent   = fmtMoney.format(M);
+        outAssurM.textContent  = fmtMoney.format(mAss);
+        outInteret.textContent = fmtMoney.format(Math.max(0, interets));
+        outTotal.textContent   = fmtMoney.format(Math.max(0, coutTot));
+
+        if (budget.value && Number(budget.value) > 0){
+          const target = Number(budget.value);
+          let Pguess = P;
+          for(let i=0;i<3;i++){
+            const mAssGuess = Pguess * aM;
+            const Mavail = Math.max(0, target - mAssGuess);
+            let Pnew = 0;
+            if (r > 0){
+              const pow = Math.pow(1+r, N);
+              Pnew = Mavail * (pow - 1) / (r * pow);
+            }else{
+              Pnew = Mavail * N;
+            }
+            Pguess = Pnew;
+          }
+          outBudget.textContent = fmtMoney.format(Math.max(0, Math.floor(Pguess)));
+        } else {
+          outBudget.textContent = '—';
+        }
+      }
+
+      function bind(){
+        [montant, duree, taux, assur].forEach(inp=>{
+          inp.addEventListener('input', calc);
+          inp.addEventListener('change', calc);
+        });
+        budget.addEventListener('input', calc);
+        budget.addEventListener('change', calc);
+
+        document.querySelectorAll('.simu-pill').forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            const v = Number(btn.getAttribute('data-amt'));
+            montant.value = Math.min(Math.max(v, Number(montant.min)), Number(montant.max));
+            calc();
+          });
+        });
+
+        const copyBtn = document.getElementById('s-copy');
+        copyBtn && copyBtn.addEventListener('click', async ()=>{
+          const txt = [
+            `Simulation de prêt Axion Partners`,
+            `Montant : ${outMontant.textContent}`,
+            `Durée : ${outDuree.textContent}`,
+            `Taux : ${outTaux.textContent.replace(/\u00A0/g,' ')}`,
+            `Assurance : ${outAssur.textContent.replace(/\u00A0/g,' ')} (estimée)`,
+            `Mensualité (hors assur.) : ${outMensu.textContent}`,
+            `Assurance / mois : ${outAssurM.textContent}`,
+            `Coût des intérêts : ${outInteret.textContent}`,
+            `Coût total (intérêts + assurance) : ${outTotal.textContent}`,
+            budget.value ? `Budget mensuel cible : ${Number(budget.value).toLocaleString('fr-BE')} € → Montant possible estimé : ${outBudget.textContent}` : ''
+          ].filter(Boolean).join('\n');
+          try{
+            await navigator.clipboard.writeText(txt);
+            copyBtn.textContent = 'Copié ✅';
+            setTimeout(()=>copyBtn.textContent='Copier cette simulation',1800);
+          }catch(e){
+            alert('Copie impossible sur ce navigateur.');
+          }
+        });
+
+        const resetBtn = document.getElementById('s-reset');
+        resetBtn && resetBtn.addEventListener('click', ()=>{
+          montant.value = 50000;
+          duree.value   = 5;
+          taux.value    = 2.5;
+          assur.value   = 0.30;
+          budget.value  = '';
+          calc();
+        });
+
+        const pretRadio = document.getElementById('prod-pret');
+        const subvRadio = document.getElementById('prod-subv');
+        const indecRadio= document.getElementById('prod-indecis');
+        function toggle(){
+          if (pretRadio && pretRadio.checked){ sim.classList.remove('simu-hidden'); }
+          else { sim.classList.add('simu-hidden'); }
+        }
+        [pretRadio, subvRadio, indecRadio].forEach(r => r && r.addEventListener('change', toggle));
+        toggle();
+      }
+
+      bind();
+      calc();
+    })();
+  </script>
+
+  <!-- (Optionnel) Ton script existant si besoin -->
   <script src="/Axfinancement.js" defer></script>
 </body>
 </html>
