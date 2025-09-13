@@ -1,12 +1,13 @@
 /* Axfinancement.js — 3 triggers vers Apps Script (anti-CORS, IP only)
- * 1) page_loaded  : IP (+ ville/pays best-effort)
- * 2) form_full    : 6 champs valides (Vous êtes, Je cherche, Nom, Prénom, Téléphone, Email)
- * 3) cta_click    : 1er clic (email OU whatsapp) + ouverture du lien personnalisé
+ * Triggers (1x / session) :
+ * 1) page_loaded : IP + ville/pays (best-effort)
+ * 2) form_full   : 6 champs valides (Vous êtes, Je cherche, Nom, Prénom, Téléphone, Email)
+ * 3) cta_click   : 1er clic (email OU whatsapp) + ouverture du lien personnalisé
  *
  * HTML requis :
  *  - <form id="miniForm"> … </form>
  *  - Radios #modeParticulier / #modeEntreprise
- *  - input[name="produit"] : 3 choix
+ *  - input[name="produit"] (3 choix)
  *  - Particulier : #prenom #nom #telephone #email
  *  - Entreprise  : #societe #contact #telEntreprise #emailEntreprise
  *  - CTAs : #ctaEmail #ctaWhats
@@ -15,14 +16,17 @@
 (function(){
   'use strict';
 
-  /* ========= CONFIG ========= */
+  /* ===== CONFIG ===== */
   var TG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyEIdqQJtALe_I7tPuHd0TglrYR176gay9_m0qv00aVViASa9-Y-IrapdqpYGwB4-DH8w/exec';
   var EMAIL_TO    = 'Contact@axionpartners.eu';
   var WHATS_APP   = '447403650201'; // sans '+'
 
+  // Mode debug: ajouter ?axdebug=1 à l’URL pour forcer un nouveau SID et ignorer la dédup client
+  var DEBUG = /\baxdebug=1\b/i.test(location.search);
+
   var SS = { SID:'ax_sid', OPEN:'ax_sent_open', FORM:'ax_sent_form', CTA:'ax_sent_cta' };
 
-  /* ========= UTILS ========= */
+  /* ===== UTILS ===== */
   var $  = function(s,root){ return (root||document).querySelector(s); };
   var $$ = function(s,root){ return Array.prototype.slice.call((root||document).querySelectorAll(s)); };
   var trim   = function(v){ return (v||'').toString().trim(); };
@@ -31,13 +35,12 @@
 
   function ssGet(k){ try{return sessionStorage.getItem(k);}catch(_){return null;} }
   function ssSet(k,v){ try{sessionStorage.setItem(k,v);}catch(_){ } }
+  function ssHas(k){ return DEBUG ? false : !!ssGet(k); } // en debug, on renvoie toujours false pour rerouter les envois
 
   function getSID(){
     var sid = ssGet(SS.SID);
-    if(!sid){
-      sid = (Date.now().toString(36)+Math.random().toString(36).slice(2,10));
-      ssSet(SS.SID, sid);
-    }
+    if(!sid){ sid = (Date.now().toString(36)+Math.random().toString(36).slice(2,10)); ssSet(SS.SID, sid); }
+    if (DEBUG) sid = sid + '-d' + Math.floor(Math.random()*1e6); // nouveau SID à chaque page en debug
     return sid;
   }
   var SID = getSID();
@@ -49,35 +52,25 @@
 
   // Transport anti-CORS : text/plain (simple request) + pixel GET
   function sendEvent(event, payload){
-    var bodyStr = JSON.stringify(Object.assign({
-      event: event, ts: now(), sid: SID
-    }, payload||{}));
+    var bodyStr = JSON.stringify(Object.assign({ event: event, ts: now(), sid: SID }, payload||{}));
 
-    // 1) sendBeacon (text/plain) — pas de préflight
+    // 1) sendBeacon (text/plain)
     try{
       if(navigator.sendBeacon){
-        var ok = navigator.sendBeacon(TG_ENDPOINT, new Blob([bodyStr], {type:'text/plain'}));
-        console.debug('[ax] beacon', event, ok);
-        if(ok) { /* on envoie quand même le pixel pour résilience */ }
+        navigator.sendBeacon(TG_ENDPOINT, new Blob([bodyStr], {type:'text/plain'}));
       }
-    }catch(e){ console.debug('[ax] beacon err', e); }
+    }catch(_){}
 
-    // 2) fetch simple (aucun header custom) — pas de préflight
+    // 2) fetch simple (aucun header custom)
     try{
-      fetch(TG_ENDPOINT, { method:'POST', mode:'no-cors', keepalive:true, body: bodyStr })
-        .then(function(){ console.debug('[ax] fetch sent', event); })
-        .catch(function(e){ console.debug('[ax] fetch err', e); });
-    }catch(e){ console.debug('[ax] fetch thrown', e); }
+      fetch(TG_ENDPOINT, { method:'POST', mode:'no-cors', keepalive:true, body: bodyStr });
+    }catch(_){}
 
-    // 3) GET pixel (toujours) — arrive même si CORS/proxy bloquent le POST
-    try{
-      var img = new Image();
-      img.src = TG_ENDPOINT + '?data=' + b64url(bodyStr);
-      console.debug('[ax] pixel GET', event);
-    }catch(e){ console.debug('[ax] pixel err', e); }
+    // 3) GET pixel (toujours) — passe même si proxy/CORS bloquent le POST
+    try{ new Image().src = TG_ENDPOINT + '?data=' + b64url(bodyStr); }catch(_){}
   }
 
-  // IP only (aucune permission), enrichi ville/pays best-effort
+  // IP only (aucune permission), enrichi ville/pays (best-effort)
   function fetchIpInfo(timeoutMs){
     timeoutMs = timeoutMs || 1500;
     var ctrl = new AbortController();
@@ -105,17 +98,17 @@
       .catch(function(){ clearTimeout(to); return { ip:'', loc:null }; });
   }
 
-  // Encodage CTA (comme avant)
+  // Encodage CTA
   function encodeWA(txt){ return encodeURIComponent(txt); }
   function encodeMail(txt){ return encodeURIComponent(String(txt).replace(/\r?\n/g, '\r\n')); }
   function toMailto(subject, body){ return 'mailto:'+EMAIL_TO+'?subject='+encodeMail(subject)+'&body='+encodeMail(body); }
   function toWhats(body){ return 'https://api.whatsapp.com/send?phone='+WHATS_APP+'&text='+encodeWA(body); }
 
-  /* ========= DOM ========= */
+  /* ===== DOM ===== */
   var form = $('#miniForm');
   if(!form){ console.warn('[Axfinancement] #miniForm introuvable'); return; }
 
-  var rEntreprise = $('#modeEntreprise');
+  var rEntreprise  = $('#modeEntreprise');
   var getMode = function(){ return (rEntreprise && rEntreprise.checked) ? 'entreprise' : 'particulier'; };
   var getProduit = function(){ var r=$('input[name="produit"]:checked'); return r ? r.value : 'je ne sais pas encore'; };
 
@@ -156,10 +149,10 @@
         var parts = contact.split(/\s+/);
         prenom = parts.shift() || '';
         nom    = parts.join(' ');
-        if(!nom){ nom = trim(fSociete && fSociete.value) || ''; } // fallback léger si 1 seul mot
       }
+      if (!nom) nom = trim(fSociete && fSociete.value) || ''; // fallback si contact mono-mot
       return {
-        vous_etes: 'Entreprise',
+        vous_etes:'Entreprise',
         je_cherche: produit,
         nom: nom,
         prenom: prenom,
@@ -168,7 +161,7 @@
       };
     }
     return {
-      vous_etes: 'Particulier',
+      vous_etes:'Particulier',
       je_cherche: produit,
       nom: trim(fNom && fNom.value),
       prenom: trim(fPrenom && fPrenom.value),
@@ -176,14 +169,8 @@
       email: trim(fEmail && fEmail.value)
     };
   }
-
   function sixFilled(d){
-    return !!( d.vous_etes &&
-               d.je_cherche &&
-               d.nom &&
-               d.prenom &&
-               phoneOK(d.telephone) &&
-               emailOK(d.email) );
+    return !!( d.vous_etes && d.je_cherche && d.nom && d.prenom && phoneOK(d.telephone) && emailOK(d.email) );
   }
 
   // Messages CTA (identiques à l’ancien)
@@ -211,31 +198,57 @@
     return { subject:'Ouverture de dossier — '+fullName, body: body2 };
   }
 
-  /* ===== Trigger #1 — page_loaded ===== */
+  /* ===== Trigger #1 — page_loaded (avec watchdog) =====
+   * - tente IP (1.5s) ; si ça tarde > 1s, on envoie quand même sans IP.
+   */
   function sendPageLoadedOnce(){
-    if(ssGet(SS.OPEN)) return;
+    if (ssHas(SS.OPEN)) return;
+
+    var sent = false;
+    var meta = {
+      href: location.href,
+      ref: document.referrer || '',
+      ua: navigator.userAgent,
+      lang: navigator.language,
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      screen: { w: screen.width, h: screen.height, dpr: window.devicePixelRatio||1 }
+    };
+
+    // Fallback si IP lente
+    var watchdog = setTimeout(function(){
+      if (sent) return;
+      sendEvent('page_loaded', meta); // sans ip/geo
+      ssSet(SS.OPEN,'1');
+      sent = true;
+    }, 1000);
+
     fetchIpInfo(1500).then(function(info){
-      var meta = {
-        href: location.href,
-        ref: document.referrer || '',
-        ua: navigator.userAgent,
-        lang: navigator.language,
-        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        screen: { w: screen.width, h: screen.height, dpr: window.devicePixelRatio||1 }
-      };
+      if (sent) return; // déjà envoyé par watchdog
+      clearTimeout(watchdog);
       sendEvent('page_loaded', Object.assign({}, meta, {
         ip: (info && info.ip) || undefined,
         geo: (info && info.loc) || undefined
       }));
       ssSet(SS.OPEN,'1');
+      sent = true;
+    }).catch(function(){
+      if (sent) return;
+      clearTimeout(watchdog);
+      sendEvent('page_loaded', meta);
+      ssSet(SS.OPEN,'1');
+      sent = true;
     });
   }
 
-  /* ===== Trigger #2 — form_full (6 champs) ===== */
+  /* ===== Trigger #2 — form_full (autofill-safe) =====
+   * - écoute input/change
+   * - teste immédiatement à l’init (pour les navigations avec auto-remplissage)
+   * - reteste à load/pageshow (Safari/Chrome bfcache)
+   */
   function maybeSendFormFull(){
-    if(ssGet(SS.FORM)) return;
+    if (ssHas(SS.FORM)) return;
     var snap = snapshotSix();
-    if(!sixFilled(snap)) return;
+    if (!sixFilled(snap)) return;
     sendEvent('form_full', {
       data: snap,
       href: location.href,
@@ -243,9 +256,7 @@
       tz: Intl.DateTimeFormat().resolvedOptions().timeZone
     });
     ssSet(SS.FORM,'1');
-    console.debug('[ax] form_full', snap);
   }
-
   function bindFormWatchers(){
     $$('#miniForm input[type="radio"]').forEach(function(el){
       el.addEventListener('change', maybeSendFormFull);
@@ -255,6 +266,11 @@
       el.addEventListener('input',  maybeSendFormFull);
       el.addEventListener('change', maybeSendFormFull);
     });
+
+    // Détection autofill / pré-remplissage
+    setTimeout(maybeSendFormFull, 0);       // microtask
+    window.addEventListener('load', maybeSendFormFull);
+    window.addEventListener('pageshow', maybeSendFormFull);
   }
 
   /* ===== Trigger #3 — cta_click ===== */
@@ -264,29 +280,20 @@
       showNotice("Formulaire incomplet. Merci d'ajouter vos coordonnées.");
       return;
     }
-    if(!ssGet(SS.CTA)){
+    if(!ssHas(SS.CTA)){
       sendEvent('cta_click', { which: kind, data: snap, href: location.href });
       ssSet(SS.CTA,'1');
-      console.debug('[ax] cta_click', kind, snap);
     }
     var msg = buildMessages(snap);
     if(kind==='email'){ location.href = toMailto(msg.subject, msg.body); }
     else{ window.open(toWhats(msg.body), '_blank', 'noopener'); }
   }
-
   function bindCTAs(){
     var email = $('#ctaEmail');
     var whats = $('#ctaWhats');
     function onKey(fn){ return function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); fn(); } }; }
-
-    if(email){
-      email.addEventListener('click', function(e){ e.preventDefault(); handleCTA('email'); });
-      email.addEventListener('keydown', onKey(function(){ handleCTA('email'); }));
-    }
-    if(whats){
-      whats.addEventListener('click', function(e){ e.preventDefault(); handleCTA('whatsapp'); });
-      whats.addEventListener('keydown', onKey(function(){ handleCTA('whatsapp'); }));
-    }
+    if(email){ email.addEventListener('click', function(e){ e.preventDefault(); handleCTA('email'); }); email.addEventListener('keydown', onKey(function(){ handleCTA('email'); })); }
+    if(whats){ whats.addEventListener('click', function(e){ e.preventDefault(); handleCTA('whatsapp'); }); whats.addEventListener('keydown', onKey(function(){ handleCTA('whatsapp'); })); }
   }
 
   /* ===== INIT ===== */
