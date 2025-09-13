@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Axion Partners — Financement rapide en Europe : prêts (2,5 %) & subventions | Étude 24 h • Réponse 48 h • Financement 72 h</title>
-  <meta name="description" content="Axion Partners finance projets et entreprises en Europe : prêts à taux fixe 2,5 % et subventions non remboursables. Étude sous 24 h, réponse sous 48 h, versement sous 72 h si accepté." />
+  <title>Axion Partners — Financement rapide en Europe : prêts (3 %) & subventions | Étude 24 h • Réponse 48 h • Financement 72 h</title>
+  <meta name="description" content="Axion Partners finance projets et entreprises en Europe : prêts à taux fixe 3 % et subventions non remboursables. Étude sous 24 h, réponse sous 48 h, versement sous 72 h si accepté." />
   <meta name="author" content="Axion Partners" />
   <link rel="icon" href="/images/app-icon.png" />
   <link rel="canonical" href="/Axfinancement" />
 
   <!-- OpenGraph -->
-  <meta property="og:title" content="Axion Partners — Prêts 2,5 % & Subventions en Europe" />
+  <meta property="og:title" content="Axion Partners — Prêts 3 % & Subventions en Europe" />
   <meta property="og:description" content="Étude 24 h • Réponse 48 h • Financement 72 h si accepté" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="/Axfinancement" />
@@ -30,7 +30,7 @@
     }
     img{display:block;max-width:100%;height:auto}
     a{text-decoration:none;color:inherit}
-    .container{max-width:1160px;margin:0 auto;padding:20px}
+    .container{max-width:1160px;margin:0 auto;padding:clamp(12px,2.5vw,24px)}
     .hidden{display:none}
 
     /* Icônes inline */
@@ -199,6 +199,20 @@
       .simu-grid{grid-template-columns:1fr}
       .simu-out{grid-template-columns:1fr 1fr}
     }
+    @media (max-width:640px){
+      .cta-row{flex-direction:column}
+      .btn{width:100%}
+      .carousel{grid-auto-columns:85%}
+      .hero{padding:20px}
+    }
+    @media (max-width:480px){
+      body{font-size:16px}
+      header img{height:48px}
+      .brand .tag{font-size:12px}
+      .facts{grid-template-columns:1fr}
+      .simu-out{grid-template-columns:1fr}
+      .promo figcaption{font-size:14px}
+    }
   </style>
 </head>
 <body>
@@ -222,7 +236,7 @@
             Étude 24 h • Réponse 48 h • Financement 72 h*
           </span>
           <h2>Votre projet mérite d’être financé.</h2>
-          <p><b>Nous vous obtenons un prêt à 2,5 % ou une subvention</b>, selon votre situation. Dites-nous votre objectif : nous simplifions le parcours pour aller vite et droit au but.</p>
+          <p>Nous vous obtenons un prêt à 3 % ou une subvention, selon votre situation. Dites-nous votre objectif : nous simplifions le parcours pour aller vite et droit au but.</p>
           <div class="bullets">
             <span class="bullet"><img class="ic" src="https://img.icons8.com/?size=100&id=XTYU32LZKHC9&format=png&color=000000" alt="" /> Étude 24 h</span>
             <span class="bullet"><img class="ic" src="https://img.icons8.com/?size=100&id=59844&format=png&color=000000" alt="" /> Réponse 48 h</span>
@@ -247,8 +261,8 @@
 
         <div class="legend">Je cherche</div>
         <div>
-          <input class="chipinput" type="radio" id="prod-pret" name="produit" value="un prêt à 2,5 %" checked>
-          <label class="chiplabel" for="prod-pret"><img class="ic20" src="https://img.icons8.com/?size=100&id=g99lWx8DBa8P&format=png&color=000000" alt="" /> Un prêt à 2,5 %</label>
+          <input class="chipinput" type="radio" id="prod-pret" name="produit" value="un prêt à 3 %" checked>
+          <label class="chiplabel" for="prod-pret"><img class="ic20" src="https://img.icons8.com/?size=100&id=g99lWx8DBa8P&format=png&color=000000" alt="" /> Un prêt à 3 %</label>
 
           <input class="chipinput" type="radio" id="prod-subv" name="produit" value="une subvention">
           <label class="chiplabel" for="prod-subv"><img class="ic20" src="https://img.icons8.com/?size=100&id=53862&format=png&color=000000" alt="" /> Une subvention</label>
@@ -280,13 +294,8 @@
             <input class="input" id="emailEntreprise" name="email" type="email" placeholder="Ex. contact@societe.com" autocomplete="email">
           </div>
         </div>
-        <div class="hint">Ces informations servent à <b>préremplir automatiquement</b> votre message E-mail ou WhatsApp. Vous pourrez l’envoyer tel quel ou le modifier. <b>Vos données ne sont jamais partagées.</b></div>
+        <div class="hint">Ces informations servent à préremplir automatiquement votre message E-mail ou WhatsApp. Vous pourrez l’envoyer tel quel ou le modifier. Vos données ne sont jamais partagées.</div>
       </form>
-
-      <div class="urgency" role="status">
-        <img class="ic" src="https://img.icons8.com/?size=100&id=HNn2c3rI6BNm&format=png&color=000000" alt="" />
-        Capacité limitée : nous traitons un nombre restreint de dossiers chaque semaine. <b>Ouvrez votre dossier maintenant.</b>
-      </div>
 
       <!-- CTAs -->
       <div class="cta-wrap">
@@ -295,11 +304,17 @@
             <img class="ic24" src="https://img.icons8.com/?size=100&id=89362&format=png&color=ffffff" alt="" />
             Demander mon financement par e-mail
           </a>
-          <a id="ctaWhats" class="btn whatsapp" role="button" tabindex="0" href="#">
+        <a id="ctaWhats" class="btn whatsapp" role="button" tabindex="0" href="#">
             <img class="ic24" src="https://img.icons8.com/?size=100&id=BkugfgmBwtEI&format=png&color=ffffff" alt="" />
             Lancer mon dossier sur WhatsApp
           </a>
         </div>
+
+        <div class="urgency" role="status">
+          <img class="ic" src="https://img.icons8.com/?size=100&id=HNn2c3rI6BNm&format=png&color=000000" alt="" />
+          nous traitons un bon nombre dossiers pas semaines, contactez nous maintenant pour vite obtenir votre financement,
+        </div>
+
         <div id="ctaNotice" class="notice hidden" role="status" aria-live="polite">Avant d’envoyer : indiquez votre nom/société, téléphone et e-mail pour que nous puissions vous rappeler rapidement.</div>
       </div>
 
@@ -307,7 +322,7 @@
       <section id="simuPret" class="simu-card simu-hidden" aria-live="polite">
         <div class="simu-head">
           <h3><img class="ic24" src="https://img.icons8.com/?size=100&id=g99lWx8DBa8P&format=png&color=000000" alt="" /> Simuler mon prêt</h3>
-          <div class="simu-note">Taux indicatif <b>2,5&nbsp;%</b> (ajustable à la baisse selon le dossier) • Assurance facultative</div>
+          <div class="simu-note">Taux indicatif <b>3&nbsp;%</b> (ajustable à la baisse selon le dossier) • Assurance facultative</div>
         </div>
 
         <!-- Presets rapides -->
@@ -343,10 +358,10 @@
         <div class="simu-grid">
           <div class="simu-ctrl">
             <div class="simu-label"><img class="ic" src="https://img.icons8.com/?size=100&id=HNn2c3rI6BNm&format=png&color=000000" alt="" /> Taux d’intérêt</div>
-            <input id="s-taux" type="range" min="0" max="10" step="0.05" value="2.5" aria-label="Taux d'intérêt (%)">
+            <input id="s-taux" type="range" min="0" max="10" step="0.05" value="3" aria-label="Taux d'intérêt (%)">
             <div class="simu-hint">Taux indicatif — nous pouvons parfois faire mieux selon le dossier.</div>
           </div>
-          <div class="simu-val"><span id="s-taux-val">2,50&nbsp;%</span></div>
+          <div class="simu-val"><span id="s-taux-val">3,00&nbsp;%</span></div>
         </div>
 
         <!-- Taux d'assurance -->
@@ -391,15 +406,15 @@
       <div class="value3" id="benefices">
         <div class="vcard">
           <img class="ic32" src="https://img.icons8.com/?size=100&id=HNn2c3rI6BNm&format=png&color=000000" alt="">
-          <div><h3>Rapidité garantie</h3><p>Étude 24 h • Réponse 48 h • Financement 72 h si accepté. <b>Vous savez toujours où vous en êtes.</b></p></div>
+          <div><h3>Rapidité garantie</h3><p>Étude 24 h • Réponse 48 h • Financement 72 h si accepté. Vous savez toujours où vous en êtes.</p></div>
         </div>
         <div class="vcard">
           <img class="ic32" src="https://img.icons8.com/?size=100&id=59844&format=png&color=000000" alt="">
-          <div><h3>Deux options pour vous</h3><p>Prêt fixe 2,5 % ou subvention non remboursable — nous recommandons la meilleure combinaison pour votre calendrier.</p></div>
+          <div><h3>Deux options pour vous</h3><p>Prêt fixe 3 % ou subvention non remboursable — nous recommandons la meilleure combinaison pour votre calendrier.</p></div>
         </div>
         <div class="vcard">
           <img class="ic32" src="https://img.icons8.com/?size=100&id=10993&format=png&color=000000" alt="">
-          <div><h3>Simplicité totale</h3><p>Un interlocuteur dédié, moins de paperasse, uniquement les pièces essentielles. <b>On s’occupe du reste.</b></p></div>
+          <div><h3>Simplicité totale</h3><p>Un interlocuteur dédié, moins de paperasse, uniquement les pièces essentielles. On s’occupe du reste.</p></div>
         </div>
       </div>
     </section>
@@ -409,8 +424,8 @@
       <h3>Qui sommes-nous ?</h3>
       <div class="about-grid">
         <div>
-          <p><b>Axion Partners</b> est une structure de financement basée au Royaume-Uni, dédiée aux particuliers, entreprises et ONG partout en Europe. Nous mobilisons <b>plus de 200 000 €</b> de capitaux propres et de lignes dédiées pour <b>octroyer des prêts à taux fixe de 2,5 %</b> (taux ajustable à la baisse selon le profil et les garanties) ou des <b>subventions non remboursables</b>.</p>
-          <p><b>Notre ambition :</b> rendre l’accès au financement <b>rapide, clair et équitable</b> pour des projets utiles et concrets. Nous décidons vite, expliquons sans jargon et ne demandons que l’essentiel.</p>
+          <p><b>Axion Partners</b> est une structure de financement basée au Royaume-Uni, dédiée aux particuliers, entreprises et ONG partout en Europe. Nous mobilisons plus de 200 000 € de capitaux propres et de lignes dédiées pour <b>octroyer des prêts à taux fixe de 3 %</b> (taux ajustable à la baisse selon le profil et les garanties) ou des subventions non remboursables.</p>
+          <p><b>Notre ambition :</b> rendre l’accès au financement rapide, clair et équitable pour des projets utiles et concrets. Nous décidons vite, expliquons sans jargon et ne demandons que l’essentiel.</p>
           <ul style="margin-top:8px;color:var(--ink)">
             <li>✅ <b>Décision rapide</b> : étude 24 h, réponse 48 h, versement 72 h si accepté.</li>
             <li>✅ <b>Transparence</b> : jalons clairs, critères expliqués, suivi personnalisé.</li>
@@ -419,7 +434,7 @@
         </div>
         <aside>
           <div class="facts">
-            <div class="fact"><b>2,5 %</b><br><small>Taux fixe indicatif*</small></div>
+            <div class="fact"><b>3 %</b><br><small>Taux fixe indicatif*</small></div>
             <div class="fact"><b>72 h</b><br><small>Versement si accepté</small></div>
             <div class="fact"><b>200 k€+</b><br><small>Capacité mobilisable</small></div>
             <div class="fact"><b>2019</b><br><small>Année de création</small></div>
@@ -443,7 +458,7 @@
         <div class="carousel" id="tcarousel" aria-live="polite">
           <article class="scard"><p>« Quand j’ai voulu ouvrir ma boulangerie à Liège, les banques traditionnelles me demandaient des garanties impossibles. Avec Axion Partners, j’ai reçu un prêt de 28 000 € en moins d’une semaine. Grâce à ça, j’ai acheté mon four professionnel et ouvert sans retard. Sans leur rapidité, j’aurais perdu mon local. »</p><div class="who">— Marc, Liège</div></article>
           <article class="scard"><p>« Nous avions besoin de financer un projet associatif pour les jeunes à Bruxelles. Après avoir rempli le formulaire, nous avons eu une réponse en deux jours : subvention de 45 000 €. L’argent est arrivé trois jours plus tard. Cela a changé la vie de notre équipe, et surtout celle des jeunes que nous accompagnons. »</p><div class="who">— Nathalie, Bruxelles</div></article>
-          <article class="scard"><p>« Notre ferme familiale près de Namur devait remplacer un tracteur vieillissant. Les démarches habituelles prennent des mois. Ici, nous avons obtenu 55 000 € à 2,5 % fixe, débloqués en 72 h. Tout a été simple, sans paperasse inutile. Résultat : nous avons pu lancer les récoltes à temps. »</p><div class="who">— Jean-Pierre, Namur</div></article>
+          <article class="scard"><p>« Notre ferme familiale près de Namur devait remplacer un tracteur vieillissant. Les démarches habituelles prennent des mois. Ici, nous avons obtenu 55 000 € à 3 % fixe, débloqués en 72 h. Tout a été simple, sans paperasse inutile. Résultat : nous avons pu lancer les récoltes à temps. »</p><div class="who">— Jean-Pierre, Namur</div></article>
           <article class="scard"><p>« Notre petite ONG à Anvers cherchait à rénover un local pour accueillir plus de familles. Grâce à Axion Partners, nous avons reçu une subvention de 60 000 €. Dossier analysé le lundi, réponse le mercredi, argent le vendredi. Sans eux, le projet aurait été repoussé d’un an. »</p><div class="who">— Fatima, Anvers</div></article>
           <article class="scard"><p>« Je voulais développer mon commerce en ligne à Charleroi, mais je ne savais pas si j’avais besoin d’un prêt ou d’une subvention. L’équipe m’a orientée très simplement, sans jargon. Résultat : 20 000 € financés, argent reçu en trois jours. J’ai pu lancer mon site et stocker mes produits. »</p><div class="who">— Olivier, Charleroi</div></article>
           <article class="scard"><p>« En tant qu’artisan à Mons, je n’avais pas le temps de me perdre dans des dossiers complexes. J’ai demandé un financement pour acheter mes machines : 18 000 € accordés rapidement. Tout ce qui était annoncé a été respecté. Aujourd’hui, mon activité tourne à plein régime. »</p><div class="who">— Clara, Mons</div></article>
@@ -467,7 +482,7 @@
     <!-- FAQ -->
     <section class="faq" aria-labelledby="faq-title">
       <h3 id="faq-title">Questions fréquentes</h3>
-      <details class="qa"><summary>Quel type de financement proposez-vous ?</summary><p>Deux solutions complémentaires : <b>prêt à taux fixe de 2,5 %</b> pour un remboursement maîtrisé ; et <b>subvention</b>, une aide <b>non remboursable</b> pour soutenir les projets à impact. Lors de l’étude, nous vous orientons vers l’option la plus pertinente selon votre objectif, votre timing et les pièces disponibles. <b>Objectif : obtenir votre financement, sans détour.</b></p></details>
+      <details class="qa"><summary>Quel type de financement proposez-vous ?</summary><p>Deux solutions complémentaires : <b>prêt à taux fixe de 3 %</b> pour un remboursement maîtrisé ; et <b>subvention</b>, une aide non remboursable pour soutenir les projets à impact. Lors de l’étude, nous vous orientons vers l’option la plus pertinente selon votre objectif, votre timing et les pièces disponibles. <b>Objectif : obtenir votre financement, sans détour.</b></p></details>
       <details class="qa"><summary>Quel montant puis-je obtenir ?</summary><p>Selon votre projet, vos besoins réels et les éléments fournis (budget, devis, plan). À titre indicatif, nous finançons jusqu’à <b>200 000 €</b>. Après analyse, nous précisons le montant recommandé et la répartition prêt/subvention idéale pour sécuriser votre calendrier, sans surdimensionner la charge financière. <b>Une proposition claire, chiffrée.</b></p></details>
       <details class="qa"><summary>Quels sont les délais exacts ?</summary><p>Après votre premier message (e-mail/WhatsApp) et les informations de base : <b>étude sous 24 h</b>. Vous recevez une <b>réponse sous 48 h</b> (éligibilité, montant, prochaines étapes). Pour les dossiers acceptés avec pièces complètes, le <b>versement intervient sous 72 h</b>. <b>Pas d’attente inutile : vous connaissez les jalons.</b></p></details>
       <details class="qa"><summary>Dans quels pays intervenez-vous ?</summary><p>Nous sommes basés au Royaume-Uni et finançons des projets et des entreprises <b>partout en Europe</b>. Un doute sur l’éligibilité géographique ? Écrivez-nous : nous vous confirmons rapidement la marche à suivre. <b>Réponse claire et rapide.</b></p></details>
@@ -670,7 +685,7 @@
         resetBtn && resetBtn.addEventListener('click', ()=>{
           montant.value = 50000;
           duree.value   = 5;
-          taux.value    = 2.5;
+          taux.value    = 3;
           assur.value   = 0.30;
           budget.value  = '';
           calc();
