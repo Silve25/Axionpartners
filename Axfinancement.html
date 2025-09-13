@@ -60,7 +60,6 @@
     .bullets{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}
     .bullet{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#1d4ed8;font-weight:800;border-radius:999px;padding:7px 12px;font-size:12px}
     .hero .line{margin-top:10px;color:#111827;font-size:14px}
-    .hero-visual{position:relative}
     .hero-visual img{border-radius:16px;border:1px solid var(--line);box-shadow:var(--shadow);object-fit:cover;aspect-ratio:4/3}
 
     /* Form card */
@@ -69,8 +68,8 @@
     .seginput,.chipinput{position:absolute;opacity:0;pointer-events:none}
     .seglabel,.chiplabel{
       display:inline-flex;align-items:center;gap:8px;
-      margin:0 8px 8px 0;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;
-      font-weight:800;font-size:13px;cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .05s
+      margin:0 8px 8px 0;padding:10px 14px;border-radius:999px;border:1px solid var(--line);
+      background:#fff;font-weight:800;font-size:13px;cursor:pointer;transition:box-shadow .15s,border-color .15s,transform .05s
     }
     .seginput:checked + .seglabel,.chipinput:checked + .chiplabel{background:var(--brand);color:#fff;border-color:transparent;box-shadow:0 10px 24px rgba(15,86,255,.18)}
     .seglabel:active,.chiplabel:active{transform:translateY(1px)}
@@ -147,7 +146,7 @@
     .simu-out{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
     .sout{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
     .sout .k{font-size:12px;color:#64748b}
-    .sout .v{font-size:18px;font-weight:900;color:var(--ink-strong)}
+    .sout .v{font-size:18px;font-weight:900;color:#0a1020}
     .simu-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
     .simu-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:900;font-size:14px;cursor:pointer}
     .simu-btn:hover{box-shadow:0 10px 24px rgba(2,6,23,.06)}
@@ -156,14 +155,35 @@
     .simu-ctrl input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--brand);box-shadow:0 2px 6px rgba(15,86,255,.25)}
     .simu-ctrl input[type="range"]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--brand)}
 
-    /* Bannière bas de page */
+    /* Bannière bas de page (image réduite) */
     .promo{margin:26px 0 6px}
-    .promo figure{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
-    .promo img{width:100%;height:auto;display:block}
+    .promo figure{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);max-width:640px;margin:0 auto}
+    .promo img{width:100%;height:auto;display:block;max-height:260px;object-fit:cover}
     .promo figcaption{
       position:absolute;bottom:14px;left:14px;background:rgba(255,255,255,.9);
       padding:8px 12px;border-radius:12px;font-weight:900;color:#0a1020
     }
+    @media (max-width:920px){ .promo img{max-height:180px} }
+
+    /* Modal — formulaire requis */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.45);z-index:60;padding:16px}
+    .modal.show{display:flex}
+    .modal .box{position:relative;max-width:520px;width:100%;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+    .modal .box h4{font-size:18px;font-weight:900;color:var(--ink-strong);display:flex;align-items:center;gap:8px}
+    .modal .box p{margin-top:8px;color:var(--muted)}
+    .modal .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+    .modal .btn{background:#fff;border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:12px;font-weight:900}
+    .modal .btn.primary{background:var(--brand);color:#fff;border-color:transparent}
+    .modal .close{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:999px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer}
+
+    /* FAQ */
+    .faq{margin-top:30px}
+    .faq h3{font-size:20px;margin-bottom:10px;font-weight:900;color:var(--ink-strong)}
+    details.qa{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;transition:box-shadow .2s}
+    .qa summary{cursor:pointer;font-weight:900;list-style:none}
+    .qa summary::-webkit-details-marker{display:none}
+    .qa[open]{box-shadow:0 16px 36px rgba(2,6,23,.06)}
+    .qa p{color:var(--muted);margin-top:8px}
 
     /* Footer */
     footer{margin:18px auto 36px;text-align:center;color:#64748b;font-size:13px}
@@ -436,7 +456,7 @@
       </div>
     </section>
 
-    <!-- Bannière bas de page -->
+    <!-- Bannière bas de page (image fortement réduite) -->
     <section class="promo" aria-label="Appel à l'action">
       <figure>
         <img src="images/ChatGPT%20Image%2013%20sept.%202025%2C%2022_15_14.png" alt="Ne tardez pas pour obtenir votre financement">
@@ -451,7 +471,7 @@
       <details class="qa"><summary>Quel montant puis-je obtenir ?</summary><p>Selon votre projet, vos besoins réels et les éléments fournis (budget, devis, plan). À titre indicatif, nous finançons jusqu’à <b>200 000 €</b>. Après analyse, nous précisons le montant recommandé et la répartition prêt/subvention idéale pour sécuriser votre calendrier, sans surdimensionner la charge financière. <b>Une proposition claire, chiffrée.</b></p></details>
       <details class="qa"><summary>Quels sont les délais exacts ?</summary><p>Après votre premier message (e-mail/WhatsApp) et les informations de base : <b>étude sous 24 h</b>. Vous recevez une <b>réponse sous 48 h</b> (éligibilité, montant, prochaines étapes). Pour les dossiers acceptés avec pièces complètes, le <b>versement intervient sous 72 h</b>. <b>Pas d’attente inutile : vous connaissez les jalons.</b></p></details>
       <details class="qa"><summary>Dans quels pays intervenez-vous ?</summary><p>Nous sommes basés au Royaume-Uni et finançons des projets et des entreprises <b>partout en Europe</b>. Un doute sur l’éligibilité géographique ? Écrivez-nous : nous vous confirmons rapidement la marche à suivre. <b>Réponse claire et rapide.</b></p></details>
-      <details class="qa"><summary>Comment ouvrir mon dossier ?</summary><p>Trois options : nous écrire <a href="mailto:Contact@axionpartners.eu">par e-mail</a> <img class="ic" src="https://img.icons8.com/?size=100&id=89362&format=png&color=000000" alt="" />, nous contacter sur <a href="https://api.whatsapp.com/send?phone=447403650201" target="_blank" rel="noopener">WhatsApp</a> <img class="ic" src="https://img.icons8.com/?size=100&id=BkugfgmBwtEI&format=png&color=000000" alt="" />, ou utiliser le <b>mini-formulaire</b>. À réception, nous listons les pièces nécessaires et lançons l’étude.</p></details>
+      <details class="qa"><summary>Comment ouvrir mon dossier ?</summary><p>Trois options : nous écrire <a href="mailto:Contact@axionpartners.eu">par e-mail</a>, nous contacter sur <a href="https://api.whatsapp.com/send?phone=447403650201" target="_blank" rel="noopener">WhatsApp</a>, ou utiliser le <b>mini-formulaire</b> (Nom, Prénom, Téléphone, E-mail). À réception, nous listons les pièces nécessaires et lançons l’étude. <b>C’est simple et guidé.</b></p></details>
       <details class="qa"><summary>Que se passe-t-il si mon dossier est refusé ?</summary><p>Vous recevez une explication factuelle (points bloquants, alternatives). L’objectif : ne pas vous faire perdre de temps. Même en cas de refus, vous repartez avec des indications concrètes pour retenter rapidement. <b>Transparence totale.</b></p></details>
     </section>
 
@@ -461,9 +481,9 @@
     </footer>
   </div>
 
-  <!-- JS: carrousel + simulateur -->
+  <!-- JS: carrousel + pop-up + simulateur -->
   <script>
-    // Carrousel flèches
+    // Carrousel (flèches)
     (function(){
       const track = document.getElementById('tcarousel');
       const prev = document.getElementById('prevBtn');
@@ -473,6 +493,63 @@
       const smooth = {behavior:(matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth')};
       prev && prev.addEventListener('click',()=>track.scrollBy({left:-step(), ...smooth}));
       next && next.addEventListener('click',()=>track.scrollBy({left: step(), ...smooth}));
+    })();
+
+    // CTAs: blocage + pop-up si formulaire incomplet
+    (function(){
+      // Crée la modale dans le DOM
+      const modalHtml = `
+        <div id="fillModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+          <div class="box">
+            <button class="close" type="button" aria-label="Fermer" id="fillClose">✕</button>
+            <h4>Un petit instant</h4>
+            <p>Avant d’envoyer votre demande, merci de <b>compléter le mini-formulaire</b> : nom/société, téléphone et e-mail. Ces informations nous permettent de <b>préremplir</b> votre message et de vous rappeler rapidement.</p>
+            <div class="actions">
+              <button type="button" class="btn" id="fillLater">Je le ferai plus tard</button>
+              <a href="#miniForm" class="btn primary" id="fillGo">Aller au formulaire</a>
+            </div>
+          </div>
+        </div>`;
+      document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+      const modal   = document.getElementById('fillModal');
+      const byId    = (id)=>document.getElementById(id);
+      const btnEmail= byId('ctaEmail');
+      const btnWhats= byId('ctaWhats');
+      const closeBtn= byId('fillClose');
+      const laterBtn= byId('fillLater');
+      const goBtn   = byId('fillGo');
+      const notice  = document.getElementById('ctaNotice');
+
+      const open = ()=>{ modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
+      const close= ()=>{ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
+
+      const isEmail=(v)=>/.+@.+\..+/.test((v||'').trim());
+      function firstMissing(){
+        const part = document.getElementById('modeParticulier').checked;
+        if(part){
+          const fields = [byId('prenom'), byId('nom'), byId('telephone'), byId('email')];
+          return fields.find(x=>!x || !x.value.trim() || (x.id==='email' && !isEmail(x.value)));
+        } else {
+          const fields = [byId('societe'), byId('contact'), byId('telEntreprise'), byId('emailEntreprise')];
+          return fields.find(x=>!x || !x.value.trim() || (x.id==='emailEntreprise' && !isEmail(x.value)));
+        }
+      }
+      function guard(e){
+        const miss = firstMissing();
+        if(miss){
+          e.preventDefault();
+          open();
+          notice && (notice.style.display='flex');
+          goBtn && goBtn.addEventListener('click',()=>{ setTimeout(()=>{ miss.focus(); }, 80); }, {once:true});
+        }
+      }
+
+      [btnEmail, btnWhats].forEach(b=> b && b.addEventListener('click', guard, true));
+      closeBtn && closeBtn.addEventListener('click', close);
+      laterBtn && laterBtn.addEventListener('click', close);
+      modal.addEventListener('click',(ev)=>{ if(ev.target===modal) close(); });
+      window.addEventListener('keydown',(ev)=>{ if(ev.key==='Escape') close(); });
     })();
 
     // Simulateur de prêt
