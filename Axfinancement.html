@@ -219,6 +219,31 @@
       .simu-out{grid-template-columns:1fr}
       .promo figcaption{font-size:14px}
     }
+
+    /* ===== Popup modal (fix: overlay, z-index élevé, anim) ===== */
+    .modal{
+      position:fixed; inset:0;
+      display:none; align-items:center; justify-content:center;
+      background:rgba(2,6,23,.45);
+      z-index:9999; padding:16px;
+    }
+    .modal.show{ display:flex; }
+    .modal .box{
+      position:relative; width:min(520px, 92vw);
+      background:#fff; border:1px solid var(--line); border-radius:16px;
+      padding:18px; box-shadow:var(--shadow);
+    }
+    .modal .box h4{font-size:18px;font-weight:900;color:var(--ink-strong);display:flex;align-items:center;gap:8px}
+    .modal .box p{margin-top:8px;color:var(--muted)}
+    .modal .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+    .modal .btn{background:#fff;border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:12px;font-weight:900}
+    .modal .btn.primary{background:var(--brand);color:#fff;border-color:transparent}
+    .modal .close{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:999px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer}
+
+    @media (prefers-reduced-motion: no-preference){
+      .modal.show .box{ animation:apop .18s ease-out; }
+      @keyframes apop{ from{transform:scale(.98);opacity:0} to{transform:scale(1);opacity:1} }
+    }
   </style>
 </head>
 <body>
@@ -503,7 +528,7 @@
     </footer>
   </div>
 
-  <!-- JS: carrousel + pop-up + simulateur -->
+  <!-- JS: carrousel + popup (fix) + simulateur -->
   <script>
     // Carrousel (flèches)
     (function(){
@@ -517,38 +542,42 @@
       next && next.addEventListener('click',()=>track.scrollBy({left: step(), ...smooth}));
     })();
 
-    // CTAs: blocage + pop-up si formulaire incomplet
+    // CTAs: blocage + pop-up si formulaire incomplet (FIX: fermeture fiable + focus champ)
     (function(){
-      // Crée la modale dans le DOM
       const modalHtml = `
         <div id="fillModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
           <div class="box">
-            <button class="close" type="button" aria-label="Fermer" id="fillClose">✕</button>
+            <button class="close" type="button" aria-label="Fermer" data-close>✕</button>
             <h4>Un petit instant</h4>
             <p>Avant d’envoyer votre demande, merci de <b>compléter le mini-formulaire</b> : nom/société, téléphone et e-mail. Ces informations nous permettent de <b>préremplir</b> votre message et de vous rappeler rapidement.</p>
             <div class="actions">
-              <button type="button" class="btn" id="fillLater">Je le ferai plus tard</button>
-              <a href="#miniForm" class="btn primary" id="fillGo">Aller au formulaire</a>
+              <button type="button" class="btn" data-close id="fillLater">Je le ferai plus tard</button>
+              <a href="#miniForm" class="btn primary" data-close id="fillGo">Aller au formulaire</a>
             </div>
           </div>
         </div>`;
-      document.body.insertAdjacentHTML('beforeend', modalHtml);
+      if(!document.getElementById('fillModal')){
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+      }
 
       const modal   = document.getElementById('fillModal');
       const byId    = (id)=>document.getElementById(id);
-      const btnEmail= byId('ctaEmail');
-      const btnWhats= byId('ctaWhats');
-      const closeBtn= byId('fillClose');
-      const laterBtn= byId('fillLater');
-      const goBtn   = byId('fillGo');
       const notice  = document.getElementById('ctaNotice');
 
-      const open = ()=>{ modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
-      const close= ()=>{ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
+      const open = ()=>{
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';
+      };
+      const close = ()=>{
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden','true');
+        document.body.style.overflow='';
+      };
 
       const isEmail=(v)=>/.+@.+\..+/.test((v||'').trim());
       function firstMissing(){
-        const part = document.getElementById('modeParticulier').checked;
+        const part = byId('modeParticulier')?.checked;
         if(part){
           const fields = [byId('prenom'), byId('nom'), byId('telephone'), byId('email')];
           return fields.find(x=>!x || !x.value.trim() || (x.id==='email' && !isEmail(x.value)));
@@ -557,20 +586,36 @@
           return fields.find(x=>!x || !x.value.trim() || (x.id==='emailEntreprise' && !isEmail(x.value)));
         }
       }
+
       function guard(e){
         const miss = firstMissing();
         if(miss){
           e.preventDefault();
           open();
-          notice && (notice.style.display='flex');
-          goBtn && goBtn.addEventListener('click',()=>{ setTimeout(()=>{ miss.focus(); }, 80); }, {once:true});
+          if(notice) notice.style.display='flex';
         }
       }
 
-      [btnEmail, btnWhats].forEach(b=> b && b.addEventListener('click', guard, true));
-      closeBtn && closeBtn.addEventListener('click', close);
-      laterBtn && laterBtn.addEventListener('click', close);
-      modal.addEventListener('click',(ev)=>{ if(ev.target===modal) close(); });
+      byId('ctaEmail')?.addEventListener('click', guard, true);
+      byId('ctaWhats')?.addEventListener('click', guard, true);
+
+      // Fermer: X, plus tard, aller au formulaire, overlay et ESC
+      modal.addEventListener('click',(ev)=>{
+        const t = ev.target;
+        if(t.closest('[data-close]')){
+          if(t.id === 'fillGo'){
+            ev.preventDefault();
+            document.getElementById('miniForm')?.scrollIntoView({behavior:'smooth', block:'start'});
+            setTimeout(()=>{
+              const miss = firstMissing();
+              (miss || document.querySelector('#miniForm input'))?.focus();
+            }, 250);
+          }
+          close();
+        } else if(t === modal){
+          close();
+        }
+      });
       window.addEventListener('keydown',(ev)=>{ if(ev.key==='Escape') close(); });
     })();
 
