@@ -85,9 +85,6 @@
     #modeParticulier:checked ~ .form-indiv{display:block}
     #modeParticulier:checked ~ .form-entreprise{display:none}
 
-    /* Urgence */
-    .urgency{margin:14px 0;background:#fff7ed;border:1px solid #fed7aa;color:#b45309;border-radius:12px;padding:10px 14px;font-weight:900}
-
     /* CTAs */
     .cta-wrap{margin-top:10px;text-align:center}
     .cta-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
@@ -98,11 +95,31 @@
     .btn:hover{box-shadow:0 16px 36px rgba(2,6,23,.12)}
     .notice{margin-top:10px;display:none;align-items:center;justify-content:center;gap:10px;background:#fff4f4;border:1px solid #ffd7d7;color:#7a1111;padding:10px 12px;border-radius:12px;box-shadow:0 10px 20px rgba(122,17,17,.05)}
 
-    /* Bénéfices */
-    .value3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-    .vcard{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}
-    .vcard h3{font-size:16px;margin-bottom:6px;font-weight:900}
-    .vcard p{font-size:15px;color:var(--muted)}
+    /* Message d'urgence — placé APRÈS les CTA comme demandé */
+    .urgency{margin:14px 0;background:#fff7ed;border:1px solid #fed7aa;color:#b45309;border-radius:12px;padding:10px 14px;font-weight:900}
+
+    /* ===== Bénéfices — responsive & lisible ===== */
+    .value3{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: clamp(10px, 1.6vw, 16px);
+      margin-top: 18px;
+    }
+    .vcard{
+      display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+      border-radius:16px;padding:clamp(14px,1.8vw,16px);height:100%;
+    }
+    .vcard h3{font-size:clamp(15px,1.8vw,18px);margin-bottom:6px;font-weight:800;line-height:1.25}
+    .vcard p{
+      font-size:clamp(14px,1.6vw,15.5px);color:var(--muted);line-height:1.55;
+      hyphens:auto;overflow-wrap:anywhere;
+    }
+    .ic32{width:32px;height:32px}
+    @media (max-width:1024px){ .value3{grid-template-columns:repeat(2,minmax(0,1fr))} }
+    @media (max-width:640px){
+      .value3{grid-template-columns:1fr}
+      .ic32{width:24px;height:24px}
+    }
 
     /* About */
     .about{margin-top:28px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
@@ -165,17 +182,6 @@
     }
     @media (max-width:920px){ .promo img{max-height:180px} }
 
-    /* Modal — formulaire requis */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.45);z-index:60;padding:16px}
-    .modal.show{display:flex}
-    .modal .box{position:relative;max-width:520px;width:100%;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
-    .modal .box h4{font-size:18px;font-weight:900;color:var(--ink-strong);display:flex;align-items:center;gap:8px}
-    .modal .box p{margin-top:8px;color:var(--muted)}
-    .modal .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
-    .modal .btn{background:#fff;border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:12px;font-weight:900}
-    .modal .btn.primary{background:var(--brand);color:#fff;border-color:transparent}
-    .modal .close{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:999px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer}
-
     /* FAQ */
     .faq{margin-top:30px}
     .faq h3{font-size:20px;margin-bottom:10px;font-weight:900;color:var(--ink-strong)}
@@ -189,7 +195,7 @@
     footer{margin:18px auto 36px;text-align:center;color:#64748b;font-size:13px}
     footer a{color:#1d4ed8}
 
-    /* Responsive */
+    /* Responsive — général */
     @media (max-width:920px){
       .formgrid{grid-template-columns:1fr}
       .hero h2{font-size:32px}
@@ -304,12 +310,13 @@
             <img class="ic24" src="https://img.icons8.com/?size=100&id=89362&format=png&color=ffffff" alt="" />
             Demander mon financement par e-mail
           </a>
-        <a id="ctaWhats" class="btn whatsapp" role="button" tabindex="0" href="#">
+          <a id="ctaWhats" class="btn whatsapp" role="button" tabindex="0" href="#">
             <img class="ic24" src="https://img.icons8.com/?size=100&id=BkugfgmBwtEI&format=png&color=ffffff" alt="" />
             Lancer mon dossier sur WhatsApp
           </a>
         </div>
 
+        <!-- Urgence (immédiatement après les CTA) -->
         <div class="urgency" role="status">
           <img class="ic" src="https://img.icons8.com/?size=100&id=HNn2c3rI6BNm&format=png&color=000000" alt="" />
           nous traitons un bon nombre dossiers pas semaines, contactez nous maintenant pour vite obtenir votre financement,
