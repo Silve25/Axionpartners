@@ -1,14 +1,19 @@
-/* Axfinancement.js — 3 événements max par visiteur
- * 1) page_open (avec IP si dispo)
- * 2) form_complete (une fois)
- * 3) cta (premier clic Email OU WhatsApp)
+/* Axfinancement.js — 3 triggers propres pour le Code.gs (anti-spam)
+ * 1) page_open         → envoie l’IP (géoloc côté .gs)
+ * 2) form_complete     → dès que 6 éléments sont connus :
+ *      - Vous êtes (Particulier | Entreprise)
+ *      - Je cherche (Prêt 2,5 % | Subvention | Je ne sais pas encore)
+ *      - Nom, Prénom, Téléphone, Email  (tous remplis et valides)
+ * 3) cta               → premier clic (Email OU WhatsApp)
  *
- * Nécessite dans le HTML :
- *  - form#miniForm, radios #modeParticulier / #modeEntreprise
- *  - champs Particulier: #prenom #nom #telephone #email
- *  - champs Entreprise : #societe #contact #telEntreprise #emailEntreprise
- *  - CTAs: #ctaEmail #ctaWhats
- *  - avis/notice (optionnel): #ctaNotice
+ * Hypothèses HTML:
+ *  - <form id="miniForm"> … </form>
+ *  - Radios type:  #modeParticulier / #modeEntreprise
+ *  - Radios produit: name="produit" (ex: #prod-pret / #prod-subv / #prod-indecis)
+ *  - Champs indispensables (toujours visibles): #prenom #nom #telephone #email
+ *  - CTAs: #ctaEmail #ctaWhats, notice optionnelle: #ctaNotice
+ *
+ * Tout est idempotent: un seul envoi par trigger grâce à sessionStorage + dédup côté .gs
  */
 
 (function(){
@@ -19,11 +24,11 @@
   const EMAIL_TO   = 'Contact@axionpartners.eu';
   const WHATS_APP  = '447403650201'; // sans '+'
 
-  const SS_KEYS = {
-    SID:      'ax_sid',
-    SENT_OPEN:'ax_sent_open',
-    SENT_FORM:'ax_sent_form',
-    SENT_CTA: 'ax_sent_cta',
+  const SS = {
+    SID:       'ax_sid',
+    SENT_OPEN: 'ax_sent_open',
+    SENT_FORM: 'ax_sent_form',
+    SENT_CTA:  'ax_sent_cta',
   };
 
   /* ===== UTILS ===== */
@@ -40,16 +45,16 @@
   function ssSet(k,v){ try{ sessionStorage.setItem(k,v);}catch(_){ } }
 
   function getSID(){
-    let sid = ssGet(SS_KEYS.SID);
+    let sid = ssGet(SS.SID);
     if(!sid){
       sid = (Date.now().toString(36)+Math.random().toString(36).slice(2,10));
-      ssSet(SS_KEYS.SID, sid);
+      ssSet(SS.SID, sid);
     }
     return sid;
   }
   const SID = getSID();
 
-  // IP rapide (best effort)
+  // IP (best-effort, non bloquant > 1200ms)
   let CLIENT_IP = '';
   async function fetchIP(timeoutMs=1200){
     try{
@@ -62,7 +67,7 @@
     }catch(_){}
   }
 
-  // Envoi unique (sendBeacon > fetch > img)
+  // Envoi (sendBeacon > fetch > GET image)
   function logEvent(event, payload={}){
     const body = JSON.stringify({
       event, ts: now(), sid: SID,
@@ -100,99 +105,104 @@
 
   /* ===== FORM / CTAs ===== */
   const form = $('#miniForm');
-  if(!form){ console.warn('[Axfinancement] Formulaire #miniForm introuvable'); return; }
+  if(!form){ console.warn('[Axfinancement] #miniForm introuvable'); return; }
 
+  // Segment
   const rParticulier = $('#modeParticulier');
   const rEntreprise  = $('#modeEntreprise');
 
-  // Particulier
+  // Produit (radios, name="produit")
+  function getProduit(){
+    const r = $('input[name="produit"]:checked');
+    return r ? r.value : '';
+  }
+
+  // Champs (simples, toujours présents dans la version “simple” demandée)
   const fPrenom = $('#prenom');
   const fNom    = $('#nom');
   const fTel    = $('#telephone');
   const fEmail  = $('#email');
 
-  // Entreprise
-  const fSociete  = $('#societe');
-  const fContact  = $('#contact');
-  const fTelEnt   = $('#telEntreprise');
-  const fEmailEnt = $('#emailEntreprise');
-
-  // Produit (radios optionnels)
-  function getProduit(){
-    const r = $('input[name="produit"]:checked');
-    return r ? r.value : 'je ne sais pas encore';
+  function getMode(){
+    // Si rien n’est coché, on renvoie vide (pas de spam "particulier" par défaut)
+    if(rEntreprise && rEntreprise.checked) return 'entreprise';
+    if(rParticulier && rParticulier.checked) return 'particulier';
+    return '';
   }
-  function getMode(){ return (rEntreprise && rEntreprise.checked) ? 'entreprise' : 'particulier'; }
+
   function phoneLooksValid(s){ return digits(s).length >= 8; }
 
-  function applyRequired(){
-    const m = getMode();
-    [fPrenom,fNom,fTel,fEmail,fSociete,fTelEnt,fEmailEnt].forEach(el=>{ if(el) el.required=false; });
-    if(m==='entreprise'){
-      if(fSociete)  fSociete.required  = true;
-      if(fTelEnt)   fTelEnt.required   = true;
-      if(fEmailEnt) fEmailEnt.required = true;
-    }else{
-      if(fPrenom) fPrenom.required = true;
-      if(fNom)    fNom.required    = true;
-      if(fTel)    fTel.required    = true;
-      if(fEmail)  fEmail.required  = true;
-    }
+  // Validation “6 éléments connus”
+  function isFormComplete(){
+    const mode    = getMode();            // Particulier/Entreprise (via radios)
+    const produit = getProduit();         // Prêt/Subvention/Je ne sais pas encore
+    const prenom  = trim(fPrenom?.value);
+    const nom     = trim(fNom?.value);
+    const tel     = trim(fTel?.value);
+    const email   = trim(fEmail?.value);
+
+    const hasMode    = !!mode;
+    const hasProduit = !!produit;
+    const okTel      = phoneLooksValid(tel);
+    const okEmail    = !!email;           // on évite de survalider (le .gs n’en a pas besoin)
+    const okNom      = !!nom;
+    const okPrenom   = !!prenom;
+
+    return hasMode && hasProduit && okPrenom && okNom && okTel && okEmail;
   }
 
   function collectData(){
-    const mode = getMode();
-    const produit = getProduit();
-    if(mode==='entreprise'){
-      return {
-        mode, produit,
-        societe: trim(fSociete && fSociete.value),
-        contact: trim(fContact && fContact.value),
-        tel:     trim(fTelEnt && fTelEnt.value),
-        email:   trim(fEmailEnt && fEmailEnt.value),
-      };
-    }
     return {
-      mode, produit,
-      prenom: trim(fPrenom && fPrenom.value),
-      nom:    trim(fNom && fNom.value),
-      tel:    trim(fTel && fTel.value),
-      email:  trim(fEmail && fEmail.value),
+      mode: getMode(),
+      produit: getProduit(),
+      prenom: trim(fPrenom?.value),
+      nom:    trim(fNom?.value),
+      tel:    trim(fTel?.value),
+      email:  trim(fEmail?.value),
     };
   }
 
-  function validateComplete(){
-    const m = getMode();
-    if(m==='entreprise'){
-      return !!(trim(fSociete?.value) && phoneLooksValid(fTelEnt?.value) && trim(fEmailEnt?.value));
-    }
-    return !!(trim(fPrenom?.value) && trim(fNom?.value) && phoneLooksValid(fTel?.value) && trim(fEmail?.value));
+  // Snapshot pour .gs
+  function snapshotForm(){
+    const d = collectData();
+    return {
+      mode: d.mode || '',
+      produit: d.produit || '',
+      prenom: d.prenom || '',
+      nom: d.nom || '',
+      tel: d.tel || '',
+      email: d.email || ''
+    };
   }
 
-  // Messages e-mail / WhatsApp bien formatés
+  // ====== TRIGGER #2 : form_complete (une fois) ======
+  function maybeSendFormComplete(){
+    if(ssGet(SS.SENT_FORM)) return;
+    if(!isFormComplete()) return;
+    logEvent('form_complete', { form: snapshotForm() });
+    ssSet(SS.SENT_FORM, '1');
+  }
+
+  // Watchers pour déclencher le #2
+  function bindFormWatchers(){
+    $$('#miniForm input, #miniForm select').forEach(el=>{
+      el.addEventListener('input',  maybeSendFormComplete);
+      el.addEventListener('change', maybeSendFormComplete);
+    });
+  }
+
+  // ====== Messages CTA (préremplis, propres) ======
   function buildMessages(d){
     const produit = d.produit || 'je ne sais pas encore';
-    if(d.mode==='entreprise'){
-      const who = d.contact ? `Nous sommes ${d.societe}. Je suis ${d.contact}.` : `Nous sommes ${d.societe}.`;
-      const body =
-`Bonjour Axion Partners,
-${who}
-Nous souhaitons obtenir ${produit}.
-Voici notre numéro WhatsApp : ${d.tel}.
-
-Merci,
-${d.societe}`;
-      return { subject:`Ouverture de dossier — ${d.societe}`, body };
-    }
-    const fullName = `${d.prenom} ${d.nom}`.replace(/\s+/g,' ').trim();
+    const full    = `${d.prenom||''} ${d.nom||''}`.replace(/\s+/g,' ').trim() || '—';
     const body =
 `Bonjour Axion Partners,
-Je suis ${fullName} et je souhaite obtenir ${produit}.
+Je suis ${full} et je souhaite obtenir ${produit}.
 Voici mon numéro WhatsApp : ${d.tel}. Vous pouvez me contacter dessus.
 
 Merci,
-${fullName}`;
-    return { subject:`Ouverture de dossier — ${fullName}`, body };
+${full}`;
+    return { subject:`Ouverture de dossier — ${full}`, body };
   }
   function toMailto(subject, body){
     return `mailto:${EMAIL_TO}?subject=${encodeMail(subject)}&body=${encodeMail(body)}`;
@@ -201,8 +211,10 @@ ${fullName}`;
     return `https://api.whatsapp.com/send?phone=${WHATS_APP}&text=${encodeWA(body)}`;
   }
 
-  // Notice
+  const ctaEmail  = $('#ctaEmail');
+  const ctaWhats  = $('#ctaWhats');
   const ctaNotice = $('#ctaNotice');
+
   function showNotice(msg){
     if(!ctaNotice) return;
     ctaNotice.textContent = msg || 'Merci de compléter le formulaire (coordonnées).';
@@ -210,99 +222,51 @@ ${fullName}`;
     setTimeout(()=>ctaNotice.classList.add('hidden'), 4000);
   }
 
-  // CTA handlers — un seul envoi “cta” (premier clic)
-  const ctaEmail = $('#ctaEmail');
-  const ctaWhats = $('#ctaWhats');
-
+  // ====== TRIGGER #3 : cta (premier clic) ======
   function handleCTA(kind){
-    // Valide et bloque si incomplet
-    if(!validateComplete()){
+    // Toujours exiger le formulaire complet avant d’ouvrir le canal
+    if(!isFormComplete()){
       showNotice("Formulaire incomplet. Merci d'ajouter vos coordonnées.");
       return;
     }
-
     const data = collectData();
     const { subject, body } = buildMessages(data);
 
-    // Pixel CTA (une seule fois côté client)
-    if(!ssGet(SS_KEYS.SENT_CTA)){
-      logEvent('cta', { kind, mode:data.mode, produit:data.produit, form: snapshotForm(data) });
-      ssSet(SS_KEYS.SENT_CTA, '1');
+    // Envoi CTA au .gs (une seule fois côté client)
+    if(!ssGet(SS.SENT_CTA)){
+      logEvent('cta', { kind, mode:data.mode, produit:data.produit, form: snapshotForm() });
+      ssSet(SS.SENT_CTA, '1');
     }
 
-    // Ouvre le canal
-    if(kind==='email'){
-      location.href = toMailto(subject, body);
-    }else{
-      window.open(toWhats(body), '_blank', 'noopener');
-    }
+    // Ouvrir le canal choisi
+    if(kind==='email'){ location.href = toMailto(subject, body); }
+    else { window.open(toWhats(body), '_blank', 'noopener'); }
   }
 
   function bindCTAs(){
     if(ctaEmail){
-      ctaEmail.addEventListener('click',  (e)=>{ e.preventDefault(); handleCTA('email'); });
-      ctaEmail.addEventListener('keydown',(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handleCTA('email'); }});
+      ctaEmail.addEventListener('click',  e=>{ e.preventDefault(); handleCTA('email'); });
+      ctaEmail.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handleCTA('email'); }});
     }
     if(ctaWhats){
-      ctaWhats.addEventListener('click',  (e)=>{ e.preventDefault(); handleCTA('whatsapp'); });
-      ctaWhats.addEventListener('keydown',(e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handleCTA('whatsapp'); }});
+      ctaWhats.addEventListener('click',  e=>{ e.preventDefault(); handleCTA('whatsapp'); });
+      ctaWhats.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handleCTA('whatsapp'); }});
     }
   }
 
-  // Form snapshot pour l’event form_complete / cta
-  function snapshotForm(d){
-    const x = d || collectData();
-    if(x.mode==='entreprise'){
-      return {
-        mode:x.mode, produit:x.produit,
-        societe:(x.societe||''), contact:(x.contact||''),
-        tel:(x.tel||''), email:(x.email||'')
-      };
-    }
-    return {
-      mode:x.mode, produit:x.produit,
-      prenom:(x.prenom||''), nom:(x.nom||''),
-      tel:(x.tel||''), email:(x.email||'')
-    };
-  }
-
-  // Envoi “form_complete” — une seule fois
-  function maybeSendFormComplete(){
-    if(ssGet(SS_KEYS.SENT_FORM)) return;
-    if(!validateComplete()) return;
-    const snap = snapshotForm();
-    logEvent('form_complete', { form: snap });
-    ssSet(SS_KEYS.SENT_FORM, '1');
-  }
-
-  function bindFormWatchers(){
-    $$('#miniForm input').forEach(el=>{
-      el.addEventListener('input', maybeSendFormComplete);
-      el.addEventListener('change', maybeSendFormComplete);
-    });
-  }
-
-  function bindSegmentation(){
-    [rParticulier, rEntreprise].forEach(r=>{
-      if(!r) return;
-      r.addEventListener('change', ()=> applyRequired());
-    });
-    applyRequired();
-  }
-
-  // 1) PAGE OPEN — une fois, après tentative IP
+  // ====== TRIGGER #1 : page_open (une fois, avec IP si dispo) ======
   async function sendPageOpenOnce(){
-    if(ssGet(SS_KEYS.SENT_OPEN)) return;
-    await fetchIP(1200); // best-effort IP
+    if(ssGet(SS.SENT_OPEN)) return;
+    await fetchIP(1200); // best-effort (ne bloque pas plus de ~1,2 s)
     logEvent('page_open', { mode:getMode(), produit:getProduit() });
-    ssSet(SS_KEYS.SENT_OPEN, '1');
+    ssSet(SS.SENT_OPEN, '1');
   }
 
   // INIT
   function init(){
-    bindSegmentation();
     bindFormWatchers();
     bindCTAs();
+    // Pas de valeur par défaut forcée → pas de spam “particulier/prêt”
     sendPageOpenOnce();
   }
 
